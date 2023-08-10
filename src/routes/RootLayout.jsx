@@ -4,6 +4,11 @@ import HomePage from "../pages/home/HomePage";
 import Cart from "../pages/cart/Cart";
 import Login from "../pages/dashboard/Login";
 import HomeLayout from "../layout/HomeLayout";
+import Dashboard from "../pages/dashboard/Dashboard";
+import Orders from "../pages/dashboard/Orders";
+import Products from "../pages/dashboard/Products";
+import Instock from "../pages/dashboard/Instock";
+import DashBoardLayout from "../layout/DashBoardLayout";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -22,6 +27,28 @@ function RootLayout() {
         {
           path: "/login",
           element: <Login />,
+        },
+      ],
+    },
+    {
+      path: "/",
+      element: <DashBoardLayout />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/orders",
+          element: <Orders />,
+        },
+        {
+          path: "/instock",
+          element: <Instock />,
+        },
+        {
+          path: "/products",
+          element: <Products />,
         },
       ],
     },

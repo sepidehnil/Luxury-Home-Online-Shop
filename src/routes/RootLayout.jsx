@@ -9,6 +9,7 @@ import Orders from "../pages/dashboard/Orders";
 import Products from "../pages/dashboard/Products";
 import Instock from "../pages/dashboard/Instock";
 import DashBoardLayout from "../layout/DashBoardLayout";
+import Shipping from "../pages/cart/Shipping";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -49,6 +50,16 @@ function RootLayout() {
         {
           path: "/products",
           element: <Products />,
+        },
+      ],
+    },
+    {
+      path: "/",
+      element: <ClientLayout />,
+      children: [
+        {
+          path: "/shipping",
+          element: <Shipping />,
         },
       ],
     },

@@ -9,6 +9,7 @@ import Orders from "../pages/dashboard/Orders";
 import Products from "../pages/dashboard/Products";
 import Instock from "../pages/dashboard/Instock";
 import DashBoardLayout from "../layout/DashBoardLayout";
+import ClientLayout from "../layout/ClientLayout";
 import Shipping from "../pages/cart/Shipping";
 
 function RootLayout() {

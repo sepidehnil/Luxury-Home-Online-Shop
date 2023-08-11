@@ -12,6 +12,8 @@ import DashBoardLayout from "../layout/DashBoardLayout";
 import CartLayout from "../layout/CartLayout";
 import Shipping from "../pages/cart/Shipping";
 import Pay from "../pages/cart/Pay";
+import SuccessPay from "../pages/cart/SuccessPay";
+import FailedPay from "../pages/cart/FailedPay";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -66,6 +68,14 @@ function RootLayout() {
         {
           path: "/pay",
           element: <Pay />,
+        },
+        {
+          path: "/successPay",
+          element: <SuccessPay />,
+        },
+        {
+          path: "/failedPay",
+          element: <FailedPay />,
         },
       ],
     },

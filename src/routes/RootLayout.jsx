@@ -9,8 +9,9 @@ import Orders from "../pages/dashboard/Orders";
 import Products from "../pages/dashboard/Products";
 import Instock from "../pages/dashboard/Instock";
 import DashBoardLayout from "../layout/DashBoardLayout";
-import ClientLayout from "../layout/ClientLayout";
+import CartLayout from "../layout/CartLayout";
 import Shipping from "../pages/cart/Shipping";
+import Pay from "../pages/cart/Pay";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -56,11 +57,15 @@ function RootLayout() {
     },
     {
       path: "/",
-      element: <ClientLayout />,
+      element: <CartLayout />,
       children: [
         {
           path: "/shipping",
           element: <Shipping />,
+        },
+        {
+          path: "/pay",
+          element: <Pay />,
         },
       ],
     },

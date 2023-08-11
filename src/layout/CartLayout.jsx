@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import MainHeader from "../components/UI/header/MainHeader";
 import Footer from "../components/UI/footer/Footer";
 
-function ClientLayout() {
+function CartLayout() {
   return (
     <div>
       <MainHeader />
@@ -11,4 +11,4 @@ function ClientLayout() {
     </div>
   );
 }
-export default ClientLayout;
+export default CartLayout;

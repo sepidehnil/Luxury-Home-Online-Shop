@@ -9,6 +9,11 @@ import Orders from "../pages/dashboard/Orders";
 import Products from "../pages/dashboard/Products";
 import Instock from "../pages/dashboard/Instock";
 import DashBoardLayout from "../layout/DashBoardLayout";
+import CartLayout from "../layout/CartLayout";
+import Shipping from "../pages/cart/Shipping";
+import Pay from "../pages/cart/Pay";
+import SuccessPay from "../pages/cart/SuccessPay";
+import FailedPay from "../pages/cart/FailedPay";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -49,6 +54,28 @@ function RootLayout() {
         {
           path: "/products",
           element: <Products />,
+        },
+      ],
+    },
+    {
+      path: "/",
+      element: <CartLayout />,
+      children: [
+        {
+          path: "/shipping",
+          element: <Shipping />,
+        },
+        {
+          path: "/pay",
+          element: <Pay />,
+        },
+        {
+          path: "/successPay",
+          element: <SuccessPay />,
+        },
+        {
+          path: "/failedPay",
+          element: <FailedPay />,
         },
       ],
     },

@@ -2,9 +2,9 @@ function Products() {
   return (
     <div>
       <ul>
-        <li>محصول ۱ </li>
-        <li>محصول ۲</li>
-        <li>محصول ۳</li>
+        <li>محصول ۵</li>
+        <li>محصول ۶</li>
+        <li>محصول ۷</li>
       </ul>
     </div>
   );

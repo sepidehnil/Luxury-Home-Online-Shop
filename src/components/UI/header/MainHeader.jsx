@@ -5,11 +5,15 @@ import userIcon from "../../../assets/svg/userIcon.svg";
 import menueIcon from "../../../assets/svg/menuIcon.svg";
 import search from "../../../assets/svg/search.svg";
 
-function MainHeader() {
+function MainHeader(props) {
   return (
     <header className="font-primary py-[15px] px-[40px] bg-[#c41231] flex items-center justify-between text-white">
       <div className="flex items-center gap-5">
-        <img src={menueIcon} />
+        <img
+          src={menueIcon}
+          onClick={props.onOpen}
+          className="cursor-pointer"
+        />
         <div className="w-[190px] h-[60px]">
           <Link to="/home">
             <img src={logo} alt="HomeSense brand logo" />

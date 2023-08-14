@@ -14,7 +14,7 @@ const FormValidation = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen bg-[]">
+    <div className="flex justify-center items-center h-screen w-screen bg-[url('https://www.ikea.com/images/two-blue-kivik-chairs-face-each-other-on-a-black-and-white-r-e8eb237382f450dbf0c88bd152083b1f.jpg?f=sg')] bg-no-repeat bg-cover bg-center">
       <div className="w-2/6	text-right font-secondary">
         <form
           className="bg-white shadow-lg rounded-lg px-8 py-8"

@@ -21,15 +21,17 @@ function FormValidation() {
           className="bg-white shadow-lg rounded-lg px-8 py-8"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <label className="block text-black text-md mb-2">نام کاربری</label>
+          <h1 className="text-center text-xl">پنل مدیریت</h1>
+          <div className="border-b-2 bg-gray-400 my-4"></div>
+          <label className="block text-black text-md ">نام کاربری</label>
           <input
-            className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+            className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="text"
             id="firstName"
             {...register("firstName", {
               required: true,
               maxLength: 20,
-              pattern: /^[ا-ی]+$/i,
+              pattern: /^[A-Za-z]+$/i,
             })}
           />
           {errors?.firstName?.type === "required" && (
@@ -41,9 +43,32 @@ function FormValidation() {
             <p className="text-red-500 text-[0.8rem]">فقط حروف الفبا</p>
           )}
 
+          <label className="block text-black text-md">رمز عبور</label>
+          <input
+            className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
+            type="password"
+            id="password"
+            {...register("password", {
+              required: true,
+              pattern: /^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/,
+            })}
+          />
+          {errors?.password?.type === "pattern" && (
+            <ul className="text-red-500 text-[0.8rem] list-disc	px-5">
+              <li>حداقل یک حرف بزرگ انگلیسی</li>
+              <li>حداقل یک کارکتر خاص</li>
+              <li>حداکثر ۸ کارکتر</li>
+            </ul>
+          )}
+          {errors?.password?.type === "required" && (
+            <p className="text-red-500 text-[0.8rem]">
+              رمز عبور خود را وارد کنید
+            </p>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-3"
+            className="w-full bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
           >
             ورود
           </button>

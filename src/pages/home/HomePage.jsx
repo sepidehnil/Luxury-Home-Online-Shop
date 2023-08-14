@@ -1,4 +1,9 @@
+import SideBarModal from "../../components/UI/modal/SideBarModal";
 function HomePage() {
-  return <div>home sense</div>;
+  return (
+    <div>
+      <SideBarModal />
+    </div>
+  );
 }
 export default HomePage;

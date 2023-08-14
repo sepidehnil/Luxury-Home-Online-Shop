@@ -1,7 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import backwardArrow from "../../../assets/svg/backwardArrow.svg";
 
 function FormValidation() {
+  const panelNavigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,6 +16,7 @@ function FormValidation() {
   function onSubmit(data) {
     alert(JSON.stringify(data));
     console.log(watch(data));
+    panelNavigate("/dashboard");
   }
 
   return (
@@ -72,6 +77,13 @@ function FormValidation() {
           >
             ورود
           </button>
+
+          <Link to="/home">
+            <div className="flex justify-end gap-2 text-sm items-center mt-4 hover:underline-offset-4 hover:underline">
+              <span>بازگشت به خانه</span>
+              <img src={backwardArrow} />
+            </div>
+          </Link>
         </form>
       </div>
     </div>

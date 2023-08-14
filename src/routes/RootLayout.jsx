@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import HomePage from "../pages/home/HomePage";
 import Cart from "../pages/cart/Cart";
-import Login from "../pages/dashboard/Login";
+import Login from "../pages/login/Login";
 import HomeLayout from "../layout/HomeLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Orders from "../pages/dashboard/Orders";
@@ -29,11 +29,11 @@ function RootLayout() {
           path: "/cart",
           element: <Cart />,
         },
-        {
-          path: "/login",
-          element: <Login />,
-        },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
     {
       path: "/",

@@ -21,3 +21,11 @@
   font-family: IRANyekan;
   src: url("../assets/fonts/Qs_Iranyekan.ttf");
 }
+@font-face {
+  font-family: IRANyekanbold;
+  src: url("../assets/fonts/Qs_Iranyekan bold.ttf");
+}
+@font-face {
+  font-family: IRANyekanmedium;
+  src: url("../assets/fonts/Qs_Iranyekan medium.ttf");
+}

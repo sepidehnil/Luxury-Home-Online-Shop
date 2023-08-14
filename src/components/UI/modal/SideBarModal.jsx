@@ -1,9 +1,11 @@
 import closeBtn from "../../../assets/svg/closeBtn.svg";
 import logo from "../../../assets/images/download.png";
+import { useState } from "react";
 
 function SideBarModal() {
+  const [showSideBar, setSideBar] = useState(flase);
   return (
-    <div className="w-[400px] py-[30px] px-[30px] bg-slate-300 h-screen fixed right-0 top-0">
+    <div className="w-[380px] py-[30px] px-[20px] bg-slate-200 h-screen fixed right-0 top-0 z-10 text-md font-secondary ">
       <div className="flex gap-11 items-center">
         <img src={closeBtn} />
         <img src={logo} className="w-[110px] h-[40px]" />
@@ -11,7 +13,7 @@ function SideBarModal() {
 
       <div className="flex gap-11 mt-8">
         <div>
-          <div>hel</div>
+          <div className="text-transparent">hel</div>
         </div>
         <div className="flex flex-col gap-5">
           <div>محصولات</div>

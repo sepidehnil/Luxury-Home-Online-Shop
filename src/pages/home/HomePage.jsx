@@ -1,4 +1,5 @@
 import SideBarModal from "../../components/UI/modal/SideBarModal";
+
 function HomePage() {
   return (
     <div>

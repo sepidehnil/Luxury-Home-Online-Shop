@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function DashBoardHeader() {
+function DashBoardSidebar() {
   return (
     <div className="flex gap-5">
       <div>
@@ -18,4 +18,4 @@ function DashBoardHeader() {
     </div>
   );
 }
-export default DashBoardHeader;
+export default DashBoardSidebar;

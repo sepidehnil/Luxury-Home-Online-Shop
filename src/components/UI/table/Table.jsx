@@ -27,7 +27,7 @@ const columns = [
     title: "Action",
     key: "action",
     render: (_, record) => (
-      <Space size="middle">
+      <Space size="large">
         <a>Invite {record.name}</a>
         <a>Delete</a>
       </Space>
@@ -37,7 +37,7 @@ const columns = [
 const data = [
   {
     key: "1",
-    name: "John Brown",
+    name: "",
     age: 32,
     address: "New York No. 1 Lake Park",
     tags: ["nice", "developer"],
@@ -57,5 +57,5 @@ const data = [
     tags: ["cool", "teacher"],
   },
 ];
-const App = () => <Table columns={columns} dataSource={data} />;
-export default App;
+const DeafaultTable = () => <Table columns={columns} dataSource={data} />;
+export default DeafaultTable;

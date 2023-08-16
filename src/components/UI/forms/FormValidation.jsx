@@ -46,19 +46,19 @@ function FormValidation() {
           <input
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="text"
-            id="firstName"
+            id="username"
             {...register("username", {
               required: true,
               maxLength: 20,
               pattern: /^[A-Za-z]+$/i,
             })}
           />
-          {errors?.firstName?.type === "required" && (
-            <p className="text-red-500 text-sm text-[0.8rem]">
+          {errors?.username?.type === "required" && (
+            <p className="text-red-500 text-[0.8rem]">
               نام کاربری خود را وارد کنید
             </p>
           )}
-          {errors?.firstName?.type === "pattern" && (
+          {errors?.username?.type === "pattern" && (
             <p className="text-red-500 text-[0.8rem]">فقط حروف الفبا</p>
           )}
 
@@ -69,14 +69,15 @@ function FormValidation() {
             id="password"
             {...register("password", {
               required: true,
+              validate: (value) => {
+                value === "admin1234";
+              },
             })}
           />
-          {errors?.password?.type === "pattern" && (
-            <ul className="text-red-500 text-[0.8rem] list-disc	px-5">
-              <li>حداقل یک حرف بزرگ انگلیسی</li>
-              <li>حداقل یک کارکتر خاص</li>
-              <li>حداکثر ۸ کارکتر</li>
-            </ul>
+          {errors?.password?.type === "validate" && (
+            <div className="text-red-500 text-[0.8rem] ">
+              رمز عبور خود را وارد کنید
+            </div>
           )}
           {errors?.password?.type === "required" && (
             <p className="text-red-500 text-[0.8rem]">

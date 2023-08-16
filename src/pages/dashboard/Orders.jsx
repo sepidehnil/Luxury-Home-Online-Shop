@@ -1,10 +1,11 @@
-import DefaultTable from "../../components/UI/table/DefaultTable";
+import DefaultTable from "../../components/UI/table/defaultTable";
+import { orders } from "../../data/orders";
 
 function Orders() {
-  return (
-    <div>
-      <DefaultTable />
-    </div>
-  );
+  const content = orders.map((goal) => (
+    <DefaultTable key={goal.id} address={goal.address} />
+  ));
+  console.log(orders);
+  return <div>{content}</div>;
 }
 export default Orders;

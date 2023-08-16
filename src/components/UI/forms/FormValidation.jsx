@@ -2,6 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import backwardArrow from "../../../assets/svg/backwardArrow.svg";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 function FormValidation() {
   const panelNavigate = useNavigate();
@@ -14,9 +16,21 @@ function FormValidation() {
   } = useForm();
 
   function onSubmit(data) {
-    alert(JSON.stringify(data));
-    console.log(watch(data));
-    panelNavigate("/dashboard");
+    // alert(JSON.stringify(data));
+    console.log(data);
+    axios
+      .post("http://localhost:8000/api/auth/login", data)
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data.data.user.role === "ADMIN"
+        ) {
+          const token = response.data.token;
+          Cookies.set("accessToken", token.accessToken);
+          Cookies.set("refreshToken", token.accessToken);
+          panelNavigate("/dashboard");
+        }
+      });
   }
 
   return (
@@ -33,7 +47,7 @@ function FormValidation() {
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="text"
             id="firstName"
-            {...register("firstName", {
+            {...register("username", {
               required: true,
               maxLength: 20,
               pattern: /^[A-Za-z]+$/i,
@@ -55,7 +69,6 @@ function FormValidation() {
             id="password"
             {...register("password", {
               required: true,
-              pattern: /^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/,
             })}
           />
           {errors?.password?.type === "pattern" && (

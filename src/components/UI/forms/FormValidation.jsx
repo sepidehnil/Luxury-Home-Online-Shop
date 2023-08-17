@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import backwardArrow from "../../../assets/svg/backwardArrow.svg";
@@ -7,6 +7,8 @@ import Cookies from "js-cookie";
 
 function FormValidation() {
   const panelNavigate = useNavigate();
+  const [userNameVal, setUserName] = useState();
+  const [passwordValue, setPasswordValue] = useState();
 
   const {
     register,
@@ -28,7 +30,7 @@ function FormValidation() {
           const token = response.data.token;
           Cookies.set("accessToken", token.accessToken);
           Cookies.set("refreshToken", token.accessToken);
-          panelNavigate("/dashboard");
+          panelNavigate("/orders");
         }
       });
   }
@@ -47,15 +49,23 @@ function FormValidation() {
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="text"
             id="username"
+            value={userNameVal}
+            onChange={(e) => setUserName(e.target.value)}
             {...register("username", {
               required: true,
               maxLength: 20,
               pattern: /^[A-Za-z]+$/i,
+              validate: (value) => value === "admin",
             })}
           />
           {errors?.username?.type === "required" && (
             <p className="text-red-500 text-[0.8rem]">
               نام کاربری خود را وارد کنید
+            </p>
+          )}
+          {errors?.username?.type === "validate" && (
+            <p className="text-red-500 text-[0.8rem]">
+              نام کاربری صحیح نمی باشد
             </p>
           )}
           {errors?.username?.type === "pattern" && (
@@ -67,22 +77,20 @@ function FormValidation() {
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="password"
             id="password"
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
             {...register("password", {
               required: true,
-              validate: (value) => {
-                value === "admin1234";
-              },
+              validate: (value) => value === "admin1234",
             })}
           />
-          {errors?.password?.type === "validate" && (
+          {errors?.password?.type === "required" && (
             <div className="text-red-500 text-[0.8rem] ">
               رمز عبور خود را وارد کنید
             </div>
           )}
-          {errors?.password?.type === "required" && (
-            <p className="text-red-500 text-[0.8rem]">
-              رمز عبور خود را وارد کنید
-            </p>
+          {errors?.password?.type === "validate" && (
+            <p className="text-red-500 text-[0.8rem]">رمز عبور صحیح نمی باشد</p>
           )}
 
           <button

@@ -1,4 +1,4 @@
-import DefaultTable from "../../components/UI/table/OrdersTable";
+import DefaultTable from "../../components/UI/table/ProductsTable";
 import { orders } from "../../data/orders";
 
 function Orders() {

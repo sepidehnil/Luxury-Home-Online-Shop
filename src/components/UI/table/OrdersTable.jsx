@@ -81,14 +81,14 @@ const OrdersTable = () => {
       title: "نام کالا",
       dataIndex: "name",
       key: "name",
-      className: " font-secondary",
+      className: "font-secondary",
     },
 
     {
       title: "دسته بندی",
       dataIndex: "category",
       key: "category",
-      className: " font-secondary",
+      className: "font-secondary",
       filters: [
         {
           text: "اتاق خواب",
@@ -115,7 +115,7 @@ const OrdersTable = () => {
       title: "ویرایش",
       dataIndex: "ویرایش",
       key: "ویرایش",
-      className: "w-[150px]",
+      className: "w-[150px] ",
       render: renderEditColumn,
     },
   ];
@@ -138,6 +138,7 @@ const OrdersTable = () => {
         dataSource={data}
         onChange={handleChange}
         pagination={paginationConfig}
+        className="font-secondary"
         components={{
           header: {
             cell: ({ children }) => (
@@ -145,6 +146,7 @@ const OrdersTable = () => {
                 style={{
                   background: "#ff8e8e",
                   borderTop: "none",
+                  fontSize: "1rem",
                 }}
               >
                 {children}

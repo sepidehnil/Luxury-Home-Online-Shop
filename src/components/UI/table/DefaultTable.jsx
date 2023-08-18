@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Space, Table } from "antd";
+import editLogo from "../../../assets/svg/editIcon.svg";
+import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
 
 // const data = [
@@ -31,7 +33,6 @@ import axios from "axios";
 const DefaultTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
-  const [sortedInfo, setSortedInfo] = useState({});
 
   const loadUserData = async () => {
     const resposeProducts = await axios.get(
@@ -49,11 +50,7 @@ const DefaultTable = () => {
       ...product,
       category: categories.find((category) => category._id === product.category)
         ?.name,
-      cate: categories.find((category) => category._id === product.category)
-        ?.name,
     }));
-
-    console.log(categories);
     return alldatas;
   };
   useEffect(() => {
@@ -62,24 +59,23 @@ const DefaultTable = () => {
     });
   }, []);
 
-  const handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
+  const handleChange = (pagination, filters) => {
+    console.log("Various parameters", pagination, filters);
     setFilteredInfo(filters);
-    setSortedInfo(sorter);
   };
   const clearFilters = () => {
     setFilteredInfo({});
   };
-  const clearAll = () => {
-    setFilteredInfo({});
-    setSortedInfo({});
+
+  const renderEditColumn = () => {
+    return (
+      <div className="flex gap-6 justify-center">
+        <img src={deleteIcon} />
+        <img src={editLogo} />
+      </div>
+    );
   };
-  const setAgeSort = () => {
-    setSortedInfo({
-      order: "descend",
-      columnKey: "age",
-    });
-  };
+
   const columns = [
     {
       title: "نام کالا",
@@ -89,8 +85,8 @@ const DefaultTable = () => {
 
     {
       title: "دسته بندی",
-      dataIndex: "cate",
-      key: "cate",
+      dataIndex: "category",
+      key: "category",
       filters: [
         {
           text: "اتاق خواب",
@@ -109,25 +105,35 @@ const DefaultTable = () => {
           value: "سزویس بهداشتی",
         },
       ],
-      filteredValue: filteredInfo.cate || null,
-      onFilter: (value, record) => record.cate.includes(value),
-      sorter: (a, b) => a.cate.length - b.cate.length,
-      sortOrder: sortedInfo.columnKey === "cate" ? sortedInfo.order : null,
+      filteredValue: filteredInfo.category || null,
+      onFilter: (value, record) => record.category.includes(value),
       ellipsis: true,
     },
+    {
+      title: "ویرایش",
+      dataIndex: "ویرایش",
+      key: "ویرایش",
+      render: renderEditColumn,
+    },
   ];
+  const paginationConfig = {
+    pageSize: 8,
+  };
   return (
     <>
       <Space
         style={{
-          marginBottom: 16,
+          marginBottom: 12,
         }}
       >
-        <Button onClick={setAgeSort}>Sort age</Button>
         <Button onClick={clearFilters}>Clear filters</Button>
-        <Button onClick={clearAll}>Clear filters and sorters</Button>
       </Space>
-      <Table columns={columns} dataSource={data} onChange={handleChange} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={handleChange}
+        pagination={paginationConfig}
+      />
     </>
   );
 };

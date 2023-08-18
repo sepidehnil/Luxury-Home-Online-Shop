@@ -30,7 +30,7 @@ import axios from "axios";
 //     address: "London No. 2 Lake Park",
 //   },
 // ];
-const DefaultTable = () => {
+const OrdersTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
 
@@ -156,4 +156,4 @@ const DefaultTable = () => {
     </>
   );
 };
-export default DefaultTable;
+export default OrdersTable;

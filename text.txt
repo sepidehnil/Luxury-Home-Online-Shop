@@ -1,0 +1,2 @@
+It also supports features such as pagination, retries, and real-time updates.
+Simplified data-fetching logic

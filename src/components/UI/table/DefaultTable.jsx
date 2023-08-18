@@ -138,6 +138,20 @@ const DefaultTable = () => {
         dataSource={data}
         onChange={handleChange}
         pagination={paginationConfig}
+        components={{
+          header: {
+            cell: ({ children }) => (
+              <th
+                style={{
+                  background: "#ff8e8e",
+                  borderTop: "none",
+                }}
+              >
+                {children}
+              </th>
+            ),
+          },
+        }}
       />
     </>
   );

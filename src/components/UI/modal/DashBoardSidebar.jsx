@@ -8,7 +8,7 @@ function DashBoardSidebar() {
         <img src={profileImage} className="rounded-full w-[90px] h-[90px]" />
       </div>
 
-      <div className="px-6 py-9 flex flex-col gap-6 bg-white rounded-lg">
+      <div className="px-6 py-5 flex flex-col gap-6 border-red-500 border-2 rounded-lg">
         <div>
           <Link to="/orders">سفارش ها</Link>
         </div>
@@ -18,6 +18,7 @@ function DashBoardSidebar() {
         <div>
           <Link to="/products">کالاها</Link>
         </div>
+        <div className="border-b-2 border-red-500 pb-1"></div>
         <div>
           <Link to="/home">بازگشت خانه</Link>
         </div>

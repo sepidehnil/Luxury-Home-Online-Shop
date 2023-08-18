@@ -125,9 +125,13 @@ const InstockTable = () => {
           marginBottom: 12,
         }}
       >
-        <Button onClick={clearFilters} className="bg-white text-black ">
-          Clear filters
+        <Button
+          onClick={clearFilters}
+          className="bg-white text-black font-secondary"
+        >
+          حذف فیلرها
         </Button>
+        <Button className="bg-white text-black font-secondary">ذخیره</Button>
       </Space>
       <Table
         columns={columns}

@@ -7,7 +7,7 @@ function CartLayout() {
     <div>
       <MainHeader />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

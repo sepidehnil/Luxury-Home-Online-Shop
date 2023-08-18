@@ -19,7 +19,7 @@ function HomeLayout() {
       {showSideBar && <SideBarModal onClose={closeBtn} />}
       <MainHeader onOpen={openBtn} />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </Fragment>
   );
 }

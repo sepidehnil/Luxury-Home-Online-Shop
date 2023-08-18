@@ -3,33 +3,8 @@ import { Button, Space, Table } from "antd";
 import editLogo from "../../../assets/svg/editIcon.svg";
 import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
+import privateAxios from "axios";
 
-// const data = [
-//   {
-//     key: "1",
-//     name: "John Brown",
-//     age: 32,
-//     address: "New York No. 1 Lake Park",
-//   },
-//   {
-//     key: "2",
-//     name: "Jim Green",
-//     age: 42,
-//     address: "London No. 1 Lake Park",
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sydney No. 1 Lake Park",
-//   },
-//   {
-//     key: "4",
-//     name: "Jim Red",
-//     age: 32,
-//     address: "London No. 2 Lake Park",
-//   },
-// ];
 const OrdersTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
@@ -44,13 +19,16 @@ const OrdersTable = () => {
     const responseCategories = await axios.get(
       "http://localhost:8000/api/categories"
     );
+
     const products = resposeProducts.data.data.products;
     const categories = responseCategories.data.data.categories;
     const alldatas = products.map((product) => ({
       ...product,
       category: categories.find((category) => category._id === product.category)
         ?.name,
+      // imageURL: product.imageURL,
     }));
+    console.log(alldatas);
     return alldatas;
   };
   useEffect(() => {
@@ -75,8 +53,23 @@ const OrdersTable = () => {
       </div>
     );
   };
-
+  // const renderImageColumn = (imageURL) => {
+  //   return (
+  //     <img
+  //       src={imageURL}
+  //       alt="Product"
+  //       style={{ width: "50px", height: "50px" }}
+  //     />
+  //   );
+  // };
   const columns = [
+    // {
+    //   title: "عکس کالا",
+    //   dataIndex: "imageURL",
+    //   key: "imageURL",
+    //   className: "font-secondary",
+    //   // render: (imageURL) => renderImageColumn(imageURL),
+    // },
     {
       title: "نام کالا",
       dataIndex: "name",
@@ -129,8 +122,14 @@ const OrdersTable = () => {
           marginBottom: 12,
         }}
       >
-        <Button onClick={clearFilters} className="bg-white text-black ">
-          Clear filters
+        <Button
+          onClick={clearFilters}
+          className="bg-white text-black font-secondary"
+        >
+          حذف فیلترها
+        </Button>
+        <Button className="bg-white text-black font-secondary">
+          افزودن کالا
         </Button>
       </Space>
       <Table

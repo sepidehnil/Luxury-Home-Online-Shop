@@ -11,7 +11,7 @@ function DashBoardLayout() {
         <Outlet />
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </Fragment>
   );
 }

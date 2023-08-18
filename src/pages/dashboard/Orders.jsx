@@ -1,8 +1,9 @@
+import Table from "../../components/UI/table/table";
+
 function Orders() {
   return (
-    <div>
-      <div>سفارش ۱</div>
-      <div>سفارش 2</div>
+    <div className="m-8">
+      <Table />
     </div>
   );
 }

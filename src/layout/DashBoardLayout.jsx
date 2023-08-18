@@ -6,8 +6,11 @@ import DashBoardSidebar from "../components/UI/modal/DashBoardSidebar";
 function DashBoardLayout() {
   return (
     <Fragment>
-      <DashBoardSidebar />
-      <Outlet />
+      <div className="flex h-screen w-screen bg-slate-200">
+        <DashBoardSidebar />
+        <Outlet />
+      </div>
+
       <Footer />
     </Fragment>
   );

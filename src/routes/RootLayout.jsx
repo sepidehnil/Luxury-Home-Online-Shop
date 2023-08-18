@@ -4,7 +4,7 @@ import HomePage from "../pages/home/HomePage";
 import Cart from "../pages/cart/Cart";
 import Login from "../pages/login/Login";
 import HomeLayout from "../layout/HomeLayout";
-import Orders from "../pages/dashboard/ProgressingOrders";
+import Orders from "../pages/dashboard/Orders";
 import Products from "../pages/dashboard/Products";
 import Instock from "../pages/dashboard/Instock";
 import DashBoardLayout from "../layout/DashBoardLayout";

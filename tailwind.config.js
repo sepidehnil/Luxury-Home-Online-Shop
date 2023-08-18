@@ -5,6 +5,8 @@ export default {
     extend: {
       fontFamily: {
         primary: "IRANyekan",
+        secondary: "IRANyekanbold",
+        third: "IRANyekanmedium",
       },
     },
   },

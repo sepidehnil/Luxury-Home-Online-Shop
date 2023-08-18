@@ -1,4 +1,4 @@
 function HomePage() {
-  return <div>home sense</div>;
+  return <div>jhbjh</div>;
 }
 export default HomePage;

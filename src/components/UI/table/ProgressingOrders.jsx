@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
-import { useParams } from "react-router-dom";
 
 const data2 = [
   {
@@ -127,7 +126,7 @@ const data2 = [
   },
 ];
 
-const DeliveredOrdersTable = () => {
+const ProgressingOrders = () => {
   const [sortedInfo, setSortedInfo] = useState({});
   const [filteredInfo, setFilteredInfo] = useState({});
 
@@ -232,4 +231,4 @@ const DeliveredOrdersTable = () => {
     </>
   );
 };
-export default DeliveredOrdersTable;
+export default ProgressingOrders;

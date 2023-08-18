@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
-import { useParams } from "react-router-dom";
+
 const data = [
   {
     id: 1,
@@ -61,7 +61,14 @@ const data = [
     address: "تهران - خیابان شهید بهشتی - خیابان سعدی - پلاک ۲۰",
     deliveredTime: "۱۴۰۲/۰۶/۰۶",
   },
-
+  {
+    id: 9,
+    userName: "زهرا رحمانی",
+    totalPrice: "۳۰۰,۰۰۰",
+    orderTime: "۱۴۰۲/۰۶/۱۱",
+    address: "تهران - خیابان انقلاب - خیابان کارگر شمالی - پلاک ۲۲",
+    deliveredTime: "۱۴۰۲/۰۶/۱۲",
+  },
   {
     id: 10,
     userName: "امیر حسینی",
@@ -92,14 +99,6 @@ const data = [
     totalPrice: "۵۸۰,۰۰۰",
     orderTime: "۱۴۰۲/۰۸/۱۵",
     address: "تهران - خیابان ولیعصر - خیابان نیاوران - پلاک ۱۰",
-  },
-  {
-    id: 9,
-    userName: "زهرا رحمانی",
-    totalPrice: "۳۰۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۶/۱۱",
-    address: "تهران - خیابان انقلاب - خیابان کارگر شمالی - پلاک ۲۲",
-    deliveredTime: "۱۴۰۲/۰۶/۱۲",
   },
 ];
 
@@ -148,15 +147,15 @@ const DeliveredOrdersTable = () => {
       key: "totalPrice",
       className: "font-secondary",
     },
+
     {
       title: "زمان ثبت سفارش",
       dataIndex: "orderTime",
       className: "font-secondary",
       key: "orderTime",
       sorter: (a, b) =>
-        moment(b.orderTime, "jYYYY/jMM/jDD").diff(
-          moment(a.orderTime, "jYYYY/jMM/jDD")
-        ),
+        moment(a.orderTime, "jYYYY/jMM/jDD").unix() -
+        moment(b.orderTime, "jYYYY/jMM/jDD").unix(), // مقایسه تاریخ‌ها بر اساس تایم‌استمپ یونیکس
       sortOrder: sortedInfo.columnKey === "orderTime" ? sortedInfo.order : null,
       ellipsis: true,
     },

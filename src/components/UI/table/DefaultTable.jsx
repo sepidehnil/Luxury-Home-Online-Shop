@@ -81,12 +81,14 @@ const DefaultTable = () => {
       title: "نام کالا",
       dataIndex: "name",
       key: "name",
+      className: " font-secondary",
     },
 
     {
       title: "دسته بندی",
       dataIndex: "category",
       key: "category",
+      className: " font-secondary",
       filters: [
         {
           text: "اتاق خواب",
@@ -113,6 +115,7 @@ const DefaultTable = () => {
       title: "ویرایش",
       dataIndex: "ویرایش",
       key: "ویرایش",
+      className: "w-[150px]",
       render: renderEditColumn,
     },
   ];
@@ -126,7 +129,9 @@ const DefaultTable = () => {
           marginBottom: 12,
         }}
       >
-        <Button onClick={clearFilters}>Clear filters</Button>
+        <Button onClick={clearFilters} className="bg-white text-black ">
+          Clear filters
+        </Button>
       </Space>
       <Table
         columns={columns}

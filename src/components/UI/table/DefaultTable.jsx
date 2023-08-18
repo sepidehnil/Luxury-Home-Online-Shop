@@ -1,46 +1,67 @@
-// const [data, setData] = useState([]);
-// useEffect(() => {
-//   loadUserData();
-// }, []);
-// const loadUserData = async () => {
-//   return await axios
-//     .get("http://localhost:8000/api/orders")
-//     .then((response) => setData(response.data))
-//     .catch((err) => console.log(err));
-// };
-// console.log(data);
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Space, Table } from "antd";
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
+import axios from "axios";
+
+// const data = [
+//   {
+//     key: "1",
+//     name: "John Brown",
+//     age: 32,
+//     address: "New York No. 1 Lake Park",
+//   },
+//   {
+//     key: "2",
+//     name: "Jim Green",
+//     age: 42,
+//     address: "London No. 1 Lake Park",
+//   },
+//   {
+//     key: "3",
+//     name: "Joe Black",
+//     age: 32,
+//     address: "Sydney No. 1 Lake Park",
+//   },
+//   {
+//     key: "4",
+//     name: "Jim Red",
+//     age: 32,
+//     address: "London No. 2 Lake Park",
+//   },
+// ];
 const DefaultTable = () => {
+  const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
+
+  const loadUserData = async () => {
+    const resposeProducts = await axios.get(
+      "http://localhost:8000/api/products",
+      {
+        params: { limit: 34 },
+      }
+    );
+    const responseCategories = await axios.get(
+      "http://localhost:8000/api/categories"
+    );
+    const products = resposeProducts.data.data.products;
+    const categories = responseCategories.data.data.categories;
+    const alldatas = products.map((product) => ({
+      ...product,
+      category: categories.find((category) => category._id === product.category)
+        ?.name,
+      cate: categories.find((category) => category._id === product.category)
+        ?.name,
+    }));
+
+    console.log(categories);
+    return alldatas;
+  };
+  useEffect(() => {
+    loadUserData().then((alldatas) => {
+      setData(alldatas);
+    });
+  }, []);
+
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
     setFilteredInfo(filters);
@@ -61,51 +82,37 @@ const DefaultTable = () => {
   };
   const columns = [
     {
-      title: "Name",
+      title: "نام کالا",
       dataIndex: "name",
       key: "name",
+    },
+
+    {
+      title: "دسته بندی",
+      dataIndex: "cate",
+      key: "cate",
       filters: [
         {
-          text: "Joe",
-          value: "Joe",
+          text: "اتاق خواب",
+          value: "اتاق خواب",
         },
         {
-          text: "Jim",
-          value: "Jim",
+          text: "سالن نشیمن",
+          value: "سالن نشیمن",
+        },
+        {
+          text: "آشپزخانه",
+          value: "آشپزخانه",
+        },
+        {
+          text: "سزویس بهداشتی",
+          value: "سزویس بهداشتی",
         },
       ],
-      filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortOrder: sortedInfo.columnKey === "name" ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      sorter: (a, b) => a.age - b.age,
-      sortOrder: sortedInfo.columnKey === "age" ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      filteredValue: filteredInfo.address || null,
-      onFilter: (value, record) => record.address.includes(value),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortOrder: sortedInfo.columnKey === "address" ? sortedInfo.order : null,
+      filteredValue: filteredInfo.cate || null,
+      onFilter: (value, record) => record.cate.includes(value),
+      sorter: (a, b) => a.cate.length - b.cate.length,
+      sortOrder: sortedInfo.columnKey === "cate" ? sortedInfo.order : null,
       ellipsis: true,
     },
   ];

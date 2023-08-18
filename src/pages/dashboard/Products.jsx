@@ -1,11 +1,8 @@
+import DefaultTable from "../../components/UI/table/defaultTable";
 function Products() {
   return (
-    <div>
-      <ul>
-        <li>محصول ۱ </li>
-        <li>محصول ۲</li>
-        <li>محصول ۳</li>
-      </ul>
+    <div className="m-8 w-[600px] h-[200px]">
+      <DefaultTable />
     </div>
   );
 }

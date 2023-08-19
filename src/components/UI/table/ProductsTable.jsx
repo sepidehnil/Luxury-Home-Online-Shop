@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Table } from "antd";
+import { Button, Space, Table, Image } from "antd";
 import editLogo from "../../../assets/svg/editIcon.svg";
 import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
-import privateAxios from "axios";
 
 const OrdersTable = () => {
   const [data, setData] = useState([]);
@@ -22,12 +21,16 @@ const OrdersTable = () => {
 
     const products = resposeProducts.data.data.products;
     const categories = responseCategories.data.data.categories;
-    const alldatas = products.map((product) => ({
-      ...product,
-      category: categories.find((category) => category._id === product.category)
-        ?.name,
-      // imageURL: product.imageURL,
-    }));
+    const alldatas = products.map((product) => {
+      return {
+        ...product,
+        category: categories.find(
+          (category) => category._id === product.category
+        )?.name,
+        imageURL: product.images[0],
+      };
+    });
+
     console.log(alldatas);
     return alldatas;
   };
@@ -53,35 +56,33 @@ const OrdersTable = () => {
       </div>
     );
   };
-  // const renderImageColumn = (imageURL) => {
-  //   return (
-  //     <img
-  //       src={imageURL}
-  //       alt="Product"
-  //       style={{ width: "50px", height: "50px" }}
-  //     />
-  //   );
-  // };
+
   const columns = [
-    // {
-    //   title: "عکس کالا",
-    //   dataIndex: "imageURL",
-    //   key: "imageURL",
-    //   className: "font-secondary",
-    //   // render: (imageURL) => renderImageColumn(imageURL),
-    // },
+    {
+      title: "عکس کالا",
+      dataIndex: "imageURL",
+      key: "imageURL",
+      className: "font-secondary text-center",
+      render: (imageURL) => (
+        <Image
+          src={`http://localhost:8000/images/products/images/${imageURL}`}
+          width={120}
+          height={120}
+        />
+      ),
+    },
     {
       title: "نام کالا",
       dataIndex: "name",
       key: "name",
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
 
     {
       title: "دسته بندی",
       dataIndex: "category",
       key: "category",
-      className: "font-secondary",
+      className: "font-secondary text-center",
       filters: [
         {
           text: "اتاق خواب",
@@ -113,7 +114,7 @@ const OrdersTable = () => {
     },
   ];
   const paginationConfig = {
-    pageSize: 8,
+    pageSize: 3,
   };
   return (
     <>
@@ -146,6 +147,7 @@ const OrdersTable = () => {
                   background: "#ff8e8e",
                   borderTop: "none",
                   fontSize: "1rem",
+                  textAlign: "center",
                 }}
               >
                 {children}

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import ProgressingOrders from "../../components/UI/table/ProgressingOrders";
 import DeliveredOrdersTable from "../../components/UI/table/DeliveredOrdersTable";
 import { useState } from "react";
@@ -54,14 +53,6 @@ function Orders() {
         {currentPage === "progressing" && <ProgressingOrders />}
         {currentPage === "delivered" && <DeliveredOrdersTable />}
       </div>
-=======
-import Table from "../../components/UI/table/table";
-
-function Orders() {
-  return (
-    <div className="m-8">
-      <Table />
->>>>>>> eba8fe2ff1ddf6cd35d68938350f4eee33d4e13b
     </div>
   );
 }

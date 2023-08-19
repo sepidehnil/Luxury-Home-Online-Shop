@@ -73,13 +73,13 @@ const InstockTable = () => {
       title: "نام کالا",
       dataIndex: "name",
       key: "name",
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
     {
       title: "دسته بندی",
       dataIndex: "category",
       key: "category",
-      className: "font-secondary",
+      className: "font-secondary text-center",
       filters: [
         {
           text: "اتاق خواب",
@@ -106,13 +106,13 @@ const InstockTable = () => {
       title: "قیمت",
       dataIndex: "price",
       key: "price",
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
     {
       title: "موجودی",
       dataIndex: "quantity",
       key: "quantity",
-      className: "w-[150px] ",
+      className: "w-[150px] text-center",
     },
   ];
   const paginationConfig = {
@@ -147,6 +147,7 @@ const InstockTable = () => {
                   background: "#ff8e8e",
                   borderTop: "none",
                   fontSize: "1rem",
+                  textAlign: "center",
                 }}
               >
                 {children}

@@ -163,18 +163,18 @@ const ProgressingOrders = () => {
       title: "نام کاربر",
       dataIndex: "userName",
       key: "userName",
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
     {
       title: "مجموع مبلغ",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
     {
       title: "زمان ثبت سفارش",
       dataIndex: "orderTime",
-      className: "font-secondary",
+      className: "font-secondary text-center",
       key: "orderTime",
       sorter: (a, b) =>
         moment(b.orderTime, "jYYYY/jMM/jDD").diff(
@@ -187,12 +187,12 @@ const ProgressingOrders = () => {
       title: "مجموع مبلغ",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
     {
       title: "بررسی وضعت سفارش",
       render: renderEditColumn,
-      className: "font-secondary",
+      className: "font-secondary text-center",
     },
   ];
   return (
@@ -211,7 +211,7 @@ const ProgressingOrders = () => {
         dataSource={data2}
         onChange={handleChange}
         pagination={paginationConfig}
-        className="font-secondary"
+        className="font-secondary text-center"
         components={{
           header: {
             cell: ({ children }) => (
@@ -220,6 +220,7 @@ const ProgressingOrders = () => {
                   background: "#ff8e8e",
                   borderTop: "none",
                   fontSize: "1rem",
+                  textAlign: "center",
                 }}
               >
                 {children}

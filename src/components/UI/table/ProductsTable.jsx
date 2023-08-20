@@ -3,10 +3,14 @@ import { Button, Space, Table, Image } from "antd";
 import editLogo from "../../../assets/svg/editIcon.svg";
 import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
+import DeleteModal from "../modal/DeleteModal";
 
 const OrdersTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const loadUserData = async () => {
     const resposeProducts = await axios.get(
@@ -51,7 +55,7 @@ const OrdersTable = () => {
   const renderEditColumn = () => {
     return (
       <div className="flex gap-6 justify-center">
-        <img src={deleteIcon} />
+        <img src={deleteIcon} onClick={handleOpen} />
         <img src={editLogo} />
       </div>
     );
@@ -118,6 +122,7 @@ const OrdersTable = () => {
   };
   return (
     <>
+      {open && <DeleteModal open={open} onClose={handleClose} />}
       <Space
         style={{
           marginBottom: 12,

@@ -1,8 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button } from "antd";
+import "../../../styles/index.css";
 
 const style = {
   position: "absolute",
@@ -10,33 +10,45 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: "white",
   boxShadow: 24,
   p: 4,
 };
 
-export default function BasicModal({ open, onClose }) {
+export default function BasicModal({ open, onClose, onCancel, onConfirm }) {
+  const handelDeleteItem = async () => {
+    onConfirm();
+    onClose();
+  };
+  const handleCancel = (){
+    onCancel()
+  }
+
   return (
-    <div>
+    <div className="font-secondary">
       <Modal
         open={open}
         onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            className="font-secondary"
-          >
+        <Box sx={style} className="none rounded-md">
+          <div className="font-secondary mb-6">
             ایا مطمئن به حذف این کالا هستید؟
-          </Typography>
-          <div className="text-center">
-            <Button className="font-secondary">بله</Button>
-            <Button className="font-secondary">خیر</Button>
+          </div>
+          <div className="flex gap-5 justify-center">
+            <Button
+              className="font-secondary bg-[#191D88] text-[#FFC436] hover:px-5"
+              onClick={handelDeleteItem}
+            >
+              بله
+            </Button>
+            <Button
+              className="font-secondary bg-[#FFC436] text-[#191D88] hover:px-5"
+              onClick={handleCancel}
+            >
+              خیر
+            </Button>
           </div>
         </Box>
       </Modal>

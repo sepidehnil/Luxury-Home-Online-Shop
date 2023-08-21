@@ -8,8 +8,13 @@ import DeleteModal from "../modal/DeleteModal";
 const OrdersTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+
+  const handleOpen = (item) => {
+    setSelectedItem(item);
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
 
   const loadUserData = async () => {
@@ -55,7 +60,7 @@ const OrdersTable = () => {
   const renderEditColumn = () => {
     return (
       <div className="flex gap-6 justify-center">
-        <img src={deleteIcon} onClick={handleOpen} />
+        <img src={deleteIcon} onClick={handleOpen(item)} />
         <img src={editLogo} />
       </div>
     );

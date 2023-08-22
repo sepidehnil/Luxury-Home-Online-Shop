@@ -4,12 +4,14 @@ import editLogo from "../../../assets/svg/editIcon.svg";
 import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
 import DeleteModal from "../modal/DeleteModal";
+import AddProductModal from "../modal/AddProductModal";
 
-const OrdersTable = () => {
+const ProductsTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [selectedItem, setSelectedItem] = useState();
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const loadUserData = async () => {
     const resposeProducts = await axios.get(
@@ -44,6 +46,7 @@ const OrdersTable = () => {
   }, []);
 
   const handleClose = () => setOpen(false);
+  const handleCloseEdit = () => setModalOpen(false);
 
   const renderEditColumn = (record) => {
     const handleOpen = () => {
@@ -51,11 +54,13 @@ const OrdersTable = () => {
       setSelectedItem(record);
       setOpen(true);
     };
-
+    const handelOpenEdit = () => {
+      setModalOpen(true);
+    };
     return (
       <div className="flex gap-6 justify-center">
         <img src={deleteIcon} onClick={handleOpen} />
-        <img src={editLogo} />
+        <img src={editLogo} onClick={handelOpenEdit} />
       </div>
     );
   };
@@ -78,6 +83,10 @@ const OrdersTable = () => {
           console.error("Error deleting item:", error);
         });
     }
+  }
+
+  function handelAddProduct() {
+    setModalOpen(open);
   }
 
   const handleChange = (pagination, filters) => {
@@ -155,6 +164,9 @@ const OrdersTable = () => {
           onConfirm={handleConfirmDelete}
         />
       )}
+      {modalOpen && (
+        <AddProductModal onOpen={modalOpen} onClose={handleCloseEdit} />
+      )}
       <Space
         style={{
           marginBottom: 12,
@@ -166,7 +178,10 @@ const OrdersTable = () => {
         >
           حذف فیلترها
         </Button>
-        <Button className="bg-white text-black font-secondary">
+        <Button
+          className="bg-white text-black font-secondary"
+          onClick={handelAddProduct}
+        >
           افزودن کالا
         </Button>
       </Space>
@@ -196,4 +211,4 @@ const OrdersTable = () => {
     </>
   );
 };
-export default OrdersTable;
+export default ProductsTable;

@@ -1,4 +1,4 @@
 function HomePage() {
-  return <div>jhbjh</div>;
+  return <div></div>;
 }
 export default HomePage;

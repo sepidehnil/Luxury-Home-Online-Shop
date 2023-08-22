@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import backwardArrow from "../../../assets/svg/backwardArrow.svg";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 function FormValidation() {
   const panelNavigate = useNavigate();
+  const [userNameVal, setUserName] = useState();
+  const [passwordValue, setPasswordValue] = useState();
 
   const {
     register,
@@ -14,9 +18,21 @@ function FormValidation() {
   } = useForm();
 
   function onSubmit(data) {
-    alert(JSON.stringify(data));
-    console.log(watch(data));
-    panelNavigate("/dashboard");
+    // alert(JSON.stringify(data));
+    console.log(data);
+    axios
+      .post("http://localhost:8000/api/auth/login", data)
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data.data.user.role === "ADMIN"
+        ) {
+          const token = response.data.token;
+          Cookies.set("accessToken", token.accessToken);
+          Cookies.set("refreshToken", token.accessToken);
+          panelNavigate("/orders");
+        }
+      });
   }
 
   return (
@@ -32,19 +48,27 @@ function FormValidation() {
           <input
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="text"
-            id="firstName"
-            {...register("firstName", {
+            id="username"
+            value={userNameVal}
+            onChange={(e) => setUserName(e.target.value)}
+            {...register("username", {
               required: true,
               maxLength: 20,
               pattern: /^[A-Za-z]+$/i,
+              validate: (value) => value === "admin",
             })}
           />
-          {errors?.firstName?.type === "required" && (
-            <p className="text-red-500 text-sm text-[0.8rem]">
+          {errors?.username?.type === "required" && (
+            <p className="text-red-500 text-[0.8rem]">
               نام کاربری خود را وارد کنید
             </p>
           )}
-          {errors?.firstName?.type === "pattern" && (
+          {errors?.username?.type === "validate" && (
+            <p className="text-red-500 text-[0.8rem]">
+              نام کاربری صحیح نمی باشد
+            </p>
+          )}
+          {errors?.username?.type === "pattern" && (
             <p className="text-red-500 text-[0.8rem]">فقط حروف الفبا</p>
           )}
 
@@ -53,22 +77,20 @@ function FormValidation() {
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="password"
             id="password"
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
             {...register("password", {
               required: true,
-              pattern: /^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/,
+              validate: (value) => value === "admin1234",
             })}
           />
-          {errors?.password?.type === "pattern" && (
-            <ul className="text-red-500 text-[0.8rem] list-disc	px-5">
-              <li>حداقل یک حرف بزرگ انگلیسی</li>
-              <li>حداقل یک کارکتر خاص</li>
-              <li>حداکثر ۸ کارکتر</li>
-            </ul>
-          )}
           {errors?.password?.type === "required" && (
-            <p className="text-red-500 text-[0.8rem]">
+            <div className="text-red-500 text-[0.8rem] ">
               رمز عبور خود را وارد کنید
-            </p>
+            </div>
+          )}
+          {errors?.password?.type === "validate" && (
+            <p className="text-red-500 text-[0.8rem]">رمز عبور صحیح نمی باشد</p>
           )}
 
           <button

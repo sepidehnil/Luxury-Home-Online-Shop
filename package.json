@@ -10,9 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.5",
     "@reduxjs/toolkit": "^1.9.5",
+    "ajax": "^0.0.4",
     "antd": "^5.8.2",
     "axios": "^1.4.0",
+    "jalali-moment": "^3.3.11",
     "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
@@ -26,6 +31,7 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
+    "@types/qs": "^6.9.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",

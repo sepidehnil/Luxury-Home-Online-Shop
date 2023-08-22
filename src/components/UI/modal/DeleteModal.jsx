@@ -15,14 +15,14 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ open, onClose, onCancel, onConfirm }) {
-  const handelDeleteItem = async () => {
+export default function BasicModal({ open, onClose, onConfirm }) {
+  const handelDeleteItem = () => {
     onConfirm();
     onClose();
   };
-  const handleCancel = (){
-    onCancel()
-  }
+  const handleCancel = () => {
+    onClose();
+  };
 
   return (
     <div className="font-secondary">

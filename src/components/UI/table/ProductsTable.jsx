@@ -8,14 +8,8 @@ import DeleteModal from "../modal/DeleteModal";
 const OrdersTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState();
   const [open, setOpen] = useState(false);
-
-  const handleOpen = (item) => {
-    setSelectedItem(item);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
 
   const loadUserData = async () => {
     const resposeProducts = await axios.get(
@@ -37,9 +31,9 @@ const OrdersTable = () => {
           (category) => category._id === product.category
         )?.name,
         imageURL: product.images[0],
+        edit: product._id,
       };
     });
-
     console.log(alldatas);
     return alldatas;
   };
@@ -49,6 +43,43 @@ const OrdersTable = () => {
     });
   }, []);
 
+  const handleClose = () => setOpen(false);
+
+  const renderEditColumn = (record) => {
+    const handleOpen = () => {
+      console.log("Clicked item id:", record);
+      setSelectedItem(record);
+      setOpen(true);
+    };
+
+    return (
+      <div className="flex gap-6 justify-center">
+        <img src={deleteIcon} onClick={handleOpen} />
+        <img src={editLogo} />
+      </div>
+    );
+  };
+
+  function handleConfirmDelete() {
+    if (selectedItem) {
+      // Send a DELETE request to the backend
+      axios
+        .delete(`http://localhost:8000/api/products/${selectedItem}`)
+        .then(() => {
+          // Remove the item from the local data
+          setData((prevData) =>
+            prevData.filter((item) => item._id !== selectedItem)
+          );
+          setSelectedItem(null); // Move this line inside the .then block
+          handleClose(); // Close the modal after successful deletion
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error deleting item:", error);
+        });
+    }
+  }
+
   const handleChange = (pagination, filters) => {
     console.log("Various parameters", pagination, filters);
     setFilteredInfo(filters);
@@ -56,16 +87,6 @@ const OrdersTable = () => {
   const clearFilters = () => {
     setFilteredInfo({});
   };
-
-  const renderEditColumn = () => {
-    return (
-      <div className="flex gap-6 justify-center">
-        <img src={deleteIcon} onClick={handleOpen(item)} />
-        <img src={editLogo} />
-      </div>
-    );
-  };
-
   const columns = [
     {
       title: "عکس کالا",
@@ -116,10 +137,10 @@ const OrdersTable = () => {
     },
     {
       title: "ویرایش",
-      dataIndex: "ویرایش",
-      key: "ویرایش",
+      dataIndex: "edit",
+      key: "edit",
       className: "w-[150px] ",
-      render: renderEditColumn,
+      render: (record) => renderEditColumn(record),
     },
   ];
   const paginationConfig = {
@@ -127,7 +148,13 @@ const OrdersTable = () => {
   };
   return (
     <>
-      {open && <DeleteModal open={open} onClose={handleClose} />}
+      {open && (
+        <DeleteModal
+          open={open}
+          onClose={handleClose}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
       <Space
         style={{
           marginBottom: 12,

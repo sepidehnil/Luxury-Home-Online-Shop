@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { Button } from "antd";
 import "../../../styles/index.css";
 import closeBtn from "../../../assets/svg/closeBtn.svg";
+import LexicalTextEditor from "../forms/LexicalEditor";
 
 const style = {
   position: "absolute",
@@ -27,33 +28,17 @@ export default function BasicModal({ onOpen, onClose, onSave }) {
 
   return (
     <div className="font-secondary">
-      <Modal open={open} onClose={onClose}>
-        <div className="modal-container">
-          <Typography variant="h6">
-            {isEditing ? "Edit Product" : "Add Product"}
-          </Typography>
-          <TextField
-            label="Product Name"
-            fullWidth
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-          />
-          <FormControl fullWidth>
-            <InputLabel>Category</InputLabel>
-            <Select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <MenuItem value="category1">Category 1</MenuItem>
-              <MenuItem value="category2">Category 2</MenuItem>
-              {/* Add more categories */}
-            </Select>
-          </FormControl>
-          {/* Add other input fields for product details */}
-          <Button onClick={handleSave}>
-            {isEditing ? "Save Changes" : "Add Product"}
-          </Button>
-        </div>
+      <Modal
+        open={onOpen}
+        onClose={onClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className=" rounded-md">
+          <img src={closeBtn} onClick={handleCancel} />
+          <LexicalTextEditor />
+          <Button onClick={handleSaveBtn}>ذخیره</Button>
+        </Box>
       </Modal>
     </div>
   );

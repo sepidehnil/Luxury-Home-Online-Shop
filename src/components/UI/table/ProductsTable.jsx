@@ -4,7 +4,7 @@ import editLogo from "../../../assets/svg/editIcon.svg";
 import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
 import DeleteModal from "../modal/DeleteModal";
-import AddProductModal from "../modal/AddProductModal";
+import AddEditProductModal from "../modal/AddEditProductModal";
 
 const ProductsTable = () => {
   const [data, setData] = useState([]);
@@ -12,6 +12,7 @@ const ProductsTable = () => {
   const [selectedItem, setSelectedItem] = useState();
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editting, setIsEditing] = useState(false);
 
   const loadUserData = async () => {
     const resposeProducts = await axios.get(
@@ -55,6 +56,7 @@ const ProductsTable = () => {
       setOpen(true);
     };
     const handelOpenEdit = () => {
+      setIsEditing(true);
       setModalOpen(true);
     };
     return (
@@ -84,10 +86,10 @@ const ProductsTable = () => {
         });
     }
   }
-
-  function handelAddProduct() {
-    setModalOpen(open);
-  }
+  const handelAddProduct = () => {
+    setIsEditing(false);
+    setModalOpen(true);
+  };
 
   const handleChange = (pagination, filters) => {
     console.log("Various parameters", pagination, filters);
@@ -157,15 +159,19 @@ const ProductsTable = () => {
   };
   return (
     <>
-      {open && (
+      {true && (
         <DeleteModal
-          open={open}
+          true={open}
           onClose={handleClose}
           onConfirm={handleConfirmDelete}
         />
       )}
       {modalOpen && (
-        <AddProductModal onOpen={modalOpen} onClose={handleCloseEdit} />
+        <AddEditProductModal
+          onOpen={modalOpen}
+          onClose={handleCloseEdit}
+          isEditing={editting}
+        />
       )}
       <Space
         style={{
@@ -180,7 +186,10 @@ const ProductsTable = () => {
         </Button>
         <Button
           className="bg-white text-black font-secondary"
+          onOpen={modalOpen}
           onClick={handelAddProduct}
+          onClose={handleCloseEdit}
+          isEditing={editting}
         >
           افزودن کالا
         </Button>

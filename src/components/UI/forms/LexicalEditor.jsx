@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import {
-  Paper,
   Typography,
   TextField,
-  Button,
   IconButton,
   ToggleButton,
   ToggleButtonGroup,
@@ -15,6 +13,7 @@ import {
   FormatSize,
 } from "@mui/icons-material";
 import "../../../styles/index.css";
+import { Button } from "antd";
 
 const LexicalTextEditor = () => {
   const [text, setText] = useState("");
@@ -53,16 +52,11 @@ const LexicalTextEditor = () => {
   const getFontStyle = italic ? "italic" : "normal";
   const getTextDecoration = underline ? "underline" : "none";
   const getFontSize =
-    fontSize === "small" ? "14px" : fontSize === "large" ? "18px" : "16px";
+    fontSize === "small" ? "14px" : fontSize === "medium" ? "18px" : "16px";
 
   return (
-    <Paper
-      elevation={3}
-      style={{ padding: "16px", maxWidth: "600px", margin: "0 auto" }}
-    >
-      <Typography variant="h6" className="font-secondary">
-        توضیحات
-      </Typography>
+    <div>
+      <div className="font-secondary">توضیحات</div>
       <div style={{ display: "flex", marginBottom: "16px" }}>
         <IconButton onClick={handleBoldClick}>
           <FormatBold color={bold ? "primary" : "inherit"} />
@@ -84,13 +78,9 @@ const LexicalTextEditor = () => {
           <ToggleButton value="medium">
             <FormatSize fontSize="medium" />
           </ToggleButton>
-          <ToggleButton value="large">
-            <FormatSize fontSize="large" />
-          </ToggleButton>
         </ToggleButtonGroup>
       </div>
       <TextField
-        label="توضیحات خود را وارد کنید"
         multiline
         rows={2}
         fullWidth
@@ -98,7 +88,6 @@ const LexicalTextEditor = () => {
         onChange={handleTextChange}
         variant="outlined"
         InputProps={{
-          className: "font-secondary",
           style: {
             fontWeight: getFontWeight,
             fontStyle: getFontStyle,
@@ -108,9 +97,6 @@ const LexicalTextEditor = () => {
         }}
       />
       <div className="flex gap-5 justify-end mt-4">
-        <Button variant="contained" color="primary" className="font-secondary">
-          ذخیره
-        </Button>
         <Button
           variant="contained"
           onClick={handleClear}
@@ -119,7 +105,7 @@ const LexicalTextEditor = () => {
           پاک کردن
         </Button>
       </div>
-    </Paper>
+    </div>
   );
 };
 

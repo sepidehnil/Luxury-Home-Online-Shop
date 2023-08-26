@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import privateAxios from "../../../services/instances/privateAxios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   position: "absolute",
@@ -65,6 +67,7 @@ export default function AddEditProductModal({ onOpen, onClose, isEditing }) {
         "Content-Type": "multipart/form-data",
       },
     });
+    toast("کالا ذهیره شد");
     onClose();
     window.location.reload();
   };

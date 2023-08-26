@@ -15,7 +15,7 @@ import {
 import "../../../styles/index.css";
 import { Button } from "antd";
 
-const LexicalTextEditor = () => {
+const LexicalTextEditor = ({ onChange }) => {
   const [text, setText] = useState("");
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
@@ -23,9 +23,10 @@ const LexicalTextEditor = () => {
   const [fontSize, setFontSize] = useState("medium");
 
   const handleTextChange = (event) => {
-    setText(event.target.value);
+    const newText = event.target.value;
+    setText(newText);
+    onChange(newText); // Call the onChange callback with the new description
   };
-
   const handleClear = () => {
     setText("");
   };

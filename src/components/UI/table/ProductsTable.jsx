@@ -5,6 +5,7 @@ import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
 import DeleteModal from "../modal/DeleteModal";
 import AddEditProductModal from "../modal/AddEditProductModal";
+import publicAxios from "../../../services/instances/publicAxios";
 
 const ProductsTable = () => {
   const [data, setData] = useState([]);
@@ -15,13 +16,13 @@ const ProductsTable = () => {
   const [editting, setIsEditing] = useState(false);
 
   const loadUserData = async () => {
-    const resposeProducts = await axios.get(
+    const resposeProducts = await publicAxios.get(
       "http://localhost:8000/api/products",
       {
         params: { limit: 34 },
       }
     );
-    const responseCategories = await axios.get(
+    const responseCategories = await publicAxios.get(
       "http://localhost:8000/api/categories"
     );
 
@@ -86,6 +87,7 @@ const ProductsTable = () => {
         });
     }
   }
+
   const handelAddProduct = () => {
     setIsEditing(false);
     setModalOpen(true);

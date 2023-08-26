@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import backwardArrow from "../../../assets/svg/backwardArrow.svg";
-import axios from "axios";
 import Cookies from "js-cookie";
+import privateAxios from "../../../services/instances/privateAxios";
 
 function FormValidation() {
   const panelNavigate = useNavigate();
@@ -13,14 +13,13 @@ function FormValidation() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
   function onSubmit(data) {
     // alert(JSON.stringify(data));
     console.log(data);
-    axios
+    privateAxios
       .post("http://localhost:8000/api/auth/login", data)
       .then((response) => {
         if (

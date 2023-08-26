@@ -19,7 +19,7 @@ const ProductsTable = () => {
     const resposeProducts = await publicAxios.get(
       "http://localhost:8000/api/products",
       {
-        params: { limit: 34 },
+        params: { limit: 1000 },
       }
     );
     const responseCategories = await publicAxios.get(
@@ -163,7 +163,7 @@ const ProductsTable = () => {
     <>
       {true && (
         <DeleteModal
-          true={open}
+          open={open}
           onClose={handleClose}
           onConfirm={handleConfirmDelete}
         />

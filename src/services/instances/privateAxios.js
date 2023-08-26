@@ -1,8 +1,7 @@
 import axios from "axios";
+import { BASE_URL } from "../../configs/constant.js";
 import Cookies from "js-cookie";
 import { refreshToken } from "../../configs/api/refresh.js";
-import { BASE_URL } from "../../configs/constant.js";
-
 const privateAxios = axios.create({
   baseURL: BASE_URL,
 });
@@ -28,18 +27,21 @@ privateAxios.interceptors.response.use(
   },
   async (error) => {
     const originalConfig = error.config;
-
+    console.log(error);
     console.log(originalConfig);
     if (error.response) {
-      // 401
-      if (error.response?.status === 401 && !originalConfig._retry) {
+      if (error.response?.status === 500 && !originalConfig._retry) {
         originalConfig._retry = true;
-        const currentRefreshToken = Cookies.get("refreshToken");
-        const res = await refreshToken(currentRefreshToken);
-        const accessToken = res.token.accessToken;
-        if (accessToken) {
-          Cookies.set("accessToken", accessToken);
-          return Promise.reject(error);
+        try {
+          const currentRefreshToken = Cookies.get("refreshToken");
+          const res = await refreshToken(currentRefreshToken);
+          const accessToken = res.token.accessToken;
+          if (accessToken) {
+            Cookies.set("accessToken", accessToken);
+            return privateAxios(originalConfig);
+          }
+        } catch (err) {
+          return Promise.reject(err);
         }
       }
     }

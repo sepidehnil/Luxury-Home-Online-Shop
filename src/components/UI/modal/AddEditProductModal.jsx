@@ -6,7 +6,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import "../../../styles/index.css";
 import closeBtn from "../../../assets/svg/closeBtn.svg";
 import LexicalTextEditor from "../forms/LexicalEditor";
-import axios from "axios";
 import Cookies from "js-cookie";
 import {
   Select,
@@ -17,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import privateAxios from "../../../services/instances/privateAxios";
 
 const style = {
   position: "absolute",
@@ -47,7 +47,7 @@ export default function BasicModal({ onOpen, onClose, onSave, isEditing }) {
     const accessToken = Cookies.get("accessToken");
     const refreshToken = Cookies.get("refreshToken");
 
-    axios
+    privateAxios
       .post("http://localhost:8000/api/products", formData, {
         headers: {
           Authorization: `Bearer ${refreshToken}`,

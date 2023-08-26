@@ -16,12 +16,15 @@ function FormValidation() {
     formState: { errors },
   } = useForm();
 
-  function onSubmit(data) {
+  function onSubmit(data, event) {
     // alert(JSON.stringify(data));
+    event.preventDefault();
+
     console.log(data);
     privateAxios
       .post("http://localhost:8000/api/auth/login", data)
       .then((response) => {
+        console.log(response);
         if (
           response.status === 200 &&
           response.data.data.user.role === "ADMIN"

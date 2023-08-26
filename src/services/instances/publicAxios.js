@@ -1,11 +1,9 @@
-//نیازی به AUTH نداره
-//get
-
 import axios from "axios";
-import { Base_URL } from "../../configs/constant";
+import { BASE_URL } from "../../configs/constant";
+import { toast } from "react-toastify";
 
 const publicAxios = axios.create({
-  baseURL: Base_URL,
+  baseURL: BASE_URL,
 });
 
 publicAxios.interceptors.request.use(
@@ -22,6 +20,9 @@ publicAxios.interceptors.response.use(
     return res;
   },
   (error) => {
+    // if (error.response.status === 401) {
+    //   toast.error(error.response.data.error);
+    // }
     return Promise.reject(error);
   }
 );

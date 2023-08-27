@@ -14,9 +14,8 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import privateAxios from "../../../services/instances/privateAxios";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const style = {
@@ -30,46 +29,38 @@ const style = {
   p: 4,
 };
 
-export default function EditProduct({ open, onClose, alldatas }) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+export default function EditProduct({ open, onClose, product }) {
+  const [name, setName] = useState(product ? product.name : "");
   const [imageFile, setImageFile] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [brand, setBrand] = useState("");
+  const [price, setPrice] = useState(product ? product.price : "");
+  const [quantity, setQuantity] = useState(product ? product.quantity : "");
+  const [brand, setBrand] = useState(product ? product.brand : "");
+  const [categoryy, setCategory] = useState([]);
+  const [subcategoryy, setSubCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
-  const handleSave = async () => {
-    const data = {
-      name,
-      category: "64dd7f33b287bb94ddb72926",
-      description,
-      images: imageFile,
-      subcategory: "64dd7f62b287bb94ddb7292d",
-      brand,
-      price,
-      quantity,
-    };
-    const form = new FormData();
-    for (const key in data) {
-      const value = data[key];
-      if (Array.isArray(value)) {
-        value.forEach((v) => {
-          form.append(key, v);
-        });
-      } else {
-        form.append(key, value);
-      }
-    }
+  console.log(product);
+  const handleSave = async (e) => {
+    // e.preventDefault();
+    // const updatedData = {
+    //   name,
+    //   category,
+    //   description,
+    //   images: imageFile,
+    //   subcategory,
+    //   brand,
+    //   price,
+    //   quantity,
+    // };
 
-    privateAxios.post("/products", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    toast("کالا ذهیره شد");
+    // privateAxios.patch(`/products/${product._id}`, updatedData, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
     onClose();
-    window.location.reload();
   };
 
   const handleDescriptionChange = (newDescription) => {
@@ -83,19 +74,26 @@ export default function EditProduct({ open, onClose, alldatas }) {
     console.log(e.target.files);
     setImageFile([e.target.files[0]]);
   }
-  console.log(alldatas);
+  useEffect(() => {
+    privateAxios.get("/categories").then((res) => {
+      setCategory(res.data.data.categories);
+    });
+    privateAxios.get("/subcategories").then((response) => {
+      setSubCategory(response.data.data.subcategories);
+    });
+  }, []);
   return (
     <div className="font-secondary">
       <Modal
         open={open}
         onClose={onClose}
-        alldatas={alldatas}
+        product={product}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="rounded-md">
           <img src={closeBtn} onClick={handleCancel} />
-          <Typography>ادیت کالا</Typography>
+          <Typography>اضافه کردن کالا</Typography>
           <TextField
             label="نام کالا"
             fullWidth
@@ -129,15 +127,43 @@ export default function EditProduct({ open, onClose, alldatas }) {
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
-              value={category}
+              value={selectedCategory}
               label="دسته بندی"
               className="font-secondary"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value),
+                  console.log(e.target.value);
+              }}
             >
-              <MenuItem value="اتاق خواب">اتاق خواب</MenuItem>
-              <MenuItem value="آشپزخانه">آشپزخانه</MenuItem>
-              <MenuItem value="سرویس بهداشتی">سرویس بهداشتی</MenuItem>
-              <MenuItem value="سالن پذیرایی">سالن پذیرایی</MenuItem>
+              {categoryy.map((category) => (
+                <MenuItem key={category._id} value={category._id}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth size="small">
+            <InputLabel id="demo-select-small-label">زیربخش</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={selectedSubcategory}
+              label="زیربخش"
+              className="font-secondary"
+              onChange={(e) => {
+                setSelectedSubcategory(e.target.value);
+                console.log(e.target.value);
+              }}
+            >
+              {subcategoryy
+                .filter(
+                  (subcategory) => subcategory.category === selectedCategory
+                )
+                .map((subcategory) => (
+                  <MenuItem key={subcategory._id} value={subcategory._id}>
+                    {subcategory.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           <LexicalTextEditor onChange={handleDescriptionChange} />

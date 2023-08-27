@@ -40,16 +40,9 @@ export default function AddEditProductModal({ onOpen, onClose }) {
   const [brand, setBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  useEffect(() => {
-    privateAxios.get("/categories").then((res) => {
-      setCategory(res.data.data.categories);
-    });
-    privateAxios.get("/subcategories").then((response) => {
-      setSubCategory(response.data.data.subcategories);
-    });
-  }, []);
 
-  const handleSave = async () => {
+  const handleSave = async (e) => {
+    e.preventDefault();
     const data = {
       name,
       category: selectedCategory,
@@ -60,6 +53,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
       price,
       quantity,
     };
+    console.log(data);
     const form = new FormData();
     for (const key in data) {
       const value = data[key];
@@ -77,7 +71,6 @@ export default function AddEditProductModal({ onOpen, onClose }) {
       },
     });
     onClose();
-    window.location.reload();
   };
 
   const handleDescriptionChange = (newDescription) => {
@@ -92,6 +85,14 @@ export default function AddEditProductModal({ onOpen, onClose }) {
     setImageFile([e.target.files[0]]);
   }
 
+  useEffect(() => {
+    privateAxios.get("/categories").then((res) => {
+      setCategory(res.data.data.categories);
+    });
+    privateAxios.get("/subcategories").then((response) => {
+      setSubCategory(response.data.data.subcategories);
+    });
+  }, []);
   return (
     <div className="font-secondary">
       <Modal
@@ -183,7 +184,6 @@ export default function AddEditProductModal({ onOpen, onClose }) {
               ))}
             </Select>
           </FormControl>
-          <LexicalTextEditor onChange={handleDescriptionChange} />
           <FormControl fullWidth size="small">
             <InputLabel id="demo-select-small-label">زیربخش</InputLabel>
             <Select
@@ -197,13 +197,18 @@ export default function AddEditProductModal({ onOpen, onClose }) {
                 console.log(e.target.value);
               }}
             >
-              {subcategoryy.map((subcategory) => (
-                <MenuItem key={subcategory._id} value={subcategory._id}>
-                  {subcategory.name}
-                </MenuItem>
-              ))}
+              {subcategoryy
+                .filter(
+                  (subcategory) => subcategory.category === selectedCategory
+                )
+                .map((subcategory) => (
+                  <MenuItem key={subcategory._id} value={subcategory._id}>
+                    {subcategory.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
+          <LexicalTextEditor onChange={handleDescriptionChange} />
 
           <Upload
             listType="picture-card"

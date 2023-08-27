@@ -10,6 +10,33 @@ import EditProduct from "../modal/EditProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const loadUserData = async () => {
+  const resposeProducts = await publicAxios.get(
+    "http://localhost:8000/api/products",
+    {
+      params: { limit: 1000 },
+    }
+  );
+  const responseCategories = await publicAxios.get(
+    "http://localhost:8000/api/categories"
+  );
+
+  const products = resposeProducts.data.data.products;
+  const categories = responseCategories.data.data.categories;
+  const alldatas = products.map((product) => {
+    return {
+      ...product,
+      category: categories.find((category) => category._id === product.category)
+        ?.name,
+      imageURL: product.images[0],
+      edit: product._id,
+      price: product.price,
+    };
+  });
+  console.log(alldatas);
+  return alldatas;
+};
+
 const ProductsTable = () => {
   const [data, setData] = useState([]);
   const [filteredInfo, setFilteredInfo] = useState({});
@@ -17,34 +44,9 @@ const ProductsTable = () => {
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [product, setSelectedProduct] = useState("");
   const [totalItems, setTotalItems] = useState(0);
-
-  const loadUserData = async () => {
-    const resposeProducts = await publicAxios.get(
-      "http://localhost:8000/api/products",
-      {
-        params: { limit: 1000 },
-      }
-    );
-    const responseCategories = await publicAxios.get(
-      "http://localhost:8000/api/categories"
-    );
-
-    const products = resposeProducts.data.data.products;
-    const categories = responseCategories.data.data.categories;
-    const alldatas = products.map((product) => {
-      return {
-        ...product,
-        category: categories.find(
-          (category) => category._id === product.category
-        )?.name,
-        imageURL: product.images[0],
-        edit: product._id,
-      };
-    });
-    console.log(alldatas);
-    return alldatas;
-  };
+  console.log(data);
   useEffect(() => {
     loadUserData().then((alldatas) => {
       setData(alldatas);
@@ -62,6 +64,7 @@ const ProductsTable = () => {
       setOpen(true);
     };
     const handelOpenEdit = () => {
+      setSelectedProduct(data.find((product) => product._id === record));
       setEditModal(true);
     };
     return (
@@ -172,7 +175,13 @@ const ProductsTable = () => {
           onConfirm={handleConfirmDelete}
         />
       )}
-      {editModal && <EditProduct open={editModal} onClose={handleCloseEdit} />}
+      {editModal && (
+        <EditProduct
+          open={editModal}
+          onClose={handleCloseEdit}
+          product={product}
+        />
+      )}
       {modalOpen && (
         <AddProductModal onOpen={modalOpen} onClose={handleCloseProduct} />
       )}

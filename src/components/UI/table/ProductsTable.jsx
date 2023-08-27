@@ -4,8 +4,11 @@ import editLogo from "../../../assets/svg/editIcon.svg";
 import deleteIcon from "../../../assets/svg/deleteIcon.svg";
 import axios from "axios";
 import DeleteModal from "../modal/DeleteModal";
-import AddEditProductModal from "../modal/AddEditProductModal";
+import AddProductModal from "../modal/AddProductModal";
 import publicAxios from "../../../services/instances/publicAxios";
+import EditProduct from "../modal/EditProduct";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductsTable = () => {
   const [data, setData] = useState([]);
@@ -13,7 +16,8 @@ const ProductsTable = () => {
   const [selectedItem, setSelectedItem] = useState();
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editting, setIsEditing] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
 
   const loadUserData = async () => {
     const resposeProducts = await publicAxios.get(
@@ -44,11 +48,12 @@ const ProductsTable = () => {
   useEffect(() => {
     loadUserData().then((alldatas) => {
       setData(alldatas);
+      setTotalItems(alldatas.length);
     });
   }, []);
-
   const handleClose = () => setOpen(false);
-  const handleCloseEdit = () => setModalOpen(false);
+  const handleCloseProduct = () => setModalOpen(false);
+  const handleCloseEdit = () => setEditModal(false);
 
   const renderEditColumn = (record) => {
     const handleOpen = () => {
@@ -57,8 +62,7 @@ const ProductsTable = () => {
       setOpen(true);
     };
     const handelOpenEdit = () => {
-      setIsEditing(true);
-      setModalOpen(true);
+      setEditModal(true);
     };
     return (
       <div className="flex gap-6 justify-center">
@@ -89,7 +93,6 @@ const ProductsTable = () => {
   }
 
   const handelAddProduct = () => {
-    setIsEditing(false);
     setModalOpen(true);
   };
 
@@ -158,6 +161,7 @@ const ProductsTable = () => {
   ];
   const paginationConfig = {
     pageSize: 3,
+    total: totalItems,
   };
   return (
     <>
@@ -168,12 +172,9 @@ const ProductsTable = () => {
           onConfirm={handleConfirmDelete}
         />
       )}
+      {editModal && <EditProduct open={editModal} onClose={handleCloseEdit} />}
       {modalOpen && (
-        <AddEditProductModal
-          onOpen={modalOpen}
-          onClose={handleCloseEdit}
-          isEditing={editting}
-        />
+        <AddProductModal onOpen={modalOpen} onClose={handleCloseProduct} />
       )}
       <Space
         style={{
@@ -190,8 +191,6 @@ const ProductsTable = () => {
           className="bg-white text-black font-secondary"
           onOpen={modalOpen}
           onClick={handelAddProduct}
-          onClose={handleCloseEdit}
-          isEditing={editting}
         >
           افزودن کالا
         </Button>

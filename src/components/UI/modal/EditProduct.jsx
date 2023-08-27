@@ -30,7 +30,7 @@ const style = {
   p: 4,
 };
 
-export default function AddEditProductModal({ onOpen, onClose, isEditing }) {
+export default function EditProduct({ open, onClose, alldatas }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [imageFile, setImageFile] = useState("");
@@ -62,7 +62,7 @@ export default function AddEditProductModal({ onOpen, onClose, isEditing }) {
       }
     }
 
-    const response = await privateAxios.post("/products", form, {
+    privateAxios.post("/products", form, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -83,19 +83,19 @@ export default function AddEditProductModal({ onOpen, onClose, isEditing }) {
     console.log(e.target.files);
     setImageFile([e.target.files[0]]);
   }
-
+  console.log(alldatas);
   return (
     <div className="font-secondary">
       <Modal
-        isEditing={isEditing}
-        open={onOpen}
+        open={open}
         onClose={onClose}
+        alldatas={alldatas}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="rounded-md">
           <img src={closeBtn} onClick={handleCancel} />
-          <Typography>{isEditing ? "Edit Product" : "Add Product"}</Typography>
+          <Typography>ادیت کالا</Typography>
           <TextField
             label="نام کالا"
             fullWidth

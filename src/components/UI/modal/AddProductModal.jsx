@@ -71,6 +71,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
       },
     });
     onClose();
+    window.location.reload();
   };
 
   const handleDescriptionChange = (newDescription) => {

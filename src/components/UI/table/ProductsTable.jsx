@@ -30,7 +30,6 @@ const loadUserData = async () => {
         ?.name,
       imageURL: product.images[0],
       edit: product._id,
-      price: product.price,
     };
   });
   console.log(alldatas);

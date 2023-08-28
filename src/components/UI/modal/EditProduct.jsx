@@ -30,37 +30,58 @@ const style = {
 };
 
 export default function EditProduct({ open, onClose, product }) {
+  const [categoryy, setCategory] = useState([]);
+  const [subcategoryy, setSubCategory] = useState([]);
   const [name, setName] = useState(product ? product.name : "");
-  const [imageFile, setImageFile] = useState("");
-  const [description, setDescription] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [description, setDescription] = useState(
+    product ? product.description : ""
+  );
   const [price, setPrice] = useState(product ? product.price : "");
   const [quantity, setQuantity] = useState(product ? product.quantity : "");
   const [brand, setBrand] = useState(product ? product.brand : "");
-  const [categoryy, setCategory] = useState([]);
-  const [subcategoryy, setSubCategory] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(
+    product ? product.category : ""
+  );
+  const [selectedSubcategory, setSelectedSubcategory] = useState(
+    product ? product.subcategory : ""
+  );
 
   console.log(product);
   const handleSave = async (e) => {
-    // e.preventDefault();
-    // const updatedData = {
-    //   name,
-    //   category,
-    //   description,
-    //   images: imageFile,
-    //   subcategory,
-    //   brand,
-    //   price,
-    //   quantity,
-    // };
+    e.preventDefault();
+    const updatedData = {
+      name,
+      description,
+      images: imageFile,
+      brand,
+      price,
+      quantity,
+      category: selectedCategory,
+      subcategory: selectedSubcategory,
+    };
 
-    // privateAxios.patch(`/products/${product._id}`, updatedData, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    onClose();
+    const form = new FormData();
+    for (const key in updatedData) {
+      const value = updatedData[key];
+      form.append(key, value);
+    }
+    if (imageFile) {
+      form.append("images", imageFile);
+    }
+
+    privateAxios
+      .patch(`/products/${product._id}`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        onClose();
+      })
+      .catch((error) => {
+        console.error("Error updating product:", error);
+      });
   };
 
   const handleDescriptionChange = (newDescription) => {
@@ -167,7 +188,6 @@ export default function EditProduct({ open, onClose, product }) {
             </Select>
           </FormControl>
           <LexicalTextEditor onChange={handleDescriptionChange} />
-
           <Upload
             listType="picture-card"
             showUploadList={true}

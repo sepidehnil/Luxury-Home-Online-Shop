@@ -3,7 +3,7 @@ import { Card } from "antd";
 import { Link } from "react-router-dom";
 const { Meta } = Card;
 
-const ProductCard = (props) => (
+const ProductCard = ({ name, price, id, image }) => (
   <Card
     hoverable
     style={{
@@ -11,14 +11,14 @@ const ProductCard = (props) => (
       height: 400,
     }}
     cover={
-      <Link to={`/products/${props.id}`}>
-        <img alt={props.name} src={props.image} />
+      <Link to={`/products/${id}`}>
+        <img alt={name} src={image} />
       </Link>
     }
     className="font-secondary"
   >
-    <Meta title={props.name} description={`Price: ${props.price}`} />
-    <Link to={`/products/${props.id}`}>View Details</Link>
+    <Meta title={name} description={`Price: ${price}`} />
+    <Link to={`/products/${id}`}>View Details</Link>
   </Card>
 );
 

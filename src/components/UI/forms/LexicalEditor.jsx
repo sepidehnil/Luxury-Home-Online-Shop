@@ -15,8 +15,8 @@ import {
 import "../../../styles/index.css";
 import { Button } from "antd";
 
-const LexicalTextEditor = ({ onChange }) => {
-  const [text, setText] = useState("");
+const LexicalTextEditor = ({ onChange, defaultText = "" }) => {
+  const [text, setText] = useState(defaultText);
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);

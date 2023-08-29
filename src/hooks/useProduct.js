@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import getProducts from "../services/api/getProducts";
 import { useEffect, useState } from "react";
+import { getAllProducts } from "../services/api/products";
+import { useQuery } from "@tanstack/react-query";
 
 export default function useProduct(defaultPage = 1, limit = 10) {
   const [params, setParams] = useState({ page: defaultPage });
@@ -13,7 +13,7 @@ export default function useProduct(defaultPage = 1, limit = 10) {
     error,
   } = useQuery({
     queryKey: ["products"],
-    queryFn: () => getProducts({ ...params, limit }),
+    queryFn: () => getAllProducts(),
   });
 
   useEffect(() => {

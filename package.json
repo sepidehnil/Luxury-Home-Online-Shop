@@ -17,6 +17,7 @@
     "@mui/material": "^5.14.5",
     "@mui/x-data-grid": "^6.12.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^4.33.0",
     "ajax": "^0.0.4",
     "antd": "^5.8.2",
     "axios": "^1.4.0",

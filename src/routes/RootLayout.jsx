@@ -15,6 +15,7 @@ import SuccessPay from "../pages/cart/SuccessPay";
 import FailedPay from "../pages/cart/FailedPay";
 import ProtectedRoute from "./protectedRoute";
 import PrivateRoute from "./privateRoute";
+import ProductDetail from "../components/UI/products/ProductDetail";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -30,6 +31,7 @@ function RootLayout() {
           path: "/cart",
           element: <Cart />,
         },
+        { path: "/products/:id", element: <ProductDetail /> },
       ],
     },
     {

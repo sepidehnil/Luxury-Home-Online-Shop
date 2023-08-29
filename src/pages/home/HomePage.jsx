@@ -1,15 +1,34 @@
 import book1 from "../../assets/images/bookscase/billy-bookcase-white__1051924_pe845813_s5.jpg";
+import useProduct from "../../hooks/useProduct";
+import ProductCard from "../../components/UI/card/ProductCard";
+import { useSelector } from "react-redux";
+import ProductPrev from "../../components/UI/products/ProductPrev";
+
 function HomePage() {
+  const { isLoading, products } = useProduct();
+  const categories = useSelector((state) => state.categories.categories);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (!categories || categories.length === 0) {
+    return <div>No categories found.</div>;
+  }
+  // const categoryId = categories.data.categories[0]._id;
+
   return (
     <div>
-      <section>
-        <h1 className="text-3xl font-semibold font-secondary">سالن نشیمن</h1>
-        <div className="flex p-4 w-[300px] justify-center bg-slate-400">
-          <div className="w-[300px]">
-            <img src={book1} />
-          </div>
-        </div>
-      </section>
+      {categories.data.categories.map((category) => {
+        return (
+          <ProductPrev
+            key={category._id}
+            categories={categories}
+            products={products}
+            categoryId={category._id}
+            name={category.name}
+          />
+        );
+      })}
     </div>
   );
 }

@@ -31,8 +31,8 @@ const style = {
 
 export default function AddEditProductModal({ onOpen, onClose }) {
   const [name, setName] = useState("");
-  const [categoryy, setCategory] = useState([]);
-  const [subcategoryy, setSubCategory] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [subcategory, setSubCategory] = useState([]);
   const [imageFile, setImageFile] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -178,7 +178,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
                   console.log(e.target.value);
               }}
             >
-              {categoryy.map((category) => (
+              {category.map((category) => (
                 <MenuItem key={category._id} value={category._id}>
                   {category.name}
                 </MenuItem>
@@ -198,7 +198,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
                 console.log(e.target.value);
               }}
             >
-              {subcategoryy
+              {subcategory
                 .filter(
                   (subcategory) => subcategory.category === selectedCategory
                 )
@@ -216,7 +216,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             showUploadList={true}
             beforeUpload={(file) => {
               setImageFile(file);
-              return false; // Prevent default behavior (uploading)
+              return false; 
             }}
             onChange={handleImage}
             type="file"

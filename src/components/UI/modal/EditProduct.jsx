@@ -28,12 +28,45 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+export async function convertImage(value) {
+  if (typeof value === "string") {
+    try {
+      const url = `http://localhost:8000/images/products/images/${value}`;
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+      console.log(file);
+      return file;
+    } catch (error) {
+      throw new Error("can not convert that image to file");
+    }
+  } else {
+    return value;
+  }
+}
+export async function handleMedias(images) {
+  // console.log(images);
+  let isAllString = images.find((item) => typeof item !== "string")
+    ? false
+    : true;
 
+  const medias = [];
+
+  if (!isAllString) {
+    for (let index = 0; index < images.length; index++) {
+      const mediaFile = await convertImage(images[index]);
+      medias.push(mediaFile);
+    }
+    return medias;
+  } else {
+    return undefined;
+  }
+}
 export default function EditProduct({ open, onClose, product }) {
   const [categoryy, setCategory] = useState([]);
   const [subcategoryy, setSubCategory] = useState([]);
   const [name, setName] = useState(product ? product.name : "");
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState(product ? product.images : []);
   const [description, setDescription] = useState(
     product ? product.description : ""
   );
@@ -47,13 +80,15 @@ export default function EditProduct({ open, onClose, product }) {
     product ? product.subcategory : ""
   );
 
-  console.log(product);
   const handleSave = async (e) => {
     e.preventDefault();
+    console.log(imageFile);
+
+    const media = await handleMedias(imageFile);
     const updatedData = {
       name,
       description,
-      images: imageFile,
+      images: media,
       brand,
       price,
       quantity,
@@ -61,15 +96,23 @@ export default function EditProduct({ open, onClose, product }) {
       subcategory: selectedSubcategory,
     };
 
+    // const form = new FormData();
+    // for (const key in updatedData) {
+    //   const value = updatedData[key];
+    //   form.append(key, value);
+    // }
     const form = new FormData();
     for (const key in updatedData) {
       const value = updatedData[key];
-      form.append(key, value);
+      if (Array.isArray(value)) {
+        value.forEach((v) => {
+          form.append(key, v);
+        });
+      } else {
+        form.append(key, value);
+      }
     }
-    if (imageFile) {
-      form.append("images", imageFile);
-    }
-
+    console.log(updatedData);
     privateAxios
       .patch(`/products/${product._id}`, form, {
         headers: {
@@ -82,6 +125,8 @@ export default function EditProduct({ open, onClose, product }) {
       .catch((error) => {
         console.error("Error updating product:", error);
       });
+    setImageFile([]);
+    window.location.reload();
   };
 
   const handleDescriptionChange = (newDescription) => {
@@ -93,16 +138,23 @@ export default function EditProduct({ open, onClose, product }) {
   };
   function handleImage(e) {
     console.log(e.target.files);
-    setImageFile([e.target.files[0]]);
+    setImageFile((data) => [...data, e.target.files[0]]);
   }
   useEffect(() => {
     privateAxios.get("/categories").then((res) => {
       setCategory(res.data.data.categories);
+      const matchedCategory = res.data.data.categories.find(
+        (category) => category.name === product.category
+      );
+      if (matchedCategory) {
+        setSelectedCategory(matchedCategory._id);
+      }
     });
     privateAxios.get("/subcategories").then((response) => {
       setSubCategory(response.data.data.subcategories);
     });
-  }, []);
+  }, [product.category]);
+
   return (
     <div className="font-secondary">
       <Modal
@@ -187,17 +239,26 @@ export default function EditProduct({ open, onClose, product }) {
                 ))}
             </Select>
           </FormControl>
-          <LexicalTextEditor onChange={handleDescriptionChange} />
+          <LexicalTextEditor
+            onChange={handleDescriptionChange}
+            defaultText={description}
+          />
           <Upload
             listType="picture-card"
             showUploadList={true}
             beforeUpload={(file) => {
-              setImageFile(file);
-              return false; // Prevent default behavior (uploading)
+              setImageFile((data) => [...data, file]);
+              return false;
             }}
             onChange={handleImage}
             type="file"
             name="file"
+            defaultFileList={product.images.map((image, index) => ({
+              uid: index,
+              name: `image-${index}`,
+              status: "done",
+              url: `http://localhost:8000/images/products/images/${image}`,
+            }))}
           >
             <div>
               <PlusOutlined />

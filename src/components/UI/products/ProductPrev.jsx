@@ -11,8 +11,10 @@ function ProductPrev({ categories, products, categoryId, name }) {
   );
   return (
     <section>
-      <h1 className="text-3xl font-semibold font-secondary">{name}</h1>
-      <div className="flex justify-center w-11/12 gap-3 flex-wrap">
+      <h1 className="text-3xl font-semibold font-secondary py-8 px-8">
+        {name}
+      </h1>
+      <div className="flex w-11/12 gap-6 flex-wrap m-auto">
         {lastSixProducts.map((product) => (
           <ProductCard
             key={product._id}

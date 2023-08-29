@@ -17,7 +17,7 @@ function HomePage() {
   // const categoryId = categories.data.categories[0]._id;
 
   return (
-    <div>
+    <div className="bg-red-50 font-secondary">
       {categories.data.categories.map((category) => {
         return (
           <ProductPrev

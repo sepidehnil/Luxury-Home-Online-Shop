@@ -7,9 +7,11 @@ const ProductCard = (props) => (
   <Card
     hoverable
     style={{
-      width: 240,
+      width: 420,
+      height: 400,
     }}
     cover={<img alt={props.name} src={props.image} />}
+    className="font-secondary"
   >
     <Meta title={props.name} description={`Price: ${props.price}`} />
     <Link to={`/products/${props.id}`}>View Details</Link>

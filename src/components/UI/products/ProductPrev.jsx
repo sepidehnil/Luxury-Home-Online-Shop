@@ -1,19 +1,21 @@
-import ProductCard from "../card/ProductCard";
+import { Link } from "react-router-dom";
+import ProductCard from "./ProductCard";
 
 function ProductPrev({ categories, products, categoryId, name }) {
   const filteredProducts = products.data.products.filter(
     (item) => item.category === categoryId
   );
-  console.log(filteredProducts);
-
   const lastSixProducts = filteredProducts.slice(
     Math.max(filteredProducts.length - 6, 0)
   );
+  console.log(categoryId);
   return (
     <section>
-      <h1 className="text-3xl font-semibold font-secondary py-8 px-8">
-        {name}
-      </h1>
+      <Link to={`/categories/${categoryId}`}>
+        <h1 className="text-3xl font-semibold font-secondary py-8 px-8">
+          {name}
+        </h1>
+      </Link>
       <div className="flex w-11/12 gap-6 flex-wrap m-auto">
         {lastSixProducts.map((product) => (
           <ProductCard

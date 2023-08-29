@@ -10,7 +10,11 @@ const ProductCard = (props) => (
       width: 420,
       height: 400,
     }}
-    cover={<img alt={props.name} src={props.image} />}
+    cover={
+      <Link to={`/products/${props.id}`}>
+        <img alt={props.name} src={props.image} />
+      </Link>
+    }
     className="font-secondary"
   >
     <Meta title={props.name} description={`Price: ${props.price}`} />

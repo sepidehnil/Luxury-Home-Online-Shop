@@ -33,7 +33,7 @@ function RootLayout() {
           element: <Cart />,
         },
         { path: "/products/:id", element: <ProductDetail /> },
-        { path: "/categories/:cateId", element: <CategoriesProduct /> },
+        { path: "/categories/:categoryId", element: <CategoriesProduct /> },
       ],
     },
     {

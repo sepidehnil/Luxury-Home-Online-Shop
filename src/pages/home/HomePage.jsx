@@ -7,7 +7,6 @@ import ProductPrev from "../../components/UI/products/ProductPrev";
 function HomePage() {
   const { isLoading, products } = useProduct();
   const categories = useSelector((state) => state.categories.categories);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

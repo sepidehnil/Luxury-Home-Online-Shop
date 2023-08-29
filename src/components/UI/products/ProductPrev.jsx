@@ -8,7 +8,6 @@ function ProductPrev({ categories, products, categoryId, name }) {
   const lastSixProducts = filteredProducts.slice(
     Math.max(filteredProducts.length - 6, 0)
   );
-  console.log(categoryId);
   return (
     <section>
       <Link to={`/categories/${categoryId}`}>

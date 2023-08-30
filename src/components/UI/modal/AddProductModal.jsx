@@ -71,7 +71,6 @@ export default function AddEditProductModal({ onOpen, onClose }) {
       },
     });
     onClose();
-    window.location.reload();
   };
 
   const handleDescriptionChange = (newDescription) => {
@@ -216,7 +215,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             showUploadList={true}
             beforeUpload={(file) => {
               setImageFile(file);
-              return false; 
+              return false;
             }}
             onChange={handleImage}
             type="file"

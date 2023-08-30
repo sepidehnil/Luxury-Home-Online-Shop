@@ -145,8 +145,8 @@ const ProductsTable = () => {
           value: "آشپزخانه",
         },
         {
-          text: "سزویس بهداشتی",
-          value: "سزویس بهداشتی",
+          text: "سرویس بهداشتی",
+          value: "سرویس بهداشتی",
         },
       ],
       filteredValue: filteredInfo.category || null,

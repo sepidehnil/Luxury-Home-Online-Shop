@@ -273,6 +273,15 @@ function EditToolbar(props) {
       });
     }
   };
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      // If editing box is open, revert the cell to previous state and value
+      if (cellMode === "edit") {
+        saveEditedItems(); // Save changes before canceling
+        handleCancel();
+      }
+    }
+  };
 
   const handleCancel = () => {
     if (!selectedCellParams) {
@@ -289,10 +298,8 @@ function EditToolbar(props) {
   };
 
   const handleMouseDown = (event) => {
-    // Keep the focus in the cell
     event.preventDefault();
   };
-
   return (
     <Box
       sx={{
@@ -303,6 +310,7 @@ function EditToolbar(props) {
     >
       <Button
         onClick={handleSaveOrEdit}
+        onKeyDown={handleKeyDown}
         onMouseDown={handleMouseDown}
         disabled={!selectedCellParams}
         variant="outlined"
@@ -342,19 +350,37 @@ export default function InstockTable() {
     return cellModesModel[id]?.[field]?.mode || "view";
   }, [cellModesModel, selectedCellParams]);
 
-  const handleCellKeyDown = React.useCallback(
-    (params, event) => {
-      if (cellMode === "edit") {
-        // Prevents calling event.preventDefault() if Tab is pressed on a cell in edit mode
-        event.defaultMuiPrevented = true;
-      }
-    },
-    [cellMode]
-  );
-
   const handleCellEditStop = React.useCallback((params, event) => {
     event.defaultMuiPrevented = true;
   }, []);
+
+  const saveEditedItems = async () => {
+    // Implement your AJAX logic to save edited items
+    const editedItems = Object.entries(cellModesModel)
+      .filter(([_, fields]) => fields.some((field) => field.mode === "edit"))
+      .map(([id, fields]) => ({
+        id,
+        ...fields.reduce((acc, field) => {
+          acc[field.field] = field.value;
+          return acc;
+        }, {}),
+      }));
+
+    if (editedItems.length > 0) {
+      await Promise.all(
+        editedItems.map(async (item) => {
+          try {
+            await axios.put(
+              `http://localhost:8000/api/products/${item.id}`,
+              item
+            );
+          } catch (error) {
+            console.error("Error saving item:", error);
+          }
+        })
+      );
+    }
+  };
 
   const loadUserData = async () => {
     const resposeProducts = await axios.get(
@@ -366,6 +392,7 @@ export default function InstockTable() {
     const products = resposeProducts.data.data.products;
     return products;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const products = await loadUserData();
@@ -386,10 +413,9 @@ export default function InstockTable() {
       <DataGrid
         rows={data}
         columns={columns}
-        onCellKeyDown={handleCellKeyDown}
+        onCellEditStop={handleCellEditStop}
         cellModesModel={cellModesModel}
         pageSize={4}
-        onCellEditStop={handleCellEditStop}
         onCellModesModelChange={(model) => setCellModesModel(model)}
         slots={{
           toolbar: EditToolbar,

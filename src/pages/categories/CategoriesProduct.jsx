@@ -8,7 +8,7 @@ function CategoriesPage() {
   const { products } = useProduct();
   const { categoryId } = useParams();
 
-  const filteredProducts = products.data.products.filter(
+  const filteredProducts = products?.data.products.filter(
     (item) => item.category === categoryId
   );
 

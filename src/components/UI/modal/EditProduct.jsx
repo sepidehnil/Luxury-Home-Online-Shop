@@ -140,6 +140,7 @@ export default function EditProduct({ open, onClose, product }) {
     console.log(e.target.files);
     setImageFile((data) => [...data, e.target.files[0]]);
   }
+
   useEffect(() => {
     privateAxios.get("/categories").then((res) => {
       setCategory(res.data.data.categories);

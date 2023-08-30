@@ -73,8 +73,8 @@ export default function AddEditProductModal({ onOpen, onClose }) {
     onClose();
   };
 
-  const handleDescriptionChange = (newDescription) => {
-    setDescription(newDescription);
+  const handleDescriptionChange = (text) => {
+    setDescription(text);
   };
 
   const handleCancel = () => {
@@ -208,6 +208,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
                 ))}
             </Select>
           </FormControl>
+
           <LexicalTextEditor onChange={handleDescriptionChange} />
 
           <Upload

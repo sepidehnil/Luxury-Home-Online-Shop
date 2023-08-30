@@ -32,7 +32,7 @@ function RootLayout() {
           path: "/cart",
           element: <Cart />,
         },
-        { path: "/products/:id", element: <ProductDetail /> },
+        { path: "/products/:productId", element: <ProductDetail /> },
         { path: "/categories/:categoryId", element: <CategoriesProduct /> },
       ],
     },

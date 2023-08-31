@@ -136,6 +136,7 @@ export default function LexicalTextEditor({ defaultText = "", onChange }) {
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}
         onEditorChange={handleTextChange} // Use onEditorChange event
+        initialValue={text}
         init={{
           height: 300,
           menubar: false,

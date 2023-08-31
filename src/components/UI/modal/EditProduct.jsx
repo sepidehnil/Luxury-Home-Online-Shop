@@ -45,7 +45,6 @@ export async function convertImage(value) {
   }
 }
 export async function handleMedias(images) {
-  // console.log(images);
   let isAllString = images.find((item) => typeof item !== "string")
     ? false
     : true;
@@ -126,7 +125,6 @@ export default function EditProduct({ open, onClose, product }) {
         console.error("Error updating product:", error);
       });
     setImageFile([]);
-    window.location.reload();
   };
 
   const handleDescriptionChange = (newDescription) => {

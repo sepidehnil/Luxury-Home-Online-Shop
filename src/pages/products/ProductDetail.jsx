@@ -3,6 +3,7 @@ import useProduct from "../../hooks/useProduct";
 import { useSelector } from "react-redux";
 import carIcon from "../../assets/svg/cartIcon.svg";
 import { useState } from "react";
+import { Carousel } from "antd";
 
 function ProductDetail() {
   const { isLoading, products } = useProduct();
@@ -39,7 +40,9 @@ function ProductDetail() {
     return <p>loading</p>;
   }
   // console.log(product.description);
-
+  const onChange = (currentSlide) => {
+    console.log(currentSlide);
+  };
   return (
     <div>
       {filteredproductsDetail.map((product) => {
@@ -47,10 +50,17 @@ function ProductDetail() {
         return (
           <div key={product._id}>
             <div>{product.name}</div>
-            <img
-              src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-              alt={product.name}
-            />
+
+            <Carousel afterChange={onChange}>
+              {product?.images.map((item, index) => (
+                <div key={index}>
+                  <img
+                    src={`http://localhost:8000/images/products/images/${item}`}
+                  />
+                </div>
+              ))}
+            </Carousel>
+
             <div>{product.price}</div>
             <div dangerouslySetInnerHTML={{ __html: product.description }} />
 

@@ -1,11 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import ProductCard from "../../components/UI/products/ProductCard";
 import useProduct from "../../hooks/useProduct";
 import { useParams } from "react-router-dom";
 
 function CategoriesPage() {
-  const { products } = useProduct();
+  const { isLoading, products } = useProduct();
   const { categoryId } = useParams();
 
   const filteredProducts = products?.data.products.filter(
@@ -13,6 +12,9 @@ function CategoriesPage() {
   );
 
   console.log(categoryId);
+  if (isLoading) {
+    return <p>loading</p>;
+  }
   return (
     <div className="bg-blue-50">
       {filteredProducts.map((product) => (

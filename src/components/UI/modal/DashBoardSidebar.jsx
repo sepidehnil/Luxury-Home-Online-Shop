@@ -20,7 +20,7 @@ function DashBoardSidebar() {
         </div>
         <div className="border-b-2 border-red-500 pb-1"></div>
         <div>
-          <Link to="/home">بازگشت خانه</Link>
+          <Link to="/">بازگشت خانه</Link>
         </div>
       </div>
     </div>

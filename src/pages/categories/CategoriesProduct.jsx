@@ -4,12 +4,15 @@ import useProduct from "../../hooks/useProduct";
 import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { List, Pagination, Card } from "antd";
 
 function CategoriesPage() {
   const { isLoading, products } = useProduct();
   const { categoryId } = useParams();
   const categories = useSelector((state) => state.categories.categories);
   const [subcategories, setSubcategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     async function fetchSubcategories() {
@@ -34,7 +37,15 @@ function CategoriesPage() {
     (item) => item.category === categoryId
   );
 
-  // Organize subcategories by their parent categories
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
+
   const subcategoriesByCategory = categories?.data.categories.reduce(
     (acc, category) => {
       const categorySubcategories = subcategories.filter(
@@ -45,10 +56,9 @@ function CategoriesPage() {
     },
     {}
   );
-
   return (
-    <div className="w-full h-full bg-red-50 flex p-8 gap-12">
-      <div className="w-[500px] h-full bg-white p-8">
+    <div className=" h-screen bg-red-50 flex p-4 gap-12">
+      <div className="w-[500px] h-[450px] bg-white p-8 rounded-lg">
         {categories?.data.categories.map((item) => (
           <div key={item._id} className="mb-5 font-secondary">
             <Link to={`/categories/${item._id}`} key={item._id}>
@@ -70,16 +80,42 @@ function CategoriesPage() {
           </div>
         ))}
       </div>
+
       <div className="flex w-11/12 flex-wrap m-auto gap-6">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product._id}
-            name={product.name}
-            image={`http://localhost:8000/images/products/images/${product.images[0]}`}
-            price={product.price}
-            id={product._id}
-          />
-        ))}
+        <div></div>
+        <List
+          grid={{ gutter: 16, column: 3 }}
+          dataSource={displayedProducts}
+          renderItem={(product) => (
+            <List.Item className="font-secondary">
+              <Card
+                className="font-secondary"
+                title={product.name}
+                extra={
+                  <Link
+                    to={`/products/${product._id}`}
+                    className="font-secondary"
+                  >
+                    جزئیات بیشتر
+                  </Link>
+                }
+              >
+                <img
+                  alt={product.name}
+                  src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                />
+                <p>قیمت: {product.price}</p>
+              </Card>
+            </List.Item>
+          )}
+        />
+        <Pagination
+          current={currentPage}
+          total={filteredProducts.length}
+          pageSize={itemsPerPage}
+          onChange={onPageChange}
+          className="mt-4"
+        />
       </div>
     </div>
   );

@@ -21,20 +21,17 @@ function ProductDetail() {
 
   console.log(filteredproductsDetail);
   function handleIncrement() {
-    // Increment the selected quantity if within stock range
     if (selectedQuantity < filteredproductsDetail[0].quantity) {
       setSelectedQuantity(selectedQuantity + 1);
     }
   }
 
   function handleDecrement() {
-    // Decrement the selected quantity if greater than or equal to 1
     setSelectedQuantity(Math.max(selectedQuantity - 1, 1));
   }
 
   function handleAddToCart() {
-    // Add the selected product with quantity to the cart
-    // You can implement your cart logic here
+
     console.log(
       `Added ${selectedQuantity} units of product ${productId} to the cart.`
     );
@@ -60,7 +57,7 @@ function ProductDetail() {
                 className="my-10 w-[600px]"
               />
               <span className="my-10">{` قیمت کالا : ${product.price}`}</span>
-              <div className="flex justify-center items-center gap-8 mt-[200px]">
+              <div className="flex justify-center items-center gap-8 mt-[80px]">
                 <div className="px-[60px] py-[8px] bg-red-800 rounded-3xl flex gap-3">
                   <button
                     onClick={handleAddToCart}

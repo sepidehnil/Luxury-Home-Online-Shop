@@ -101,8 +101,10 @@ export default function AddEditProductModal({ onOpen, onClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="rounded-md">
-          <img src={closeBtn} onClick={handleCancel} />
+        <Box
+          sx={style}
+          className="rounded-md font-secondary flex flex-col gap-3"
+        >
           <Typography>اضافه کردن کالا</Typography>
           <TextField
             label="نام کالا"

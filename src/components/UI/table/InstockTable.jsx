@@ -16,7 +16,6 @@ export default function InstockTable() {
         params: { limit: 1000 },
       }
     );
-    // Load categories and map them to products as needed
     const responseCategories = await axios.get(
       "http://localhost:8000/api/categories"
     );
@@ -27,7 +26,7 @@ export default function InstockTable() {
       category: categories.find((category) => category._id === product.category)
         ?.name,
       price: product.price,
-      __original: { ...product }, // Store original data for comparison
+      __original: { ...product },
     }));
     return alldatas;
   };
@@ -106,6 +105,7 @@ export default function InstockTable() {
 
     await Promise.all(updatePromises);
     setIsEditing(false);
+    window.location.reload();
   };
 
   const handlekeyCahnge = (key, event) => {

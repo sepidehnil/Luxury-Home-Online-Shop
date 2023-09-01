@@ -155,7 +155,7 @@ export default function EditProduct({ open, onClose, product }) {
   }, [product.category]);
 
   return (
-    <div className="font-secondary">
+    <div className="font-secondary ">
       <Modal
         open={open}
         onClose={onClose}
@@ -163,9 +163,11 @@ export default function EditProduct({ open, onClose, product }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="rounded-md">
-          <img src={closeBtn} onClick={handleCancel} />
-          <Typography>اضافه کردن کالا</Typography>
+        <Box
+          sx={style}
+          className="rounded-md flex flex-col gap-3 font-secondary"
+        >
+          <Typography>ویرایش کالا</Typography>
           <TextField
             label="نام کالا"
             fullWidth

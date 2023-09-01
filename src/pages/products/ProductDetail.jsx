@@ -3,13 +3,17 @@ import useProduct from "../../hooks/useProduct";
 import { useSelector } from "react-redux";
 import carIcon from "../../assets/svg/cartIcon.svg";
 import { useState } from "react";
-import { Carousel } from "antd";
+import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
+import plus from "../../assets/svg/plus.svg";
+import minus from "../../assets/svg/minus.svg";
 
 function ProductDetail() {
   const { isLoading, products } = useProduct();
   const categories = useSelector((state) => state.categories.categories);
   const { productId } = useParams();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const filteredproductsDetail = products?.data.products.filter(
     (item) => item._id === productId
@@ -40,49 +44,88 @@ function ProductDetail() {
     return <p>loading</p>;
   }
   // console.log(product.description);
-  const onChange = (currentSlide) => {
-    console.log(currentSlide);
-  };
+
   return (
-    <div>
+    <div className="overflow-hidden">
       {filteredproductsDetail.map((product) => {
         console.log(product);
         return (
-          <div key={product._id}>
-            <div>{product.name}</div>
-
-            <Carousel afterChange={onChange}>
-              {product?.images.map((item, index) => (
-                <div key={index}>
-                  <img
-                    src={`http://localhost:8000/images/products/images/${item}`}
-                  />
-                </div>
-              ))}
-            </Carousel>
-
-            <div>{product.price}</div>
-            <div dangerouslySetInnerHTML={{ __html: product.description }} />
-
-            <div className="px-[20px] py-[8px] bg-red-800 bord rounded-3xl flex gap-5 items-center justify-center">
-              <div className="px-[12px] py-[3px] rounded-2xl bg-red-600 flex items-center justify-center text-md">
-                {selectedQuantity}
-              </div>
-              <button onClick={handleIncrement}>+</button>
-              <button onClick={handleDecrement}>-</button>
-              <input
-                type="number"
-                id="tentacles"
-                name="tentacles"
-                min="0"
-                max={product.quantity}
-                value={selectedQuantity}
-                onChange={(e) => setSelectedQuantity(Number(e.target.value))}
+          <div key={product._id} className="flex font-primary p-8 gap-11">
+            <div>
+              <h1 className="font-secondary text-xl font-semibold">
+                {product.name}
+              </h1>
+              <div className="my-10">{product.price}</div>
+              <div
+                dangerouslySetInnerHTML={{ __html: product.description }}
+                className="my-10 w-[600px]"
               />
-              <button onClick={handleAddToCart}>
-                سبد خرید
-                <img src={carIcon} alt="cart icon" />
-              </button>
+
+              <div className="flex justify-center items-center gap-8">
+                <div className="px-[60px] py-[8px] bg-red-800 rounded-3xl flex gap-3">
+                  <button
+                    onClick={handleAddToCart}
+                    className="font-secondary font-semibold text-md"
+                  >
+                    سبد خرید
+                  </button>
+                  <img src={carIcon} alt="cart icon" />
+                </div>
+                <div className="flex px-[4px] bg-red-700 justify-center gap-1 rounded-md">
+                  <img src={plus} onClick={handleIncrement} />
+                  <input
+                    className="px-[10px] py-[5px] bg-transparent w-[30px] outline-none text-lg font-semibold"
+                    id="tentacles"
+                    name="tentacles"
+                    min="0"
+                    max={product.quantity}
+                    value={selectedQuantity}
+                    onChange={(e) =>
+                      setSelectedQuantity(Number(e.target.value))
+                    }
+                  />
+                  <img src={minus} onClick={handleDecrement} />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-5/6">
+                <CarouselProvider
+                  naturalSlideWidth={200}
+                  naturalSlideHeight={200}
+                  totalSlides={product?.images.length}
+                  currentSlide={selectedImageIndex}
+                >
+                  <Slider>
+                    {product?.images.map((item, index) => (
+                      <Slide key={index} index={index}>
+                        <img
+                          src={`http://localhost:8000/images/products/images/${item}`}
+                          alt={`Image ${index}`}
+                        />
+                      </Slide>
+                    ))}
+                  </Slider>
+                </CarouselProvider>
+              </div>
+
+              {/* Render the Thumbnail Images */}
+              <div className="w-2/12 flex flex-col gap-10">
+                {product?.images.map((item, index) => (
+                  <img
+                    key={index}
+                    src={`http://localhost:8000/images/products/images/${item}`}
+                    alt={`Thumbnail ${index}`}
+                    className={`cursor-pointer ${
+                      index === selectedImageIndex
+                        ? "border border-blue-500"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedImageIndex(index)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         );

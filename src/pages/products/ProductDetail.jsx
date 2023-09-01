@@ -43,25 +43,24 @@ function ProductDetail() {
   if (isLoading) {
     return <p>loading</p>;
   }
-  // console.log(product.description);
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden bg-red-50 p-9">
       {filteredproductsDetail.map((product) => {
         console.log(product);
         return (
-          <div key={product._id} className="flex font-primary p-8 gap-11">
+          <div key={product._id} className="flex font-primary gap-11">
             <div>
               <h1 className="font-secondary text-xl font-semibold">
                 {product.name}
               </h1>
-              <div className="my-10">{product.price}</div>
+              <div className="border-2 mt-5 w-[300px] border-gray-500"></div>
               <div
                 dangerouslySetInnerHTML={{ __html: product.description }}
                 className="my-10 w-[600px]"
               />
-
-              <div className="flex justify-center items-center gap-8">
+              <span className="my-10">{` قیمت کالا : ${product.price}`}</span>
+              <div className="flex justify-center items-center gap-8 mt-[200px]">
                 <div className="px-[60px] py-[8px] bg-red-800 rounded-3xl flex gap-3">
                   <button
                     onClick={handleAddToCart}
@@ -71,7 +70,7 @@ function ProductDetail() {
                   </button>
                   <img src={carIcon} alt="cart icon" />
                 </div>
-                <div className="flex px-[4px] bg-red-700 justify-center gap-1 rounded-md">
+                <div className="flex px-[4px] bg-red-700 justify-center gap-1 rounded-lg">
                   <img src={plus} onClick={handleIncrement} />
                   <input
                     className="px-[10px] py-[5px] bg-transparent w-[30px] outline-none text-lg font-semibold"
@@ -92,8 +91,8 @@ function ProductDetail() {
             <div className="flex gap-4">
               <div className="w-5/6">
                 <CarouselProvider
-                  naturalSlideWidth={200}
-                  naturalSlideHeight={200}
+                  naturalSlideWidth={100}
+                  naturalSlideHeight={100}
                   totalSlides={product?.images.length}
                   currentSlide={selectedImageIndex}
                 >

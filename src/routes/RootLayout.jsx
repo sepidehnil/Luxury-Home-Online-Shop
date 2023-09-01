@@ -25,7 +25,7 @@ function RootLayout() {
       element: <HomeLayout />,
       children: [
         {
-          path: "/home",
+          path: "/",
           element: <HomePage />,
         },
         {

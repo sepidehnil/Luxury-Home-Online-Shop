@@ -17,8 +17,10 @@ const ProductCard = ({ name, price, id, image }) => (
     }
     className="font-secondary"
   >
-    <Meta title={name} description={`Price: ${price}`} />
-    <Link to={`/products/${id}`}>View Details</Link>
+    <Meta title={name} description={`قیمت کالا: ${price}`} />
+    <div className="mt-1 underline underline-offset-4">
+      <Link to={`/products/${id}`}>جزئیات بیشتر</Link>
+    </div>
   </Card>
 );
 

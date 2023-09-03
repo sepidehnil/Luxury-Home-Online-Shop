@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import privateAxios from "../../../services/instances/privateAxios";
+import { useForm, Controller } from "react-hook-form";
+import { FormHelperText } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -41,7 +43,14 @@ export default function AddEditProductModal({ onOpen, onClose }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
-  const handleSave = async (e) => {
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     const data = {
       name,
@@ -77,9 +86,6 @@ export default function AddEditProductModal({ onOpen, onClose }) {
     setDescription(text);
   };
 
-  const handleCancel = () => {
-    onClose();
-  };
   function handleImage(e) {
     console.log(e.target.files);
     setImageFile([e.target.files[0]]);
@@ -93,6 +99,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
       setSubCategory(response.data.data.subcategories);
     });
   }, []);
+
   return (
     <div className="font-secondary">
       <Modal
@@ -110,111 +117,108 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             label="نام کالا"
             fullWidth
             size="small"
-            value={name}
+            className="font-secondary"
             onChange={(e) => setName(e.target.value)}
+            {...register("name", { required: "نام کالا الزامی است." })}
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
           <TextField
             label="برند کالا"
             fullWidth
             size="small"
-            value={brand}
             onChange={(e) => setBrand(e.target.value)}
+            {...register("brand", { required: "نام برند کالا الزامی است." })}
+            error={!!errors.brand}
+            helperText={errors.brand?.message}
           />
           <TextField
             label="قیمت کالا "
             fullWidth
             size="small"
-            value={price}
             onChange={(e) => setPrice(e.target.value)}
+            {...register("price", { required: "قیمت کالا الزامی است." })}
+            error={!!errors.price}
+            helperText={errors.price?.message}
           />
           <TextField
             label="تعداد کالا "
             fullWidth
             size="small"
-            value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
+            {...register("quantity", { required: "تعداد کالا الزامی است." })}
+            error={!!errors.quantity}
+            helperText={errors.quantity?.message}
           />
-          {/* <FormControl fullWidth size="small">
-            <InputLabel id="demo-select-small-label">دسته بندی</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={category}
-              label="دسته بندی"
-              className="font-secondary"
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <MenuItem value="اتاق خواب">اتاق خواب</MenuItem>
-              <MenuItem value="آشپزخانه">آشپزخانه</MenuItem>
-              <MenuItem value="سرویس بهداشتی">سرویس بهداشتی</MenuItem>
-              <MenuItem value="سالن پذیرایی">سالن پذیرایی</MenuItem>
-            </Select>
-          </FormControl> */}
-          {/* <FormControl fullWidth size="small">
-            <InputLabel id="demo-select-small-label">دسته بندی</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={subcategory}
-              label="دسته بندی"
-              className="font-secondary"
-              onChange={(e) => setSubCategory(e.target.value)}
-            >
-              <MenuItem value="اتاق خواب">اتاق خواب</MenuItem>
-              <MenuItem value="آشپزخانه">آشپزخانه</MenuItem>
-              <MenuItem value="سرویس بهداشتی">سرویس بهداشتی</MenuItem>
-              <MenuItem value="سالن پذیرایی">سالن پذیرایی</MenuItem>
-            </Select>
-          </FormControl> */}
-          <FormControl fullWidth size="small">
-            <InputLabel id="demo-select-small-label">دسته بندی</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={selectedCategory}
-              label="دسته بندی"
-              className="font-secondary"
-              onChange={(e) => {
-                setSelectedCategory(e.target.value),
-                  console.log(e.target.value);
-              }}
-            >
-              {category.map((category) => (
-                <MenuItem key={category._id} value={category._id}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth size="small">
-            <InputLabel id="demo-select-small-label">زیربخش</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={selectedSubcategory}
-              label="زیربخش"
-              className="font-secondary"
-              onChange={(e) => {
-                setSelectedSubcategory(e.target.value);
-                console.log(e.target.value);
-              }}
-            >
-              {subcategory
-                .filter(
-                  (subcategory) => subcategory.category === selectedCategory
-                )
-                .map((subcategory) => (
-                  <MenuItem key={subcategory._id} value={subcategory._id}>
-                    {subcategory.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
+          <Controller
+            name="selectedCategory"
+            control={control}
+            defaultValue=""
+            rules={{ required: "دسته بندی الزامی است." }}
+            render={({ field }) => (
+              <FormControl fullWidth size="small">
+                <InputLabel id="demo-select-small-label">دسته بندی</InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  label="دسته بندی"
+                  className="font-secondary"
+                  required
+                >
+                  {category.map((category) => (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText error={!!errors.selectedCategory}>
+                  {errors.selectedCategory?.message}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="selectedSubcategory"
+            control={control}
+            defaultValue=""
+            rules={{ required: "زیربخش الزامی است." }}
+            render={({ field }) => (
+              <FormControl fullWidth size="small">
+                <InputLabel id="demo-select-small-label">زیربخش</InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  label="زیربخش"
+                  className="font-secondary"
+                  required
+                >
+                  {subcategory
+                    .filter(
+                      (subcategory) => subcategory.category === selectedCategory
+                    )
+                    .map((subcategory) => (
+                      <MenuItem key={subcategory._id} value={subcategory._id}>
+                        {subcategory.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText error={!!errors.selectedSubcategory}>
+                  {errors.selectedSubcategory?.message}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
 
           <LexicalTextEditor onChange={handleDescriptionChange} />
 
           <Upload
             listType="picture-card"
+            required
             showUploadList={true}
             beforeUpload={(file) => {
               setImageFile(file);
@@ -230,7 +234,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             </div>
           </Upload>
 
-          <Button onClick={handleSave} className="font-secondary">
+          <Button onClick={handleSubmit(onSubmit)} className="font-secondary">
             ذخیره
           </Button>
         </Box>

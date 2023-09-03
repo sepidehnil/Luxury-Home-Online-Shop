@@ -7,7 +7,7 @@ import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import plus from "../../assets/svg/plus.svg";
 import minus from "../../assets/svg/minus.svg";
-import { fetchsubcategories } from "../../services/instances/subCategorySlice";
+import { fetchsubcategories } from "../../services/instances/subCategory";
 
 function ProductDetail() {
   const { isLoading, products } = useProduct();

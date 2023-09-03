@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchcategories } from "../services/instances/categoriesSlice";
 import SideBarModal from "../components/UI/modal/SideBarModal";
+import CartProvider from "../context/CartProvider";
 
 function HomeLayout() {
   const dispatch = useDispatch();
@@ -24,12 +25,12 @@ function HomeLayout() {
   }
 
   return (
-    <Fragment>
+    <CartProvider>
       {showSideBar && <SideBarModal onClose={closeBtn} />}
       <MainHeader onOpen={openBtn} />
       <Outlet />
       {/* <Footer /> */}
-    </Fragment>
+    </CartProvider>
   );
 }
 export default HomeLayout;

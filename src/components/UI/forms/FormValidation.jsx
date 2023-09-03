@@ -103,7 +103,7 @@ function FormValidation() {
             ورود
           </button>
 
-          <Link to="/home">
+          <Link to="/">
             <div className="flex justify-end gap-2 text-sm items-center mt-4 hover:underline-offset-4 hover:underline">
               <span>بازگشت به خانه</span>
               <img src={backwardArrow} />

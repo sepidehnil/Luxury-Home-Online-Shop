@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from "react";
-import ProductCard from "../../components/UI/products/ProductCard";
 import useProduct from "../../hooks/useProduct";
 import { useParams, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import { List, Pagination, Card } from "antd";
+import { fetchsubcategories } from "../../services/instances/subCategorySlice";
 
 function CategoriesPage() {
   const { isLoading, products } = useProduct();
   const { categoryId } = useParams();
-  const categories = useSelector((state) => state.categories.categories);
-  const [subcategories, setSubcategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const categories = useSelector((state) => state.categories.categories);
+  const subcategories = useSelector(
+    (state) => state.subcategories.subcategories
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchSubcategories() {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/subcategories`
-        );
-        setSubcategories(response.data.data.subcategories);
-      } catch (error) {
-        console.error("Error fetching subcategories:", error);
-      }
-    }
-
-    fetchSubcategories();
-  }, []);
+    dispatch(fetchsubcategories());
+  }, [dispatch]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -48,7 +39,7 @@ function CategoriesPage() {
 
   const subcategoriesByCategory = categories?.data.categories.reduce(
     (acc, category) => {
-      const categorySubcategories = subcategories.filter(
+      const categorySubcategories = subcategories.data.subcategories.filter(
         (subcategory) => subcategory.category === category._id
       );
       acc[category._id] = categorySubcategories;
@@ -57,7 +48,7 @@ function CategoriesPage() {
     {}
   );
   return (
-    <div className=" h-screen bg-red-50 flex p-4 gap-12">
+    <div className="bg-red-50 flex p-4 gap-12 h-screen">
       <div className="w-[500px] h-[450px] bg-white p-8 rounded-lg">
         {categories?.data.categories.map((item) => (
           <div key={item._id} className="mb-5 font-secondary">
@@ -81,8 +72,7 @@ function CategoriesPage() {
         ))}
       </div>
 
-      <div className="flex w-11/12 flex-wrap m-auto gap-6">
-        <div></div>
+      <div className="flex w-11/12 flex-wrap m-auto mt-6 overflow-hidden">
         <List
           grid={{ gutter: 16, column: 3 }}
           dataSource={displayedProducts}
@@ -100,10 +90,12 @@ function CategoriesPage() {
                   </Link>
                 }
               >
-                <img
-                  alt={product.name}
-                  src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-                />
+                <Link to={`/products/${product._id}`}>
+                  <img
+                    alt={product.name}
+                    src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                  />
+                </Link>
                 <p>قیمت: {product.price}</p>
               </Card>
             </List.Item>
@@ -114,7 +106,7 @@ function CategoriesPage() {
           total={filteredProducts.length}
           pageSize={itemsPerPage}
           onChange={onPageChange}
-          className="mt-4"
+          className="m-auto mt-2"
         />
       </div>
     </div>

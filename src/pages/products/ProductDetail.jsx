@@ -1,25 +1,45 @@
 import { useParams } from "react-router-dom";
 import useProduct from "../../hooks/useProduct";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import carIcon from "../../assets/svg/cartIcon.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import plus from "../../assets/svg/plus.svg";
 import minus from "../../assets/svg/minus.svg";
+import { fetchsubcategories } from "../../services/instances/subCategorySlice";
 
 function ProductDetail() {
   const { isLoading, products } = useProduct();
-  const categories = useSelector((state) => state.categories.categories);
   const { productId } = useParams();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const categories = useSelector((state) => state.categories.categories);
+  const subcategories = useSelector(
+    (state) => state.subcategories.subcategories
+  );
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchsubcategories());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <p>loading</p>;
+  }
   const filteredproductsDetail = products?.data.products.filter(
     (item) => item._id === productId
   );
+  const filteredCategories = categories?.data.categories.filter((category) => {
+    return category._id === filteredproductsDetail[0]?.category;
+  });
 
-  console.log(filteredproductsDetail);
+  const filteredSubCategories = subcategories?.data.subcategories.filter(
+    (subcategory) => {
+      return subcategory._id === filteredproductsDetail[0]?.subcategory;
+    }
+  );
+
   function handleIncrement() {
     if (selectedQuantity < filteredproductsDetail[0].quantity) {
       setSelectedQuantity(selectedQuantity + 1);
@@ -31,26 +51,23 @@ function ProductDetail() {
   }
 
   function handleAddToCart() {
-
     console.log(
       `Added ${selectedQuantity} units of product ${productId} to the cart.`
     );
   }
 
-  if (isLoading) {
-    return <p>loading</p>;
-  }
-
   return (
     <div className="overflow-hidden bg-red-50 p-9">
       {filteredproductsDetail.map((product) => {
-        console.log(product);
         return (
           <div key={product._id} className="flex font-primary gap-11">
             <div>
               <h1 className="font-secondary text-xl font-semibold">
                 {product.name}
               </h1>
+              <p className="mt-2">
+                {filteredCategories[0].name}/ {filteredSubCategories[0].name}
+              </p>
               <div className="border-2 mt-5 w-[300px] border-gray-500"></div>
               <div
                 dangerouslySetInnerHTML={{ __html: product.description }}

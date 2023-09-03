@@ -38,13 +38,13 @@ export default function BasicModal({ open, onClose, onConfirm }) {
           </div>
           <div className="flex gap-5 justify-center">
             <Button
-              className="font-secondary bg-[#191D88] text-[#FFC436] hover:px-5"
+              className="font-secondary bg-red-800 hover:px-5"
               onClick={handelDeleteItem}
             >
               بله
             </Button>
             <Button
-              className="font-secondary bg-[#FFC436] text-[#191D88] hover:px-5"
+              className="font-secondary bg-transparent hover:px-5 border-2 border-gray-300"
               onClick={handleCancel}
             >
               خیر

@@ -9,9 +9,8 @@ import CartContext from "../../../context/cart-context";
 
 function MainHeader(props) {
   const cartCtx = useContext(CartContext);
-  const numberOfCartItems = cartCtx.items.reduce((curNumber, item) => {
-    return curNumber + item.amount;
-  }, 0);
+  const numberOfCartItems = cartCtx.items.length;
+
   return (
     <header className="font-primary py-[15px] px-[40px] bg-[#c41231] flex items-center justify-between text-white">
       <div className="flex items-center gap-5">

@@ -30,6 +30,7 @@ function ProductDetail() {
         name: product.name,
         price: product.price,
         amount: amount,
+        quantity: product.quantity,
       });
     }
   };

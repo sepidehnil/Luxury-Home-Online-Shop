@@ -4,8 +4,14 @@ import carIcon from "../../../assets/svg/cartIcon.svg";
 import userIcon from "../../../assets/svg/userIcon.svg";
 import menueIcon from "../../../assets/svg/menuIcon.svg";
 import search from "../../../assets/svg/search.svg";
+import { useContext } from "react";
+import CartContext from "../../../context/cart-context";
 
 function MainHeader(props) {
+  const cartCtx = useContext(CartContext);
+  const numberOfCartItems = cartCtx.items.reduce((curNumber, item) => {
+    return curNumber + item.amount;
+  }, 0);
   return (
     <header className="font-primary py-[15px] px-[40px] bg-[#c41231] flex items-center justify-between text-white">
       <div className="flex items-center gap-5">
@@ -38,7 +44,7 @@ function MainHeader(props) {
         <Link to="/cart">
           <div className="px-[20px] py-[8px] bg-red-800 bord rounded-3xl flex gap-5 items-center justify-center">
             <div className="px-[12px] py-[3px] rounded-2xl bg-red-600 flex items-center justify-center text-md">
-              0
+              {numberOfCartItems}
             </div>
 
             <div className="flex gap-2 text-md">

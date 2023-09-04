@@ -51,7 +51,6 @@ export default function AddEditProductModal({ onOpen, onClose }) {
   } = useForm();
 
   const onSubmit = async (e) => {
-    e.preventDefault();
     const data = {
       name,
       category: selectedCategory,
@@ -100,6 +99,8 @@ export default function AddEditProductModal({ onOpen, onClose }) {
     });
   }, []);
 
+  console.log(subcategory);
+  console.log(name);
   return (
     <div className="font-secondary">
       <Modal
@@ -145,6 +146,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             label="تعداد کالا "
             fullWidth
             size="small"
+            value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             {...register("quantity", { required: "تعداد کالا الزامی است." })}
             error={!!errors.quantity}
@@ -162,7 +164,10 @@ export default function AddEditProductModal({ onOpen, onClose }) {
                   labelId="demo-select-small-label"
                   id="demo-select-small"
                   value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value);
+                    field.onChange(e.target.value);
+                  }}
                   label="دسته بندی"
                   className="font-secondary"
                   required
@@ -192,7 +197,10 @@ export default function AddEditProductModal({ onOpen, onClose }) {
                   labelId="demo-select-small-label"
                   id="demo-select-small"
                   value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedSubcategory(e.target.value);
+                    field.onChange(e.target.value);
+                  }}
                   label="زیربخش"
                   className="font-secondary"
                   required

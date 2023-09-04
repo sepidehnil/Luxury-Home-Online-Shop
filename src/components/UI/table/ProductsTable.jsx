@@ -167,7 +167,7 @@ const ProductsTable = () => {
   };
   return (
     <>
-      {true && (
+      {open && (
         <DeleteModal
           open={open}
           onClose={handleClose}

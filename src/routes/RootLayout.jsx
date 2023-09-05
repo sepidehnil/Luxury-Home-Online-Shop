@@ -75,10 +75,6 @@ function RootLayout() {
           element: <Shipping />,
         },
         {
-          path: "/pay",
-          element: <Pay />,
-        },
-        {
           path: "/successPay",
           element: <SuccessPay />,
         },
@@ -87,6 +83,10 @@ function RootLayout() {
           element: <FailedPay />,
         },
       ],
+    },
+    {
+      path: "/pay",
+      element: <Pay />,
     },
   ]);
   return <RouterProvider router={router} />;

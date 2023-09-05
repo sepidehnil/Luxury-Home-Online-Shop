@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { Navigate, useLocation } from "react-router-dom";
 
-const userPrivateRoute = ({ children }) => {
+const UserPrivateRoute = ({ children }) => {
   const accessToken = Cookies.get("accessToken");
 
   const location = useLocation().pathname;
@@ -13,4 +13,4 @@ const userPrivateRoute = ({ children }) => {
   );
 };
 
-export default userPrivateRoute;
+export default UserPrivateRoute;

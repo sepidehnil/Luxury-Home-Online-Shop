@@ -18,8 +18,8 @@ import PrivateRoute from "./privateRoute";
 import ProductDetail from "../pages/products/ProductDetail";
 import CategoriesProduct from "../pages/categories/CategoriesProduct";
 import UserLogin from "../pages/login/UserLogin";
-import userPrivateRoute from "./userPrivateRoute";
-import userProtectedRoute from "./userProtectedRoute";
+import UserPrivateRoute from "./userPrivateRoute";
+import UserProtectedRoute from "./userProtectedRoute";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -72,17 +72,17 @@ function RootLayout() {
     {
       path: "/userlogin",
       element: (
-        <userProtectedRoute>
+        <UserProtectedRoute>
           <UserLogin />
-        </userProtectedRoute>
+        </UserProtectedRoute>
       ),
     },
     {
       path: "/",
       element: (
-        <userPrivateRoute>
+        <UserPrivateRoute>
           <CartLayout />
-        </userPrivateRoute>
+        </UserPrivateRoute>
       ),
       children: [
         {

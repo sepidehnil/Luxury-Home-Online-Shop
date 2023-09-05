@@ -25,9 +25,7 @@ function Cart() {
   };
 
   const cartItemAddHandler = (item) => {
-    if (item.amount < item.quantity) {
-      cartCtx.addItem({ ...item, amount: 1 });
-    }
+    cartCtx.addItem({ ...item, amount: 1 });
   };
 
   const renderEditColumn = (record) => {

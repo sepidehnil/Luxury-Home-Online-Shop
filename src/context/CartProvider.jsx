@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { useEffect } from "react";
 
 import CartContext from "./cart-context";
 
@@ -19,14 +20,22 @@ const cartReducer = (state, action) => {
     let updatedItems;
 
     if (existingCartItem) {
+      const availableQuantity =
+        existingCartItem.quantity - existingCartItem.amount;
+      const addedQuantity = Math.min(availableQuantity, action.item.amount);
+
       const updatedItem = {
         ...existingCartItem,
-        amount: existingCartItem.amount + action.item.amount,
+        amount: existingCartItem.amount + addedQuantity,
       };
+
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
     } else {
-      updatedItems = state.items.concat(action.item);
+      updatedItems = state.items.concat({
+        ...action.item,
+        amount: Math.min(action.item.amount, action.item.quantity),
+      });
     }
 
     return {
@@ -34,6 +43,7 @@ const cartReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
+
   if (action.type === "REMOVE") {
     const existingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.id
@@ -70,6 +80,11 @@ const cartReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
+
+  if (action.type === "LOAD_CART") {
+    return action.cartData;
+  }
+
   return defaultCartState;
 };
 
@@ -90,6 +105,20 @@ const CartProvider = (props) => {
   const clearCart = (id) => {
     dispatchCartAction({ type: "CLEAR", id: id });
   };
+
+  useEffect(() => {
+    const storedCartData = localStorage.getItem("cartData");
+    if (storedCartData) {
+      dispatchCartAction({
+        type: "LOAD_CART",
+        cartData: JSON.parse(storedCartData),
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartData", JSON.stringify(cartState));
+  }, [cartState]);
 
   const cartContext = {
     items: cartState.items,

@@ -6,6 +6,7 @@ import menueIcon from "../../../assets/svg/menuIcon.svg";
 import search from "../../../assets/svg/search.svg";
 import { useContext } from "react";
 import CartContext from "../../../context/cart-context";
+import user from "../../../assets/svg/user.svg";
 
 function MainHeader(props) {
   const cartCtx = useContext(CartContext);
@@ -45,11 +46,15 @@ function MainHeader(props) {
             <div className="px-[12px] py-[3px] rounded-2xl bg-red-600 flex items-center justify-center text-md">
               {numberOfCartItems}
             </div>
-
             <div className="flex gap-2 text-md">
               سبد خرید
               <img src={carIcon} alt="cart icon" />
             </div>
+          </div>
+        </Link>
+        <Link to="/userlogin">
+          <div>
+            <img src={user} />
           </div>
         </Link>
       </div>

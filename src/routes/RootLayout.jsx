@@ -17,6 +17,9 @@ import ProtectedRoute from "./protectedRoute";
 import PrivateRoute from "./privateRoute";
 import ProductDetail from "../pages/products/ProductDetail";
 import CategoriesProduct from "../pages/categories/CategoriesProduct";
+import UserLogin from "../pages/login/UserLogin";
+import userPrivateRoute from "./userPrivateRoute";
+import userProtectedRoute from "./userProtectedRoute";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -67,8 +70,20 @@ function RootLayout() {
       ],
     },
     {
+      path: "/userlogin",
+      element: (
+        <userProtectedRoute>
+          <UserLogin />
+        </userProtectedRoute>
+      ),
+    },
+    {
       path: "/",
-      element: <CartLayout />,
+      element: (
+        <userPrivateRoute>
+          <CartLayout />
+        </userPrivateRoute>
+      ),
       children: [
         {
           path: "/shipping",

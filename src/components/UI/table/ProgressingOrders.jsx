@@ -1,134 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
-
-const data2 = [
-  {
-    id: 13,
-    userName: "مهدی علیزاده",
-    totalPrice: "۴۵۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۸/۲۰",
-    address: "تهران - خیابان ونک - خیابان شهرآرا - پلاک ۷",
-    deliveredTime: "۱۴۰۲/۰۸/۲۲",
-  },
-  {
-    id: 14,
-    userName: "سارا محمدی",
-    totalPrice: "۳۸۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۸/۲۳",
-    address: "تهران - خیابان ولنجک - خیابان ولیعصر - پلاک ۲۵",
-    deliveredTime: "۱۴۰۲/۰۸/۲۵",
-  },
-  {
-    id: 15,
-    userName: "علی احمدی",
-    totalPrice: "۵۶۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۹/۰۳",
-    address: "تهران - خیابان اندرزگو - خیابان کاوه - پلاک ۱۴",
-    deliveredTime: "۱۴۰۲/۰۹/۰۵",
-  },
-  {
-    id: 16,
-    userName: "نازنین رجبی",
-    totalPrice: "۷۵۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۹/۰۸",
-    address: "تهران - خیابان میرداماد - خیابان نیکبخت - پلاک ۹",
-    deliveredTime: "۱۴۰۲/۰۹/۱۰",
-  },
-  {
-    id: 17,
-    userName: "مصطفی کریمی",
-    totalPrice: "۶۴۰,۰۰۰",
-    orderTime: "۱۴۰۲/۱۰/۱۱",
-    address: "تهران - خیابان شریعتی - خیابان شهید سعیدی - پلاک ۳",
-    deliveredTime: "۱۴۰۲/۱۰/۱۳",
-  },
-  {
-    id: 18,
-    userName: "فاطمه عبدالهی",
-    totalPrice: "۳۲۰,۰۰۰",
-    orderTime: "۱۴۰۲/۱۰/۱۵",
-    address: "تهران - خیابان جمهوری - خیابان آفریقا - پلاک ۱۰",
-    deliveredTime: "۱۴۰۲/۱۰/۱۷",
-  },
-  {
-    id: 19,
-    userName: "رامین رحمانی",
-    totalPrice: "۵۸۰,۰۰۰",
-    orderTime: "۱۴۰۲/۱۱/۰۵",
-    address: "تهران - خیابان ولیعصر - خیابان نیاوران - پلاک ۲۲",
-    deliveredTime: "۱۴۰۲/۱۱/۰۷",
-  },
-  {
-    id: 20,
-    userName: "ناهید اکبری",
-    totalPrice: "۷۴۰,۰۰۰",
-    orderTime: "۱۴۰۲/۱۱/۱۱",
-    address: "تهران - خیابان شهید بهشتی - خیابان انقلاب - پلاک ۴",
-    deliveredTime: "۱۴۰۲/۱۱/۱۳",
-  },
-  {
-    id: 21,
-    userName: "حمیدرضا خسروی",
-    totalPrice: "۵۵۰,۰۰۰",
-    orderTime: "۱۴۰۲/۱۲/۱۵",
-    address: "تهران - خیابان انقلاب - خیابان کارگر شمالی - پلاک ۴۴",
-    deliveredTime: "۱۴۰۲/۱۲/۱۷",
-  },
-  {
-    id: 22,
-    userName: "سحر محمدی",
-    totalPrice: "۶۶۰,۰۰۰",
-    orderTime: "۱۴۰۲/۱۲/۲۲",
-    address: "تهران - خیابان ولیعصر - خیابان جمهوری - پلاک ۶",
-    deliveredTime: "۱۴۰۲/۱۲/۲۴",
-  },
-  {
-    id: 23,
-    userName: "سارا حسینی",
-    totalPrice: "۴۲۰,۰۰۰",
-    orderTime: "۱۴۰۳/۰۱/۱۱",
-    address: "تهران - خیابان ونک - خیابان کریمی - پلاک ۱۷",
-    deliveredTime: "۱۴۰۳/۰۱/۱۳",
-  },
-  {
-    id: 24,
-    userName: "علی جعفری",
-    totalPrice: "۳۸۰,۰۰۰",
-    orderTime: "۱۴۰۳/۰۲/۱۵",
-    address: "تهران - خیابان شهید بهشتی - خیابان شریعتی - پلاک ۲۲",
-    deliveredTime: "۱۴۰۳/۰۲/۱۷",
-  },
-  {
-    id: 25,
-    userName: "نازنین میرزایی",
-    totalPrice: "۵۶۰,۰۰۰",
-    orderTime: "۱۴۰۳/۰۳/۰۳",
-    address: "تهران - خیابان میرداماد - خیابان شهرآرا - پلاک ۱۰",
-    deliveredTime: "۱۴۰۳/۰۳/۰۵",
-  },
-  {
-    id: 26,
-    userName: "علی رضایی",
-    totalPrice: "۷۵۰,۰۰۰",
-    orderTime: "۱۴۰۳/۰۴/۰۸",
-    address: "تهران - خیابان جمهوری - خیابان نیکبخت - پلاک ۲۵",
-    deliveredTime: "۱۴۰۳/۰۴/۱۰",
-  },
-  {
-    id: 27,
-    userName: "لیلا محمدی",
-    totalPrice: "۶۴۰,۰۰۰",
-    orderTime: "۱۴۰۳/۰۵/۱۴",
-    address: "تهران - خیابان انقلاب - خیابان کارگر شمالی - پلاک ۱۴",
-    deliveredTime: "۱۴۰۳/۰۵/۱۶",
-  },
-];
+import publicAxios from "../../../services/instances/publicAxios";
 
 const ProgressingOrders = () => {
   const [sortedInfo, setSortedInfo] = useState({});
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await publicAxios.get("/orders", {
+          params: { limit: 1000 },
+        });
+        const orders = response.data.data.orders;
+
+        const deliveredOrders = orders.filter(
+          (order) => order.deliveryStatus === false
+        );
+
+        const userIds = deliveredOrders.map((order) => order.user);
+
+        const userDataPromises = userIds.map((userId) =>
+          publicAxios.get(`/users/${userId}`)
+        );
+        const userDatas = await Promise.all(userDataPromises);
+        const ordersWithUserData = deliveredOrders.map((order, index) => {
+          const user = userDatas[index].data.data.user;
+          const fullName = `${user.firstname} ${user.lastname}`;
+          return {
+            ...order,
+            userName: fullName,
+          };
+        });
+
+        setData(ordersWithUserData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
@@ -184,12 +99,6 @@ const ProgressingOrders = () => {
       ellipsis: true,
     },
     {
-      title: "مجموع مبلغ",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      className: "font-secondary text-center",
-    },
-    {
       title: "بررسی وضعت سفارش",
       render: renderEditColumn,
       className: "font-secondary text-center",
@@ -208,7 +117,7 @@ const ProgressingOrders = () => {
       </Space>
       <Table
         columns={columns}
-        dataSource={data2}
+        dataSource={data}
         onChange={handleChange}
         pagination={paginationConfig}
         className="font-secondary text-center"

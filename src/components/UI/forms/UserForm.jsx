@@ -25,7 +25,6 @@ function UserForm() {
       .post("http://localhost:8000/api/auth/login", data)
       .then((response) => {
         console.log(response);
-
         if (
           response?.status === 200 &&
           response?.data.data.user.role === "USER"
@@ -33,6 +32,7 @@ function UserForm() {
           const token = response.data.token;
           Cookies.set("accessToken", token.accessToken);
           Cookies.set("refreshToken", token.refreshToken);
+          
           const userId = response.data.data.user._id;
           setUserId(userId);
           Cookies.set("userId", userId);

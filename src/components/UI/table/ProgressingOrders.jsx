@@ -66,6 +66,16 @@ const ProgressingOrders = () => {
   const paginationConfig = {
     pageSize: 8,
   };
+
+  const renderDateColumn = (record) => {
+    const formattedDate = moment(record.date).format("jYYYY/jMM/jDD");
+    return (
+      <div className="text-center">
+        <div>{formattedDate}</div>
+      </div>
+    );
+  };
+
   const renderEditColumn = () => {
     return (
       <div className="text-center">
@@ -73,6 +83,15 @@ const ProgressingOrders = () => {
       </div>
     );
   };
+
+  const renderPriceColumn = (record) => {
+    return (
+      <div className="text-center">
+        <div></div>
+      </div>
+    );
+  };
+
   const columns = [
     {
       title: "نام کاربر",
@@ -85,6 +104,7 @@ const ProgressingOrders = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
+      render: renderPriceColumn,
     },
     {
       title: "زمان ثبت سفارش",
@@ -97,11 +117,12 @@ const ProgressingOrders = () => {
         ),
       sortOrder: sortedInfo.columnKey === "date" ? sortedInfo.order : null,
       ellipsis: true,
+      render: renderDateColumn,
     },
     {
       title: "بررسی وضعت سفارش",
-      render: renderEditColumn,
       className: "font-secondary text-center",
+      render: renderEditColumn,
     },
   ];
   return (

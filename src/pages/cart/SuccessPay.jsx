@@ -1,4 +1,62 @@
+import Cookies from "js-cookie";
+import privateAxios from "../../services/instances/privateAxios";
+import { useEffect } from "react";
+
 function SuccessPay() {
+  useEffect(() => {
+    // Function to send the requestObj
+    const sendRequest = async () => {
+      try {
+        const orders = localStorage.getItem("cartData");
+        const newList = JSON.parse(orders).items.map((item) => ({
+          product: item.id,
+          count: item.quantity,
+        }));
+
+        const userId = Cookies.get("userId");
+        const delivery = localStorage.getItem("shippingDate");
+
+        const requestObj = {
+          user: userId,
+          products: newList,
+          deliveryDate: delivery,
+          deliveryStatus: true,
+        };
+
+        // Send the POST request
+        const response = await privateAxios.post("/orders", requestObj);
+
+        console.log("Request sent successfully", response.data);
+      } catch (error) {
+        console.error("Error sending request:", error);
+      }
+    };
+
+    sendRequest(); // Call the sendRequest function when the component mounts
+  }, []);
+
+  // let orders = localStorage.getItem("cartData");
+  // orders = JSON.parse(orders);
+  // console.log(orders.items);
+  // const newList = orders.items.map((item) => {
+  //   return { product: item.id, count: item.quantity };
+  // });
+  // console.log(newList);
+
+  // const userId = Cookies.get("userId");
+  // console.log(userId);
+
+  // let delivery = localStorage.getItem("shippingDate");
+  // console.log(delivery);
+
+  // const requestObj = {
+  //   user: userId,
+  //   products: newList,
+  //   deliveryDate: delivery,
+  //   deliveryStatus: true,
+  // };
+  // console.log(requestObj);
+
   return (
     <div className="flex justify-center h-[650px] font-secondary">
       <div className="flex gap-8 items-center">

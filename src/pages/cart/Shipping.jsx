@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import publicAxios from "../../services/instances/publicAxios";
 import Cookies from "js-cookie";
 
@@ -10,7 +9,6 @@ function Shipping() {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [date, setDate] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = Cookies.get("userId");
@@ -30,6 +28,12 @@ function Shipping() {
   }, []);
   console.log(data);
 
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setDate(selectedDate);
+    localStorage.setItem("shippingDate", selectedDate); // Save the date to local storage
+  };
+
   const handleSave = (e) => {
     e.preventDefault();
 
@@ -40,24 +44,11 @@ function Shipping() {
       phoneNumber,
     };
 
-    const form = new FormData();
-    for (const key in updatedData) {
-      const value = updatedData[key];
-      if (Array.isArray(value)) {
-        value.forEach((v) => {
-          form.append(key, v);
-        });
-      } else {
-        form.append(key, value);
-      }
-    }
-
     publicAxios
-      .patch(`/users/${data._id}`, form)
+      .patch(`/users/${data._id}`, updatedData)
       .then(() => {
         console.log("User data updated successfully.");
         // You can navigate to the next page or handle success as needed.
-        navigate("/pay");
       })
       .catch((error) => {
         console.error("Error updating user data:", error);
@@ -113,14 +104,13 @@ function Shipping() {
           name="date"
           className="border-2 py-1 px-2 rounded-lg outline-none"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={handleDateChange}
         />
-        <button
-          type="submit"
-          className="flex w-full py-2 px-2 justify-center mt-7 bg-red-600 rounded-lg "
-        >
-          ثبت سفارش
-        </button>
+        <a href="http://localhost:5173/">
+          <div className="px-3 py-2 bg-red-600 border-none rounded-lg justify-center flex">
+            ثبت سفارش
+          </div>
+        </a>
       </form>
     </div>
   );

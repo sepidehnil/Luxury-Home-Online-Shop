@@ -10,7 +10,6 @@ import Instock from "../pages/dashboard/Instock";
 import DashBoardLayout from "../layout/DashBoardLayout";
 import CartLayout from "../layout/CartLayout";
 import Shipping from "../pages/cart/Shipping";
-import Pay from "../pages/cart/Pay";
 import SuccessPay from "../pages/cart/SuccessPay";
 import FailedPay from "../pages/cart/FailedPay";
 import ProtectedRoute from "./protectedRoute";
@@ -98,10 +97,6 @@ function RootLayout() {
           element: <FailedPay />,
         },
       ],
-    },
-    {
-      path: "/pay",
-      element: <Pay />,
     },
   ]);
   return <RouterProvider router={router} />;

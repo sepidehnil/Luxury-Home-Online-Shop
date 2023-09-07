@@ -4,13 +4,18 @@ import carIcon from "../../../assets/svg/cartIcon.svg";
 import userIcon from "../../../assets/svg/userIcon.svg";
 import menueIcon from "../../../assets/svg/menuIcon.svg";
 import search from "../../../assets/svg/search.svg";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import CartContext from "../../../context/cart-context";
 import user from "../../../assets/svg/user.svg";
 
 function MainHeader(props) {
-  const cartCtx = useContext(CartContext);
-  const numberOfCartItems = cartCtx.items.length;
+  const [numberOfCartItems, setNumberOfCartItems] = useState("");
+
+  useEffect(() => {
+    let orders = localStorage.getItem("cartData");
+    orders = JSON.parse(orders);
+    setNumberOfCartItems(orders.items.length);
+  }, []);
 
   return (
     <header className="font-primary py-[15px] px-[40px] bg-[#c41231] flex items-center justify-between text-white">

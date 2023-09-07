@@ -14,15 +14,14 @@ function CategoriesPage() {
   const subcategories = useSelector(
     (state) => state.subcategories.subcategories
   );
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchsubcategories());
   }, [dispatch]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
 
   const filteredProducts = products?.data.products.filter(
     (item) => item.category === categoryId

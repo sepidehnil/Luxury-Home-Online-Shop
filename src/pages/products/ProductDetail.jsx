@@ -16,11 +16,20 @@ function ProductDetail() {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const categories = useSelector((state) => state.categories.categories);
+  const cartCtx = useContext(CartContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchsubcategories());
+  }, [dispatch]);
+
   const subcategories = useSelector(
     (state) => state.subcategories.subcategories
   );
-  const dispatch = useDispatch();
-  const cartCtx = useContext(CartContext);
+
+  if (isLoading) {
+    return <p>loading</p>;
+  }
 
   const addToCartHandler = (amount) => {
     const product = filteredproductsDetail[0];
@@ -35,13 +44,6 @@ function ProductDetail() {
     }
   };
 
-  useEffect(() => {
-    dispatch(fetchsubcategories());
-  }, [dispatch]);
-
-  if (isLoading) {
-    return <p>loading</p>;
-  }
   const filteredproductsDetail = products?.data.products.filter(
     (item) => item._id === productId
   );

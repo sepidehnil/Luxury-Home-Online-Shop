@@ -4,7 +4,7 @@ import moment from "jalali-moment";
 import "moment/locale/fa";
 import publicAxios from "../../../services/instances/publicAxios";
 
-const ProgressingOrders = () => {
+const DeliveredOrdersTable = () => {
   const [sortedInfo, setSortedInfo] = useState({});
   const [filteredInfo, setFilteredInfo] = useState({});
   const [data, setData] = useState([]);
@@ -18,7 +18,7 @@ const ProgressingOrders = () => {
         const orders = response.data.data.orders;
 
         const deliveredOrders = orders.filter(
-          (order) => order.deliveryStatus === true
+          (order) => order.deliveryStatus === false
         );
 
         const userIds = deliveredOrders.map((order) => order.user);
@@ -141,4 +141,4 @@ const ProgressingOrders = () => {
     </>
   );
 };
-export default ProgressingOrders;
+export default DeliveredOrdersTable;

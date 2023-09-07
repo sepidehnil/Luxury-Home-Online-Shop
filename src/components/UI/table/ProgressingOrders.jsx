@@ -16,23 +16,23 @@ const ProgressingOrders = () => {
           params: { limit: 1000 },
         });
         const orders = response.data.data.orders;
-
-        const deliveredOrders = orders.filter(
-          (order) => order.deliveryStatus === false
+        const progressingOrders = orders.filter(
+          (order) => order.deliveryStatus === true
         );
-
-        const userIds = deliveredOrders.map((order) => order.user);
-
+        const userIds = progressingOrders.map((order) => order.user);
         const userDataPromises = userIds.map((userId) =>
           publicAxios.get(`/users/${userId}`)
         );
         const userDatas = await Promise.all(userDataPromises);
-        const ordersWithUserData = deliveredOrders.map((order, index) => {
+        const ordersWithUserData = progressingOrders.map((order, index) => {
           const user = userDatas[index].data.data.user;
+          console.log(user.createdAt);
           const fullName = `${user.firstname} ${user.lastname}`;
+          const createdAt = user.createdAt;
           return {
             ...order,
             userName: fullName,
+            date: createdAt,
           };
         });
 
@@ -66,6 +66,16 @@ const ProgressingOrders = () => {
   const paginationConfig = {
     pageSize: 8,
   };
+
+  const renderDateColumn = (record) => {
+    const formattedDate = moment(record.date).format("jYYYY/jMM/jDD");
+    return (
+      <div className="text-center">
+        <div>{formattedDate}</div>
+      </div>
+    );
+  };
+
   const renderEditColumn = () => {
     return (
       <div className="text-center">
@@ -73,6 +83,15 @@ const ProgressingOrders = () => {
       </div>
     );
   };
+
+  const renderPriceColumn = (record) => {
+    return (
+      <div className="text-center">
+        <div></div>
+      </div>
+    );
+  };
+
   const columns = [
     {
       title: "نام کاربر",
@@ -85,23 +104,25 @@ const ProgressingOrders = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
+      render: renderPriceColumn,
     },
     {
       title: "زمان ثبت سفارش",
-      dataIndex: "orderTime",
+      dataIndex: "date",
       className: "font-secondary text-center",
-      key: "orderTime",
+      key: "date",
       sorter: (a, b) =>
         moment(b.orderTime, "jYYYY/jMM/jDD").diff(
           moment(a.orderTime, "jYYYY/jMM/jDD")
         ),
-      sortOrder: sortedInfo.columnKey === "orderTime" ? sortedInfo.order : null,
+      sortOrder: sortedInfo.columnKey === "date" ? sortedInfo.order : null,
       ellipsis: true,
+      render: renderDateColumn,
     },
     {
       title: "بررسی وضعت سفارش",
-      render: renderEditColumn,
       className: "font-secondary text-center",
+      render: renderEditColumn,
     },
   ];
   return (

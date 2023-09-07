@@ -3,11 +3,13 @@ import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
 import publicAxios from "../../../services/instances/publicAxios";
+import OrdersStatusModal from "../modal/OrdersStatusModal";
 
 const ProgressingOrders = () => {
   const [sortedInfo, setSortedInfo] = useState({});
   const [filteredInfo, setFilteredInfo] = useState({});
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -19,6 +21,7 @@ const ProgressingOrders = () => {
         const progressingOrders = orders.filter(
           (order) => order.deliveryStatus === true
         );
+        console.log(progressingOrders);
         const userIds = progressingOrders.map((order) => order.user);
         const userDataPromises = userIds.map((userId) =>
           publicAxios.get(`/users/${userId}`)
@@ -77,20 +80,26 @@ const ProgressingOrders = () => {
   };
 
   const renderEditColumn = () => {
+    function handelOpen() {
+      setOpen(true);
+    }
     return (
       <div className="text-center">
-        <div>بررسی وضعیت</div>
+        <div onClick={handelOpen}>بررسی وضعیت</div>
       </div>
     );
   };
+  function handleClose() {
+    setOpen(false);
+  }
 
-  const renderPriceColumn = (record) => {
-    return (
-      <div className="text-center">
-        <div></div>
-      </div>
-    );
-  };
+  // const renderPriceColumn = (record) => {
+  //   return (
+  //     <div className="text-center">
+  //       <div></div>
+  //     </div>
+  //   );
+  // };
 
   const columns = [
     {
@@ -104,7 +113,7 @@ const ProgressingOrders = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
-      render: renderPriceColumn,
+      // render: renderPriceColumn,
     },
     {
       title: "زمان ثبت سفارش",
@@ -136,6 +145,7 @@ const ProgressingOrders = () => {
         <Button onClick={clearFilters}>Clear filters</Button>
         <Button onClick={clearAll}>Clear filters and sorters</Button>
       </Space>
+      {open && <OrdersStatusModal open={open} onClose={handleClose} />}
       <Table
         columns={columns}
         dataSource={data}

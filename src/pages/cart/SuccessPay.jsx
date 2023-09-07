@@ -7,10 +7,6 @@ function SuccessPay() {
     const sendRequest = async () => {
       try {
         const orders = localStorage.getItem("cartData");
-        if (orders === null) {
-          console.log("Cart data is null.");
-          return; // Exit early if cart data is null
-        }
 
         const newList = JSON.parse(orders).items.map((item) => ({
           product: item.id,

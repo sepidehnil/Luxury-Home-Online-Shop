@@ -3,7 +3,7 @@ import DeliveredOrdersTable from "../../components/UI/table/DeliveredOrdersTable
 import { useState } from "react";
 
 function Orders() {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const [currentPage, setCurrentPage] = useState("progressing");
 
   const handleCheckboxClick = () => {

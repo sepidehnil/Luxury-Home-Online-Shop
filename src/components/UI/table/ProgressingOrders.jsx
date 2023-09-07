@@ -10,6 +10,7 @@ const ProgressingOrders = () => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -78,9 +79,11 @@ const ProgressingOrders = () => {
       </div>
     );
   };
-
-  const renderEditColumn = () => {
+  console.log(data);
+  const renderEditColumn = (record) => {
     function handelOpen() {
+      console.log("Clicked item id:", record);
+      setSelectedUser(record);
       setOpen(true);
     }
     return (
@@ -92,14 +95,6 @@ const ProgressingOrders = () => {
   function handleClose() {
     setOpen(false);
   }
-
-  // const renderPriceColumn = (record) => {
-  //   return (
-  //     <div className="text-center">
-  //       <div></div>
-  //     </div>
-  //   );
-  // };
 
   const columns = [
     {
@@ -113,7 +108,6 @@ const ProgressingOrders = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
-      // render: renderPriceColumn,
     },
     {
       title: "زمان ثبت سفارش",
@@ -131,7 +125,7 @@ const ProgressingOrders = () => {
     {
       title: "بررسی وضعت سفارش",
       className: "font-secondary text-center",
-      render: renderEditColumn,
+      render: (record) => renderEditColumn(record),
     },
   ];
   return (
@@ -145,7 +139,13 @@ const ProgressingOrders = () => {
         <Button onClick={clearFilters}>Clear filters</Button>
         <Button onClick={clearAll}>Clear filters and sorters</Button>
       </Space>
-      {open && <OrdersStatusModal open={open} onClose={handleClose} />}
+      {open && (
+        <OrdersStatusModal
+          open={open}
+          onClose={handleClose}
+          selectedUser={selectedUser}
+        />
+      )}
       <Table
         columns={columns}
         dataSource={data}

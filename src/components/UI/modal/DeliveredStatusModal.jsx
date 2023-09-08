@@ -51,7 +51,6 @@ export default function OrdersStatusModal({ open, onClose, selectedUser }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch user data
         const userDataPromises = publicAxios.get(`/users/${selectedUser.user}`);
         const userDataResponse = await userDataPromises;
         const userData = userDataResponse.data.data.user;
@@ -91,23 +90,6 @@ export default function OrdersStatusModal({ open, onClose, selectedUser }) {
   const formatPersianDate = (dateString) => {
     const jalaliDate = moment(dateString, "YYYY-MM-DD").locale("fa");
     return jalaliDate.format("jYYYY/jMM/jDD");
-  };
-
-  const handleDelivered = (e) => {
-    e.preventDefault();
-
-    const updatedData = {
-      deliveryStatus: false,
-    };
-
-    privateAxios
-      .patch(`/orders/${selectedUser._id}`, updatedData)
-      .then(() => {
-        onClose();
-      })
-      .catch((error) => {
-        console.error("Error updating user data:", error);
-      });
   };
 
   return (
@@ -158,12 +140,9 @@ export default function OrdersStatusModal({ open, onClose, selectedUser }) {
               />
             </div>
           </div>
-          <button
-            onClick={handleDelivered}
-            className="bg-gray-300 flex w-[100px] rounded-lg m-auto justify-center py-2 hover:bg-red-300 mt-4"
-          >
-            تحویل شد
-          </button>
+          <div className="bg-gray-300 flex w-[100px] rounded-lg m-auto justify-center py-2 hover:bg-red-300 mt-4">
+            زمان ثبت سفارش
+          </div>
         </Box>
       </Modal>
     </div>

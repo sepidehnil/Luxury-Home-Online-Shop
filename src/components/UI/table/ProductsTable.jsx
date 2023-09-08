@@ -105,6 +105,7 @@ const ProductsTable = () => {
   const clearFilters = () => {
     setFilteredInfo({});
   };
+
   const columns = [
     {
       title: "عکس کالا",
@@ -218,6 +219,7 @@ const ProductsTable = () => {
                   borderTop: "none",
                   fontSize: "1rem",
                   textAlign: "center",
+                  width: "800px",
                 }}
               >
                 {children}

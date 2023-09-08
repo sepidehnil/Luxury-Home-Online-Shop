@@ -1,8 +1,12 @@
 import Cookies from "js-cookie";
 import privateAxios from "../../services/instances/privateAxios";
 import { useEffect } from "react";
+import { useContext } from "react";
+import CartContext from "../../context/cart-context";
 
 function SuccessPay() {
+  const cartCtx = useContext(CartContext);
+
   useEffect(() => {
     const sendRequest = async () => {
       try {
@@ -26,6 +30,7 @@ function SuccessPay() {
         console.log("Request sent successfully", response.data);
         localStorage.removeItem("cartData");
         localStorage.removeItem("shippingDate");
+        cartCtx.resetCart();
       } catch (error) {
         console.error("Error sending request:", error);
       }

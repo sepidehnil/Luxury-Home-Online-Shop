@@ -30,7 +30,7 @@ function ProductDetail() {
   if (isLoading) {
     return <p>loading</p>;
   }
-
+  console.log(products);
   const addToCartHandler = (amount) => {
     const product = filteredproductsDetail[0];
     if (product) {
@@ -40,6 +40,7 @@ function ProductDetail() {
         price: product.price,
         amount: amount,
         quantity: product.quantity,
+        imageUrl: product.images,
       });
     }
   };

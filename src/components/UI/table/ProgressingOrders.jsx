@@ -4,6 +4,7 @@ import moment from "jalali-moment";
 import "moment/locale/fa";
 import publicAxios from "../../../services/instances/publicAxios";
 import OrdersStatusModal from "../modal/OrdersStatusModal";
+import "moment/locale/fa";
 
 const ProgressingOrders = () => {
   const [sortedInfo, setSortedInfo] = useState({});
@@ -72,13 +73,16 @@ const ProgressingOrders = () => {
   };
 
   const renderDateColumn = (record) => {
-    const formattedDate = moment(record.date).format("jYYYY/jMM/jDD");
+    const formattedDate = moment(record.date)
+      .locale("fa")
+      .format("jYYYY/jMM/jDD");
     return (
       <div className="text-center">
         <div>{formattedDate}</div>
       </div>
     );
   };
+
   console.log(data);
   const renderEditColumn = (record) => {
     function handelOpen() {
@@ -108,6 +112,11 @@ const ProgressingOrders = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
+      render: (totalPrice) => (
+        <span>
+          {totalPrice.toLocaleString("fa-IR")} {/* Format with commas */}
+        </span>
+      ),
     },
     {
       title: "زمان ثبت سفارش",

@@ -94,12 +94,6 @@ export default function EditProduct({ open, onClose, product }) {
       category: selectedCategory,
       subcategory: selectedSubcategory,
     };
-
-    // const form = new FormData();
-    // for (const key in updatedData) {
-    //   const value = updatedData[key];
-    //   form.append(key, value);
-    // }
     const form = new FormData();
     for (const key in updatedData) {
       const value = updatedData[key];

@@ -9,13 +9,8 @@ import CartContext from "../../../context/cart-context";
 import user from "../../../assets/svg/user.svg";
 
 function MainHeader(props) {
-  const [numberOfCartItems, setNumberOfCartItems] = useState("");
-
-  useEffect(() => {
-    let orders = localStorage.getItem("cartData");
-    orders = JSON.parse(orders);
-    setNumberOfCartItems(orders.items.length);
-  }, []);
+  const ctx = useContext(CartContext);
+  const numberOfCartItems = ctx.items.length;
 
   return (
     <header className="font-primary py-[15px] px-[40px] bg-[#c41231] flex items-center justify-between text-white">
@@ -58,8 +53,11 @@ function MainHeader(props) {
           </div>
         </Link>
         <Link to="/userlogin">
-          <div>
-            <img src={user} />
+          <div className="flex gap-3 items-center px-[20px] py-[8px] bg-red-800 rounded-3xl">
+            <div> ورود</div>
+            <div>
+              <img src={user} />
+            </div>
           </div>
         </Link>
       </div>

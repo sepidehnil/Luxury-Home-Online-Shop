@@ -34,25 +34,17 @@ function Shipping() {
     localStorage.setItem("shippingDate", selectedDate); // Save the date to local storage
   };
 
+  const updatedData = {
+    firstname: name,
+    lastname: lastName,
+    address,
+    phoneNumber,
+  };
+
+  localStorage.setItem("userData", JSON.stringify(updatedData));
+
   const handleSave = (e) => {
     e.preventDefault();
-
-    const updatedData = {
-      firstname: name,
-      lastname: lastName,
-      address,
-      phoneNumber,
-    };
-
-    publicAxios
-      .patch(`/users/${data._id}`, updatedData)
-      .then(() => {
-        console.log("User data updated successfully.");
-        // You can navigate to the next page or handle success as needed.
-      })
-      .catch((error) => {
-        console.error("Error updating user data:", error);
-      });
   };
 
   return (
@@ -115,5 +107,4 @@ function Shipping() {
     </div>
   );
 }
-
 export default Shipping;

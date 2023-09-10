@@ -229,8 +229,21 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             required
             showUploadList={true}
             beforeUpload={(file) => {
+              // Check if the file is an image (you can add more checks here)
+              if (!file.type.startsWith("image/")) {
+                message.error("لطفاً یک تصویر انتخاب کنید.");
+                return false; // Prevent the upload
+              }
+
+              // Check the file size (in bytes)
+              const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+              if (file.size > maxSizeInBytes) {
+                message.error("تصویر انتخابی باید کمتر از 5 مگابایت باشد.");
+                return false; // Prevent the upload
+              }
+
               setImageFile(file);
-              return false;
+              return false; // Prevent the default behavior of the Upload component
             }}
             onChange={handleImage}
             type="file"

@@ -5,7 +5,6 @@ import "../../../styles/index.css";
 import { Space, Table, Tag } from "antd";
 import { useState, useEffect } from "react";
 import publicAxios from "../../../services/instances/publicAxios";
-import privateAxios from "../../../services/instances/privateAxios";
 import useProduct from "../../../hooks/useProduct";
 import moment from "jalali-moment";
 
@@ -43,7 +42,7 @@ const columns = [
   },
 ];
 
-export default function OrdersStatusModal({ open, onClose, selectedUser }) {
+export default function DeliveredStatusModal({ open, onClose, selectedUser }) {
   const [userData, setUserData] = useState({});
   const [getUserTable, setGetUserTable] = useState([]);
   const { products } = useProduct();
@@ -140,8 +139,11 @@ export default function OrdersStatusModal({ open, onClose, selectedUser }) {
               />
             </div>
           </div>
-          <div className="bg-gray-300 flex w-[100px] rounded-lg m-auto justify-center py-2 hover:bg-red-300 mt-4">
-            زمان ثبت سفارش
+          <div>
+            زمان تحویل:{" "}
+            {formatPersianDate(selectedUser.deliveryDate).toLocaleString(
+              "fa-IR"
+            )}
           </div>
         </Box>
       </Modal>

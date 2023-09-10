@@ -3,6 +3,7 @@ import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
 import publicAxios from "../../../services/instances/publicAxios";
+import DeliveredStatusModal from "../modal/DeliveredStatusModal";
 
 // const DeliveredOrdersTable = () => {
 //   const [sortedInfo, setSortedInfo] = useState({});
@@ -257,11 +258,7 @@ const DeliveredOrdersTable = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
-      render: (totalPrice) => (
-        <span>
-          {totalPrice.toLocaleString("fa-IR")} {/* Format with commas */}
-        </span>
-      ),
+      render: (totalPrice) => <span>{totalPrice.toLocaleString("fa-IR")}</span>,
     },
     {
       title: "زمان ثبت سفارش",
@@ -294,7 +291,7 @@ const DeliveredOrdersTable = () => {
         <Button onClick={clearAll}>Clear filters and sorters</Button>
       </Space>
       {open && (
-        <OrdersStatusModal
+        <DeliveredStatusModal
           open={open}
           onClose={handleClose}
           selectedUser={selectedUser}

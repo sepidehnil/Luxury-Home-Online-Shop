@@ -19,7 +19,6 @@ function SuccessPay() {
 
         const userId = Cookies.get("userId");
         const delivery = localStorage.getItem("shippingDate");
-
         const requestObj = {
           user: userId,
           products: newList,
@@ -30,13 +29,31 @@ function SuccessPay() {
         console.log("Request sent successfully", response.data);
         localStorage.removeItem("cartData");
         localStorage.removeItem("shippingDate");
-        cartCtx.resetCart();
       } catch (error) {
         console.error("Error sending request:", error);
       }
     };
 
     sendRequest();
+  }, []);
+
+  useEffect(() => {
+    const sendRequest2 = async () => {
+      try {
+        const users = localStorage.getItem("userData");
+        console.log(users);
+        const newUser = JSON.parse(users);
+        console.log(newUser);
+        const userId = Cookies.get("userId");
+
+        await privateAxios.patch(`/users/${userId}`, newUser).then(() => {
+          console.log("User data updated successfully.");
+        });
+      } catch (error) {
+        console.error("Error updating user data:", error);
+      }
+    };
+    sendRequest2();
   }, []);
 
   return (

@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@hookform/error-message": "^2.0.1",
     "@lexical/react": "^0.12.0",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
@@ -32,6 +33,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
+    "react-modern-calendar-datepicker": "^3.1.6",
     "react-query": "^3.39.3",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.2",

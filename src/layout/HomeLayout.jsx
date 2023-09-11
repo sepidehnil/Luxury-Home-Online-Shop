@@ -26,10 +26,12 @@ function HomeLayout() {
 
   return (
     <CartProvider>
-      {showSideBar && <SideBarModal onClose={closeBtn} />}
-      <MainHeader onOpen={openBtn} />
-      <Outlet />
-      {/* <Footer /> */}
+      <div className="p-8">
+        {showSideBar && <SideBarModal onClose={closeBtn} />}
+        <MainHeader onOpen={openBtn} />
+        <Outlet />
+        {/* <Footer /> */}
+      </div>
     </CartProvider>
   );
 }

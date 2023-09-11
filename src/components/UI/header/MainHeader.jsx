@@ -1,67 +1,101 @@
 import { Link } from "react-router-dom";
-import logo from "../../../assets/images/download.png";
 import carIcon from "../../../assets/svg/cartIcon.svg";
 import userIcon from "../../../assets/svg/userIcon.svg";
 import menueIcon from "../../../assets/svg/menuIcon.svg";
 import search from "../../../assets/svg/search.svg";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import CartContext from "../../../context/cart-context";
 import user from "../../../assets/svg/user.svg";
+import logo from "../../../assets/images/green-chair-logo-tree-design-250nw-2000531558.jpg";
+import React from "react";
+import { Carousel } from "antd";
+import backward from "../../../assets/svg/backward.svg";
 
 function MainHeader(props) {
   const ctx = useContext(CartContext);
   const numberOfCartItems = ctx.items.length;
 
   return (
-    <header className="font-primary py-[15px] px-[40px] bg-[#c41231] flex items-center justify-between text-white">
-      <div className="flex items-center gap-5">
-        <img
-          src={menueIcon}
-          onClick={props.onOpen}
-          className="cursor-pointer"
-        />
-        <div className="w-[190px] h-[60px]">
+    <div className="relative">
+      <header className="font-secondary pl-[40px] flex justify-between rounded-2xl absolute w-full z-10 h-[70px]">
+        <div className="flex items-center gap-5">
+          {/* <img
+            src={menueIcon}
+            onClick={props.onOpen}
+            className="cursor-pointer"
+          /> */}
           <Link to="/">
-            <img src={logo} alt="HomeSense brand logo" />
+            <div className="flex gap-1 px-5 py-10 rounded-bl-3xl bg-white font-secondary text-2xl inset-3">
+              <span>خانه </span>
+              <img src={logo} width="22px" />
+              <span>لوکس</span>
+            </div>
+          </Link>
+          <div className="w-[500px] h-[35px] px-4 bg-white flex items-center text-black rounded-3xl mr-5">
+            <img src={search} />
+            <input
+              type="text"
+              className="px-[10px] py-[2px] outline-none w-full bg-transparent text-md"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-8 items-center">
+          <Link to="/login">
+            <div className="flex gap-1 bg-[#141b2d] py-[40px] px-2 rounded-b-lg text-white transition duration-300 ease-in-out hover:bg-gradient-to-b from-[rgb(20,27,45)] to-[rgba(255,255,255,0.333858543417367)]">
+              <img src={userIcon} alt="cart icon" />
+              <span className="texl-xl">پنل ادمین</span>
+            </div>
+          </Link>
+          <Link to="/cart">
+            <div className="text-white relative bg-[#141b2d] py-[42px] px-6 rounded-b-lg transition duration-300 ease-in-out hover:bg-gradient-to-b from-[rgb(20,27,45)] to-[rgba(255,255,255,0.333858543417367)]">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center text-sm absolute bg-black left-3 top-4 text-white ">
+                {numberOfCartItems.toLocaleString("fa")}
+              </div>
+              <img src={carIcon} alt="cart icon" className="w-5" />
+            </div>
+          </Link>
+          <Link to="/userlogin">
+            <div className="flex gap-3 items-center bg-white-800 text-white bg-[#141b2d] rounded-b-lg py-[35px] px-3 transition duration-300 ease-in-out hover:bg-gradient-to-b from-[rgb(20,27,45)] to-[rgba(255,255,255,0.333858543417367)]">
+              <span className="texl-xl">ورود</span>
+              <img src={user} />
+            </div>
           </Link>
         </div>
-        <div className="w-[500px] h-[35px] px-4 bg-slate-200 flex items-center text-black rounded-3xl mr-5">
-          <img src={search} />
-          <input
-            type="text"
-            className="px-[10px] py-[2px] outline-none w-full bg-transparent text-md"
-          />
+      </header>
+      <div
+        className="z-10 text-white absolute font-secondary bottom-[150px] w-[580px] pr-[90px] pl-[20px] py-5 rounded-l-lg"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(20,27,45,1) 35%, rgba(255,255,255,0.25262605042016806) 100%)",
+        }}
+      >
+        <p className="text-2xl mb-6">
+          فضای خود را با طراحی های داخلی و مبلمان خیره کننده جایگزین کنید.
+        </p>
+        <p className="text-sm mb-6">
+          در اینجا، شما با تجربه‌ی مجموعه‌ای از قطعات فوق‌العاده زیبا و مبلمانی
+          بی‌نظیر روبه‌رو خواهید شد که به دکوراسیون خانه‌تان یک ارتقاء بی‌نظیر
+          می‌دهند.
+          <br />
+          این مبلمان‌ها نه تنها از نظر ظاهری بسیار جذاب و زیبا هستند بلکه عملکرد
+          بی‌نظیری نیز دارند و به شما بهترین تجربه را در هر دو جنبه‌ی زیبایی و
+          کاربری ارائه می‌دهند.
+        </p>
+        <div className="flex justify-end">
+          <div className="w-[180px] h-[40px] flex justify-center items-center bg-[rgba(20,27,45,1)] rounded-3xl gap-2">
+            <span>جستجوی محصولات</span>
+            <img src={backward} className="text-white" />
+          </div>
         </div>
       </div>
 
-      <div className="flex gap-7 items-center">
-        <Link to="/login">
-          <div className="flex gap-1 text-md ">
-            <img src={userIcon} alt="cart icon" />
-            پنل ادمین
-          </div>
-        </Link>
-        <Link to="/cart">
-          <div className="px-[20px] py-[8px] bg-red-800 bord rounded-3xl flex gap-5 items-center justify-center">
-            <div className="px-[12px] py-[3px] rounded-2xl bg-red-600 flex items-center justify-center text-md">
-              {numberOfCartItems}
-            </div>
-            <div className="flex gap-2 text-md">
-              سبد خرید
-              <img src={carIcon} alt="cart icon" />
-            </div>
-          </div>
-        </Link>
-        <Link to="/userlogin">
-          <div className="flex gap-3 items-center px-[20px] py-[8px] bg-red-800 rounded-3xl">
-            <div> ورود</div>
-            <div>
-              <img src={user} />
-            </div>
-          </div>
-        </Link>
-      </div>
-    </header>
+      <Carousel autoplay autoplaySpeed={4000}>
+        <img className="z-0 flex justify-center items-center h-[770px] bg-[url('https://roomdsign.com/wp-content/uploads/2021/09/brown-leather-furniture-with-black-accent-wall.jpg')] bg-no-repeat bg-bottom rounded-2xl bg-cover" />
+        <img className="z-0 flex justify-center items-center h-[770px] bg-[url('https://www.ikea.com/images/a-calm-bedroom-with-green-and-black-furniture-framed-prints--b3fa8a967e7f0bb9f3c80bad2a3a6772.jpg?f=sg')] bg-no-repeat bg-bottom rounded-2xl bg-cover" />
+        <img className="z-0 flex justify-center items-center h-[770px] bg-[url('https://www.ikea.com/images/an-open-plan-kitchen-with-floor-to-ceiling-windows-sinarp-dr-e5c08a407be1a1222785c254643a17ba.jpg?f=sg')] bg-no-repeat bg-bottom rounded-2xl bg-cover" />
+      </Carousel>
+    </div>
   );
 }
 export default MainHeader;

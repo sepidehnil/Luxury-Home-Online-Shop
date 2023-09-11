@@ -11,7 +11,7 @@ import React from "react";
 import { Carousel } from "antd";
 import backward from "../../../assets/svg/backward.svg";
 
-function MainHeader(props) {
+function MainHeader(props, categoryId) {
   const ctx = useContext(CartContext);
   const numberOfCartItems = ctx.items.length;
 
@@ -19,11 +19,6 @@ function MainHeader(props) {
     <div className="relative">
       <header className="font-secondary pl-[40px] flex justify-between rounded-2xl absolute w-full z-10 h-[70px]">
         <div className="flex items-center gap-5">
-          {/* <img
-            src={menueIcon}
-            onClick={props.onOpen}
-            className="cursor-pointer"
-          /> */}
           <Link to="/">
             <div className="flex gap-1 px-5 py-10 rounded-bl-3xl bg-white font-secondary text-2xl inset-3">
               <span>خانه </span>
@@ -82,12 +77,14 @@ function MainHeader(props) {
           بی‌نظیری نیز دارند و به شما بهترین تجربه را در هر دو جنبه‌ی زیبایی و
           کاربری ارائه می‌دهند.
         </p>
-        <div className="flex justify-end">
-          <div className="w-[180px] h-[40px] flex justify-center items-center bg-[rgba(20,27,45,1)] rounded-3xl gap-2">
-            <span>جستجوی محصولات</span>
-            <img src={backward} className="text-white" />
+        <Link to={`/categories/${categoryId}`}>
+          <div className="flex justify-end cursor-pointer">
+            <div className="w-[180px] h-[40px] flex justify-center items-center bg-[rgba(20,27,45,1)] rounded-3xl gap-2">
+              <span>جستجوی محصولات</span>
+              <img src={backward} className="text-white" />
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <Carousel autoplay autoplaySpeed={4000}>

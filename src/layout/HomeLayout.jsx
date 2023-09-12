@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchcategories } from "../services/instances/categoriesSlice";
 import SideBarModal from "../components/UI/modal/SideBarModal";
 import CartProvider from "../context/CartProvider";
+import HomepageCategories from "../pages/categories/HomepageCategories";
 
 function HomeLayout() {
   const dispatch = useDispatch();

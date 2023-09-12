@@ -73,18 +73,19 @@ export default function AddEditProductModal({ onOpen, onClose }) {
         form.append(key, value);
       }
     }
-    privateAxios.post("/products", form, {
+    const response = await privateAxios.post("/products", form, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    onClose();
+    const newProduct = response.data.data.product;
+    console.log(newProduct);
+    onClose(newProduct);
   };
 
   const handleDescriptionChange = (text) => {
     setDescription(text);
   };
-
   function handleImage(e) {
     console.log(e.target.files);
     setImageFile([e.target.files[0]]);
@@ -118,29 +119,31 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             label="نام کالا"
             fullWidth
             size="small"
-            className="font-secondary"
+            value={name}
             onChange={(e) => setName(e.target.value)}
-            {...register("name", { required: "نام کالا الزامی است." })}
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            // {...register("name", { required: "نام کالا الزامی است." })}
+            // error={!!errors.name}
+            // helperText={errors.name?.message}
           />
           <TextField
             label="برند کالا"
             fullWidth
             size="small"
+            value={brand}
             onChange={(e) => setBrand(e.target.value)}
-            {...register("brand", { required: "نام برند کالا الزامی است." })}
-            error={!!errors.brand}
-            helperText={errors.brand?.message}
+            // {...register("brand", { required: "نام برند کالا الزامی است." })}
+            // error={!!errors.brand}
+            // helperText={errors.brand?.message}
           />
           <TextField
             label="قیمت کالا "
             fullWidth
             size="small"
+            value={price}
             onChange={(e) => setPrice(e.target.value)}
-            {...register("price", { required: "قیمت کالا الزامی است." })}
-            error={!!errors.price}
-            helperText={errors.price?.message}
+            // {...register("price", { required: "قیمت کالا الزامی است." })}
+            // error={!!errors.price}
+            // helperText={errors.price?.message}
           />
           <TextField
             label="تعداد کالا "
@@ -148,9 +151,9 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             size="small"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            {...register("quantity", { required: "تعداد کالا الزامی است." })}
-            error={!!errors.quantity}
-            helperText={errors.quantity?.message}
+            // {...register("quantity", { required: "تعداد کالا الزامی است." })}
+            // error={!!errors.quantity}
+            // helperText={errors.quantity?.message}
           />
           <Controller
             name="selectedCategory"
@@ -230,17 +233,17 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             showUploadList={true}
             beforeUpload={(file) => {
               // Check if the file is an image (you can add more checks here)
-              if (!file.type.startsWith("image/")) {
-                message.error("لطفاً یک تصویر انتخاب کنید.");
-                return false; // Prevent the upload
-              }
+              // if (!file.type.startsWith("image/")) {
+              //   message.error("لطفاً یک تصویر انتخاب کنید.");
+              //   return false; // Prevent the upload
+              // }
 
-              // Check the file size (in bytes)
-              const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-              if (file.size > maxSizeInBytes) {
-                message.error("تصویر انتخابی باید کمتر از 5 مگابایت باشد.");
-                return false; // Prevent the upload
-              }
+              // // Check the file size (in bytes)
+              // const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+              // if (file.size > maxSizeInBytes) {
+              //   message.error("تصویر انتخابی باید کمتر از 5 مگابایت باشد.");
+              //   return false; // Prevent the upload
+              // }
 
               setImageFile(file);
               return false; // Prevent the default behavior of the Upload component

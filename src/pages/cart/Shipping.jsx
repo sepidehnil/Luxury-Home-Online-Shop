@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import publicAxios from "../../services/instances/publicAxios";
 import Cookies from "js-cookie";
+import { Calendar } from "react-modern-calendar-datepicker";
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
 
 function Shipping() {
   const [data, setData] = useState({});
@@ -8,7 +10,7 @@ function Shipping() {
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [date, setDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     const userId = Cookies.get("userId");
@@ -22,16 +24,14 @@ function Shipping() {
         setLastName(userData.lastname);
         setAddress(userData.address);
         setPhoneNumber(userData.phoneNumber);
-        // setDate(""); // Initialize the date input with an empty string
       });
     }
   }, []);
   console.log(data);
 
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value;
-    setDate(selectedDate);
-    localStorage.setItem("shippingDate", selectedDate); // Save the date to local storage
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    localStorage.setItem("selectedDate", JSON.stringify(date));
   };
 
   const updatedData = {
@@ -46,6 +46,11 @@ function Shipping() {
   const handleSave = (e) => {
     e.preventDefault();
   };
+
+  function convertToPersianNumbers(input) {
+    const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    return input.replace(/\d/g, (match) => persianNumbers[parseInt(match)]);
+  }
 
   return (
     <div className="h-[745px] bg-[url('https://www.ikea.com/images/a-boho-bedroom-with-a-double-bed-draped-in-neutral-bed-linen-feed733279e7de1f79945bec7e45b02c.jpg?f=sg')] bg-no-repeat ">
@@ -86,17 +91,15 @@ function Shipping() {
           id="phone"
           name="phone"
           className="border-2 py-1 px-2 rounded-lg outline-none"
-          value={phoneNumber}
+          value={convertToPersianNumbers(phoneNumber)}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <label htmlFor="date">تاریخ تحویل: </label>
-        <input
-          type="date"
-          id="date"
-          name="date"
-          className="border-2 py-1 px-2 rounded-lg outline-none"
-          value={date}
+        <Calendar
+          value={selectedDate}
           onChange={handleDateChange}
+          shouldHighlightWeekends
+          locale="fa"
         />
         <a href="http://localhost:5173/">
           <div className="px-3 py-2 bg-red-600 border-none rounded-lg justify-center flex">

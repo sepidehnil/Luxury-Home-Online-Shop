@@ -82,8 +82,9 @@ export default function EditProduct({ open, onClose, product }) {
   const handleSave = async (e) => {
     e.preventDefault();
     console.log(imageFile);
+    console.log(product);
+    let media = product.images; // Initialize with existing images
 
-    const media = await handleMedias(imageFile);
     const updatedData = {
       name,
       description,
@@ -94,6 +95,7 @@ export default function EditProduct({ open, onClose, product }) {
       category: selectedCategory,
       subcategory: selectedSubcategory,
     };
+
     const form = new FormData();
     for (const key in updatedData) {
       const value = updatedData[key];
@@ -106,6 +108,7 @@ export default function EditProduct({ open, onClose, product }) {
       }
     }
     console.log(updatedData);
+
     privateAxios
       .patch(`/products/${product._id}`, form, {
         headers: {
@@ -125,9 +128,6 @@ export default function EditProduct({ open, onClose, product }) {
     setDescription(newDescription);
   };
 
-  const handleCancel = () => {
-    onClose();
-  };
   function handleImage(e) {
     console.log(e.target.files);
     setImageFile((data) => [...data, e.target.files[0]]);

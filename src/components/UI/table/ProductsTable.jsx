@@ -15,17 +15,15 @@ const loadUserData = async () => {
   const resposeProducts = await publicAxios.get("/products", {
     params: { limit: 1000 },
   });
+  console.log(resposeProducts);
   const responseCategories = await publicAxios.get("/categories");
 
   const products = resposeProducts.data.data.products;
   const categories = responseCategories.data.data.categories;
   const alldatas = products.map(async (product) => {
-    // Find the category by ID and get its name
     const category = categories.find(
       (category) => category._id === product.category
     )?.name;
-
-    // Construct the image URL properly
     const imageURL =
       product.images.length > 0
         ? `http://localhost:8000/images/products/images/${product.images[0]}`
@@ -53,6 +51,7 @@ const ProductsTable = () => {
   const [editModal, setEditModal] = useState(false);
   const [product, setSelectedProduct] = useState("");
   const [totalItems, setTotalItems] = useState(0);
+
   const categories = useSelector((state) => state.categories.categories);
 
   useEffect(() => {
@@ -74,6 +73,16 @@ const ProductsTable = () => {
     if (newProduct) {
       const processedProduct = processProduct(newProduct);
       setData((prevData) => [...prevData, processedProduct]);
+      const newTotalItems = totalItems + 1;
+      const newTotalPages = Math.ceil(
+        newTotalItems / paginationConfig.pageSize
+      );
+      setTotalItems(newTotalItems);
+      // Check if the current page exceeds the new total pages
+      if (paginationConfig.current > newTotalPages) {
+        // If it does, set the current page to the last page
+        setPagination({ ...paginationConfig, current: newTotalPages });
+      }
     }
   };
 
@@ -125,11 +134,16 @@ const ProductsTable = () => {
           );
           setSelectedItem(null);
           handleClose();
-          window.location.reload();
         })
         .catch((error) => {
           console.error("Error deleting item:", error);
         });
+    }
+    const newTotalItems = totalItems - 1;
+    setTotalItems(newTotalItems);
+    const newTotalPages = Math.ceil(newTotalItems / paginationConfig.pageSize);
+    if (paginationConfig.current > newTotalPages) {
+      setPagination({ ...paginationConfig, current: newTotalPages });
     }
   }
 

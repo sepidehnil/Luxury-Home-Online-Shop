@@ -3,7 +3,7 @@ import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
 import publicAxios from "../../../services/instances/publicAxios";
-import OrdersStatusModal from "../modal/OrdersStatusModal";
+import ProgressingStatusModal from "../modal/ProgressingStatusModal";
 import "moment/locale/fa";
 
 const ProgressingOrders = () => {
@@ -149,7 +149,7 @@ const ProgressingOrders = () => {
         <Button onClick={clearAll}>Clear filters and sorters</Button>
       </Space>
       {open && (
-        <OrdersStatusModal
+        <ProgressingStatusModal
           open={open}
           onClose={handleClose}
           selectedUser={selectedUser}

@@ -43,50 +43,57 @@ const columns = [
   },
 ];
 
-export default function OrdersStatusModal({ open, onClose, selectedUser }) {
+export default function ProgressingStatusModal({
+  open,
+  onClose,
+  selectedUser,
+}) {
   const [userData, setUserData] = useState({});
   const [getUserTable, setGetUserTable] = useState([]);
-  const { products } = useProduct();
+  const { isLoading, products } = useProduct();
+
+  if (isLoading) {
+    <p>loading...</p>;
+  }
 
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch user data
-        const userDataPromises = publicAxios.get(`/users/${selectedUser.user}`);
-        const userDataResponse = await userDataPromises;
-        const userData = userDataResponse.data.data.user;
-        setUserData(userData);
+        if (products && products.data && products.data.products) {
+          const userDataPromises = publicAxios.get(
+            `/users/${selectedUser.user}`
+          );
+          const userDataResponse = await userDataPromises;
+          const userData = userDataResponse.data.data.user;
+          setUserData(userData);
+          const getUserTableData = selectedUser.products.map((product) => ({
+            productId: product.product,
+            count: product.count,
+          }));
 
-        const getUserTableData = selectedUser.products.map((product) => ({
-          productId: product.product,
-          count: product.count,
-        }));
+          const productDetailsPromises = getUserTableData.map((item) =>
+            products.data.products.find(
+              (product) => product._id === item.productId
+            )
+          );
 
-        const productDetailsPromises = getUserTableData.map((item) =>
-          products.data.products.find(
-            (product) => product._id === item.productId
-          )
-        );
+          const productDetails = await Promise.all(productDetailsPromises);
+          console.log(productDetails);
+          const getUserTableWithData = getUserTableData.map((item, index) => ({
+            product: productDetails[index].name,
+            price: productDetails[index].price.toLocaleString("fa-IR"),
+            count: item.count.toLocaleString("fa-IR"),
+          }));
 
-        const productDetails = await Promise.all(productDetailsPromises);
-        console.log(productDetails);
-        const getUserTableWithData = getUserTableData.map((item, index) => ({
-          product: productDetails[index].name,
-          price: productDetails[index].price.toLocaleString("fa-IR"),
-          count: item.count.toLocaleString("fa-IR"),
-        }));
-
-        setGetUserTable(getUserTableWithData);
+          setGetUserTable(getUserTableWithData);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
 
     fetchData();
-  }, []);
-
-  console.log(selectedUser);
-  console.log(userData);
+  }, [products, selectedUser]);
 
   const formatPersianDate = (dateString) => {
     const jalaliDate = moment(dateString, "YYYY-MM-DD").locale("fa");

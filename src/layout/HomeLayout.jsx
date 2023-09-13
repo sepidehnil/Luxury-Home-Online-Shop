@@ -27,9 +27,10 @@ function HomeLayout() {
 
   return (
     <CartProvider>
-      <div className="p-8">
+      <div className="p-8 bg-[#f7f9fc]">
         {showSideBar && <SideBarModal onClose={closeBtn} />}
         <MainHeader onOpen={openBtn} />
+        {/* <HomepageCategories /> */}
         <Outlet />
         {/* <Footer /> */}
       </div>

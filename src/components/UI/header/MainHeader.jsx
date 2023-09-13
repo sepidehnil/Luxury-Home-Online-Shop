@@ -26,7 +26,7 @@ function MainHeader(props, categoryId) {
               <span>لوکس</span>
             </div>
           </Link>
-          <div className="w-[500px] h-[35px] px-4bg-white flex items-center text-black rounded-3xl mr-5">
+          <div className="w-[500px] h-[35px] px-4 bg-white flex items-center text-black rounded-3xl mr-5">
             <img src={search} />
             <input
               type="text"

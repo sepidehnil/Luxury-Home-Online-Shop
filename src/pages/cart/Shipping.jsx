@@ -95,12 +95,14 @@ function Shipping() {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <label htmlFor="date">تاریخ تحویل: </label>
-        <Calendar
-          value={selectedDate}
-          onChange={handleDateChange}
-          shouldHighlightWeekends
-          locale="fa"
-        />
+        {selectedDate && (
+          <Calendar
+            value={selectedDate}
+            onChange={handleDateChange}
+            shouldHighlightWeekends
+            locale="fa"
+          />
+        )}
         <a href="http://localhost:5173/">
           <div className="px-3 py-2 bg-red-600 border-none rounded-lg justify-center flex">
             ثبت سفارش

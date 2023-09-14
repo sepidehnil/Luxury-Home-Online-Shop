@@ -7,11 +7,9 @@ import PagesHeader from "../components/UI/header/PagesHeader";
 function CartLayout() {
   return (
     <CartProvider>
-      <div className="h-screen">
-        <PagesHeader />
-        <Outlet />
-        {/* <Footer /> */}
-      </div>
+      <PagesHeader />
+      <Outlet />
+      {/* <Footer /> */}
     </CartProvider>
   );
 }

@@ -6,6 +6,7 @@ import CartContext from "../../context/cart-context";
 import { useState } from "react";
 import deleteIcon from "../../assets/svg/deleteIcon.svg";
 import DeleteModal from "../../components/UI/modal/DeleteModal";
+import PagesHeader from "../../components/UI/header/PagesHeader";
 
 function Cart() {
   const [open, setOpen] = useState(false);
@@ -109,14 +110,14 @@ function Cart() {
       <div className="flex items-center gap-4 justify-center">
         <button
           onClick={() => cartItemRemoveHandler(item.id)}
-          className="py-[1px] px-2 text-lg border-2 border-gray-500 rounded-lg "
+          className="py-[1px] px-2 text-lg border-2 border-[#FDD263] rounded-lg hover:border-[#7AA668]"
         >
           -
         </button>
         <div className="text-md"> {item.amount.toLocaleString("fa-IR")}</div>
         <button
           onClick={() => cartItemAddHandler(item)}
-          className="py-[1px] px-2 text-lg border-2 border-gray-500 rounded-lg "
+          className="py-[1px] px-2 text-lg border-2 border-[#FDD263] rounded-lg hover:border-[#7AA668]"
         >
           +
         </button>
@@ -161,7 +162,7 @@ function Cart() {
           {hasItems && (
             <button
               onClick={shipping}
-              className=" bg-gray-400 p-2 rounded-lg font-secondary"
+              className="bg-[#141B2D] p-2 rounded-lg font-secondary text-white"
             >
               نهایی کردن سبد خرید
             </button>
@@ -180,6 +181,7 @@ function Cart() {
           onConfirm={handleConfirmDelete}
         />
       )}
+      <PagesHeader />
       <div className="font-secondary rounded-lg">
         <Table
           columns={columns}
@@ -192,10 +194,11 @@ function Cart() {
               cell: ({ children }) => (
                 <th
                   style={{
-                    background: "gray",
+                    background: "#141B2D",
                     borderTop: "none",
                     fontSize: "1rem",
                     textAlign: "center",
+                    color: "white",
                   }}
                 >
                   {children}

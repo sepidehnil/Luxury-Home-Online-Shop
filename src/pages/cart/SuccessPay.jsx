@@ -27,6 +27,7 @@ function SuccessPay() {
         };
         const response = await privateAxios.post("/orders", requestObj);
         console.log("Request sent successfully", response.data);
+        console.log(response.data);
         localStorage.removeItem("cartData");
         localStorage.removeItem("shippingDate");
       } catch (error) {

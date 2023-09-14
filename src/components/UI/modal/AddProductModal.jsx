@@ -121,9 +121,9 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             size="small"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            // {...register("name", { required: "نام کالا الزامی است." })}
-            // error={!!errors.name}
-            // helperText={errors.name?.message}
+            {...register("name", { required: "نام کالا الزامی است." })}
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
           <TextField
             label="برند کالا"
@@ -131,9 +131,9 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             size="small"
             value={brand}
             onChange={(e) => setBrand(e.target.value)}
-            // {...register("brand", { required: "نام برند کالا الزامی است." })}
-            // error={!!errors.brand}
-            // helperText={errors.brand?.message}
+            {...register("brand", { required: "نام برند کالا الزامی است." })}
+            error={!!errors.brand}
+            helperText={errors.brand?.message}
           />
           <TextField
             label="قیمت کالا "
@@ -141,9 +141,9 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             size="small"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            // {...register("price", { required: "قیمت کالا الزامی است." })}
-            // error={!!errors.price}
-            // helperText={errors.price?.message}
+            {...register("price", { required: "قیمت کالا الزامی است." })}
+            error={!!errors.price}
+            helperText={errors.price?.message}
           />
           <TextField
             label="تعداد کالا "
@@ -151,9 +151,9 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             size="small"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            // {...register("quantity", { required: "تعداد کالا الزامی است." })}
-            // error={!!errors.quantity}
-            // helperText={errors.quantity?.message}
+            {...register("quantity", { required: "تعداد کالا الزامی است." })}
+            error={!!errors.quantity}
+            helperText={errors.quantity?.message}
           />
           <Controller
             name="selectedCategory"

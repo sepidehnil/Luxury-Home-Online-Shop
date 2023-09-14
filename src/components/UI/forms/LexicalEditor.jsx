@@ -138,7 +138,7 @@ export default function LexicalTextEditor({ defaultText = "", onChange }) {
         onEditorChange={handleTextChange} // Use onEditorChange event
         initialValue={text}
         init={{
-          height: 300,
+          height: 200,
           menubar: false,
           plugins: [
             "advlist autolink lists link image charmap print preview anchor",

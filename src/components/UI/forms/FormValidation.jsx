@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import backwardArrow from "../../../assets/svg/backwardArrow.svg";
-import axios from "axios";
 import Cookies from "js-cookie";
+import privateAxios from "../../../services/instances/privateAxios";
+import publicAxios from "../../../services/instances/publicAxios";
 
 function FormValidation() {
   const panelNavigate = useNavigate();
@@ -13,23 +14,25 @@ function FormValidation() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
-  function onSubmit(data) {
+  function onSubmit(data, event) {
     // alert(JSON.stringify(data));
+    event.preventDefault();
+
     console.log(data);
-    axios
+    publicAxios
       .post("http://localhost:8000/api/auth/login", data)
       .then((response) => {
+        console.log(response);
         if (
-          response.status === 200 &&
-          response.data.data.user.role === "ADMIN"
+          response?.status === 200 &&
+          response?.data.data.user.role === "ADMIN"
         ) {
           const token = response.data.token;
           Cookies.set("accessToken", token.accessToken);
-          Cookies.set("refreshToken", token.accessToken);
+          Cookies.set("refreshToken", token.refreshToken);
           panelNavigate("/orders");
         }
       });

@@ -13,6 +13,10 @@ import Shipping from "../pages/cart/Shipping";
 import Pay from "../pages/cart/Pay";
 import SuccessPay from "../pages/cart/SuccessPay";
 import FailedPay from "../pages/cart/FailedPay";
+import ProtectedRoute from "./protectedRoute";
+import PrivateRoute from "./privateRoute";
+import ProductDetail from "../pages/products/ProductDetail";
+import CategoriesProduct from "../pages/categories/CategoriesProduct";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -21,22 +25,32 @@ function RootLayout() {
       element: <HomeLayout />,
       children: [
         {
-          path: "/home",
+          path: "/",
           element: <HomePage />,
         },
         {
           path: "/cart",
           element: <Cart />,
         },
+        { path: "/products/:productId", element: <ProductDetail /> },
+        { path: "/categories/:categoryId", element: <CategoriesProduct /> },
       ],
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <ProtectedRoute>
+          <Login />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/",
-      element: <DashBoardLayout />,
+      element: (
+        <PrivateRoute>
+          <DashBoardLayout />
+        </PrivateRoute>
+      ),
       children: [
         {
           path: "/orders",

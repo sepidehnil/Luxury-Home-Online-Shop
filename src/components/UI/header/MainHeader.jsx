@@ -15,7 +15,7 @@ function MainHeader(props) {
           className="cursor-pointer"
         />
         <div className="w-[190px] h-[60px]">
-          <Link to="/home">
+          <Link to="/">
             <img src={logo} alt="HomeSense brand logo" />
           </Link>
         </div>

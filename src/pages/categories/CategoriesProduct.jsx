@@ -3,7 +3,7 @@ import useProduct from "../../hooks/useProduct";
 import { useParams, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { List, Pagination, Card } from "antd";
-import { fetchsubcategories } from "../../services/instances/subCategorySlice";
+import { fetchsubcategories } from "../../services/instances/subCategory";
 
 function CategoriesPage() {
   const { isLoading, products } = useProduct();

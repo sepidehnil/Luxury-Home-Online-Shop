@@ -11,10 +11,22 @@ function Pay() {
     failed("/failedPay");
   }
   return (
-    <div>
-      <img src={logo} alt="logo" />
-      <button onClick={successfulPayment}>پرداخت</button>
-      <button onClick={paymentFailed}>انصراف</button>
+    <div className="flex flex-col">
+      <img src={logo} alt="logo" className="w-[450px] h-[600px] m-auto" />
+      <div className="flex gap-4 m-auto mt-7 font-secondary">
+        <button
+          onClick={successfulPayment}
+          className="px-3 py-2 bg-red-600 border-none rounded-lg"
+        >
+          پرداخت
+        </button>
+        <button
+          onClick={paymentFailed}
+          className="px-3 py-2 border-2 border-red-600 rounded-lg"
+        >
+          انصراف
+        </button>
+      </div>
     </div>
   );
 }

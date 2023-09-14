@@ -17,6 +17,9 @@ import ProtectedRoute from "./protectedRoute";
 import PrivateRoute from "./privateRoute";
 import ProductDetail from "../pages/products/ProductDetail";
 import CategoriesProduct from "../pages/categories/CategoriesProduct";
+import UserLogin from "../pages/login/UserLogin";
+import UserPrivateRoute from "./userPrivateRoute";
+import UserProtectedRoute from "./userProtectedRoute";
 
 function RootLayout() {
   const router = createBrowserRouter([
@@ -67,16 +70,24 @@ function RootLayout() {
       ],
     },
     {
+      path: "/userlogin",
+      element: (
+        <UserProtectedRoute>
+          <UserLogin />
+        </UserProtectedRoute>
+      ),
+    },
+    {
       path: "/",
-      element: <CartLayout />,
+      element: (
+        <UserPrivateRoute>
+          <CartLayout />
+        </UserPrivateRoute>
+      ),
       children: [
         {
           path: "/shipping",
           element: <Shipping />,
-        },
-        {
-          path: "/pay",
-          element: <Pay />,
         },
         {
           path: "/successPay",
@@ -87,6 +98,10 @@ function RootLayout() {
           element: <FailedPay />,
         },
       ],
+    },
+    {
+      path: "/pay",
+      element: <Pay />,
     },
   ]);
   return <RouterProvider router={router} />;

@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import useProduct from "../../hooks/useProduct";
 import { useDispatch, useSelector } from "react-redux";
 import carIcon from "../../assets/svg/cartIcon.svg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import plus from "../../assets/svg/plus.svg";
 import minus from "../../assets/svg/minus.svg";
-import { fetchsubcategories } from "../../services/instances/subCategorySlice";
+import { fetchsubcategories } from "../../services/instances/subCategory";
+import CartContext from "../../context/cart-context";
 
 function ProductDetail() {
   const { isLoading, products } = useProduct();
@@ -19,6 +20,20 @@ function ProductDetail() {
     (state) => state.subcategories.subcategories
   );
   const dispatch = useDispatch();
+  const cartCtx = useContext(CartContext);
+
+  const addToCartHandler = (amount) => {
+    const product = filteredproductsDetail[0];
+    if (product) {
+      cartCtx.addItem({
+        id: product._id,
+        name: product.name,
+        price: product.price,
+        amount: amount,
+        quantity: product.quantity,
+      });
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchsubcategories());
@@ -50,10 +65,9 @@ function ProductDetail() {
     setSelectedQuantity(Math.max(selectedQuantity - 1, 1));
   }
 
-  function handleAddToCart() {
-    console.log(
-      `Added ${selectedQuantity} units of product ${productId} to the cart.`
-    );
+  function handleAddToCart(event) {
+    event.preventDefault();
+    addToCartHandler(selectedQuantity);
   }
 
   return (
@@ -80,18 +94,20 @@ function ProductDetail() {
                     onClick={handleAddToCart}
                     className="font-secondary font-semibold text-md"
                   >
-                    سبد خرید
+                    افزودن به سبد خرید
                   </button>
                   <img src={carIcon} alt="cart icon" />
                 </div>
                 <div className="flex px-[4px] bg-red-700 justify-center gap-1 rounded-lg">
                   <img src={plus} onClick={handleIncrement} />
                   <input
-                    className="px-[10px] py-[5px] bg-transparent w-[30px] outline-none text-lg font-semibold"
+                    className="px-[10px] py-[5px] bg-transparent outline-none text-lg font-semibold"
                     id="tentacles"
                     name="tentacles"
-                    min="0"
+                    type="number"
+                    min="1"
                     max={product.quantity}
+                    step="1"
                     value={selectedQuantity}
                     onChange={(e) =>
                       setSelectedQuantity(Number(e.target.value))

@@ -73,18 +73,19 @@ export default function AddEditProductModal({ onOpen, onClose }) {
         form.append(key, value);
       }
     }
-    privateAxios.post("/products", form, {
+    const response = await privateAxios.post("/products", form, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    onClose();
+    const newProduct = response.data.data.product;
+    console.log(newProduct);
+    onClose(newProduct);
   };
 
   const handleDescriptionChange = (text) => {
     setDescription(text);
   };
-
   function handleImage(e) {
     console.log(e.target.files);
     setImageFile([e.target.files[0]]);
@@ -118,7 +119,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             label="نام کالا"
             fullWidth
             size="small"
-            className="font-secondary"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             {...register("name", { required: "نام کالا الزامی است." })}
             error={!!errors.name}
@@ -128,6 +129,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             label="برند کالا"
             fullWidth
             size="small"
+            value={brand}
             onChange={(e) => setBrand(e.target.value)}
             {...register("brand", { required: "نام برند کالا الزامی است." })}
             error={!!errors.brand}
@@ -137,6 +139,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             label="قیمت کالا "
             fullWidth
             size="small"
+            value={price}
             onChange={(e) => setPrice(e.target.value)}
             {...register("price", { required: "قیمت کالا الزامی است." })}
             error={!!errors.price}
@@ -229,8 +232,21 @@ export default function AddEditProductModal({ onOpen, onClose }) {
             required
             showUploadList={true}
             beforeUpload={(file) => {
+              // Check if the file is an image (you can add more checks here)
+              // if (!file.type.startsWith("image/")) {
+              //   message.error("لطفاً یک تصویر انتخاب کنید.");
+              //   return false; // Prevent the upload
+              // }
+
+              // // Check the file size (in bytes)
+              // const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+              // if (file.size > maxSizeInBytes) {
+              //   message.error("تصویر انتخابی باید کمتر از 5 مگابایت باشد.");
+              //   return false; // Prevent the upload
+              // }
+
               setImageFile(file);
-              return false;
+              return false; // Prevent the default behavior of the Upload component
             }}
             onChange={handleImage}
             type="file"

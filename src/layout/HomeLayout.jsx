@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchcategories } from "../services/instances/categoriesSlice";
 import SideBarModal from "../components/UI/modal/SideBarModal";
 import CartProvider from "../context/CartProvider";
+import HomepageCategories from "../pages/categories/HomepageCategories";
 
 function HomeLayout() {
   const dispatch = useDispatch();
@@ -20,14 +21,14 @@ function HomeLayout() {
   function openBtn() {
     setSideBar(true);
   }
-  function closeBtn() {
-    setSideBar(false);
-  }
+  // function closeBtn() {
+  //   setSideBar(false);
+  // }
 
   return (
     <CartProvider>
-      {showSideBar && <SideBarModal onClose={closeBtn} />}
-      <MainHeader onOpen={openBtn} />
+      {/* {showSideBar && <SideBarModal onClose={closeBtn} />} */}
+      {/* <HomepageCategories /> */}
       <Outlet />
       {/* <Footer /> */}
     </CartProvider>

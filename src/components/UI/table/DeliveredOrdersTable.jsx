@@ -1,110 +1,200 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Space, Table } from "antd";
 import moment from "jalali-moment";
 import "moment/locale/fa";
+import publicAxios from "../../../services/instances/publicAxios";
+import DeliveredStatusModal from "../modal/DeliveredStatusModal";
 
-const data = [
-  {
-    id: 1,
-    userName: "محمد رضایی",
-    totalPrice: "۷۵۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۳/۰۵",
-    address: "تهران - خیابان ولیعصر - خیابان کریمی - پلاک ۲۰",
-    deliveredTime: "۱۴۰۲/۰۳/۰۶",
-  },
-  {
-    id: 2,
-    userName: "نگین حسینی",
-    totalPrice: "۶۲۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۳/۱۰",
-    address: "تهران - خیابان شهید بهشتی - خیابان سعدی - پلاک ۱۵",
-    deliveredTime: "۱۴۰۲/۰۳/۱۱",
-  },
-  {
-    id: 3,
-    userName: "علی میرزایی",
-    totalPrice: "۸۵۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۳/۱۴",
-    address: "تهران - خیابان انقلاب - خیابان کارگر شمالی - پلاک ۱۰",
-    deliveredTime: "۱۴۰۲/۰۳/۱۵",
-  },
-  {
-    id: 4,
-    userName: "سمانه کاظمی",
-    totalPrice: "۳۵۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۴/۱۳",
-    address: "تهران - خیابان شریعتی - خیابان وحید دستگردی - پلاک ۸",
-    deliveredTime: "۱۴۰۲/۰۴/۱۵",
-  },
-  {
-    id: 5,
-    userName: "رضا محمدی",
-    totalPrice: "۱۲۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۴/۲۱",
-    address: "تهران - خیابان جمهوری - خیابان انقلاب - پلاک ۳",
-    deliveredTime: "۱۴۰۲/۰۴/۲۲",
-  },
+// const DeliveredOrdersTable = () => {
+//   const [sortedInfo, setSortedInfo] = useState({});
+//   const [filteredInfo, setFilteredInfo] = useState({});
+//   const [data, setData] = useState([]);
 
-  {
-    id: 7,
-    userName: "مریم عبداللهی",
-    totalPrice: "۸۷۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۵/۱۳",
-    address: "تهران - خیابان ولیعصر - خیابان کریمی - پلاک ۳۰",
-    deliveredTime: "۱۴۰۲/۰۵/۱۵",
-  },
-  {
-    id: 8,
-    userName: "حسین موسوی",
-    totalPrice: "۴۲۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۶/۰۵",
-    address: "تهران - خیابان شهید بهشتی - خیابان سعدی - پلاک ۲۰",
-    deliveredTime: "۱۴۰۲/۰۶/۰۶",
-  },
-  {
-    id: 9,
-    userName: "زهرا رحمانی",
-    totalPrice: "۳۰۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۶/۱۱",
-    address: "تهران - خیابان انقلاب - خیابان کارگر شمالی - پلاک ۲۲",
-    deliveredTime: "۱۴۰۲/۰۶/۱۲",
-  },
-  {
-    id: 10,
-    userName: "امیر حسینی",
-    totalPrice: "۶۷۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۷/۱۵",
-    address: "تهران - خیابان ولیعصر - خیابان نیاوران - پلاک ۱۰",
-    deliveredTime: "۱۴۰۲/۰۷/۱۶",
-  },
-  {
-    id: 6,
-    userName: "فاطمه صادقی",
-    totalPrice: "۵۶۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۵/۰۱",
-    address: "تهران - خیابان ولیعصر - خیابان فاطمی - پلاک ۱۲",
-    deliveredTime: "۱۴۰۲/۰۵/۰۲",
-  },
-  {
-    id: 11,
-    userName: "سجاد میرزایی",
-    totalPrice: "۱۱۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۸/۰۱",
-    address: "تهران - خیابان جمهوری - خیابان انقلاب - پلاک ۳۵",
-    deliveredTime: "۱۴۰۲/۰۸/۰۲",
-  },
-  {
-    id: 12,
-    userName: "فرزانه اسماعیلی",
-    totalPrice: "۵۸۰,۰۰۰",
-    orderTime: "۱۴۰۲/۰۸/۱۵",
-    address: "تهران - خیابان ولیعصر - خیابان نیاوران - پلاک ۱۰",
-  },
-];
+//   useEffect(() => {
+//     async function fetchData() {
+//       try {
+//         const response = await publicAxios.get("/orders", {
+//           params: { limit: 1000 },
+//         });
+//         const orders = response.data.data.orders;
+
+//         const deliveredOrders = orders.filter(
+//           (order) => order.deliveryStatus === false
+//         );
+
+//         const userIds = deliveredOrders.map((order) => order.user);
+
+//         const userDataPromises = userIds.map((userId) =>
+//           publicAxios.get(`/users/${userId}`)
+//         );
+//         const userDatas = await Promise.all(userDataPromises);
+//         const ordersWithUserData = deliveredOrders.map((order, index) => {
+//           const user = userDatas[index].data.data.user;
+//           const fullName = `${user.firstname} ${user.lastname}`;
+//           return {
+//             ...order,
+//             userName: fullName,
+//           };
+//         });
+
+//         setData(ordersWithUserData);
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//       }
+//     }
+
+//     fetchData();
+//   }, []);
+
+//   const handleChange = (pagination, filters, sorter) => {
+//     console.log("Various parameters", pagination, filters, sorter);
+//     setFilteredInfo(filters);
+//     setSortedInfo(sorter);
+//   };
+//   const clearFilters = () => {
+//     setFilteredInfo({});
+//   };
+//   const clearAll = () => {
+//     setFilteredInfo({});
+//     setSortedInfo({});
+//   };
+//   const setOrderTimeSort = () => {
+//     setSortedInfo({
+//       order: "descend",
+//       columnKey: "orderTime",
+//     });
+//   };
+//   const paginationConfig = {
+//     pageSize: 8,
+//   };
+//   const renderEditColumn = () => {
+//     return (
+//       <div className="text-center">
+//         <div>بررسی وضعیت</div>
+//       </div>
+//     );
+//   };
+//   const columns = [
+//     {
+//       title: "نام کاربر",
+//       dataIndex: "userName",
+//       key: "userName",
+//       className: "font-secondary text-center",
+//     },
+//     {
+//       title: "مجموع مبلغ",
+//       dataIndex: "totalPrice",
+//       key: "totalPrice",
+//       className: "font-secondary text-center",
+//     },
+//     {
+//       title: "زمان ثبت سفارش",
+//       dataIndex: "orderTime",
+//       className: "font-secondary text-center",
+//       key: "orderTime",
+//       sorter: (a, b) =>
+//         moment(b.orderTime, "jYYYY/jMM/jDD").diff(
+//           moment(a.orderTime, "jYYYY/jMM/jDD")
+//         ),
+//       sortOrder: sortedInfo.columnKey === "orderTime" ? sortedInfo.order : null,
+//       ellipsis: true,
+//     },
+//     {
+//       title: "بررسی وضعت سفارش",
+//       render: renderEditColumn,
+//       className: "font-secondary text-center",
+//     },
+//   ];
+//   return (
+//     <>
+//       <Space
+//         style={{
+//           marginBottom: 16,
+//         }}
+//       >
+//         <Button onClick={setOrderTimeSort}>Sort by order time</Button>
+//         <Button onClick={clearFilters}>Clear filters</Button>
+//         <Button onClick={clearAll}>Clear filters and sorters</Button>
+//       </Space>
+//       <Table
+//         columns={columns}
+//         dataSource={data}
+//         onChange={handleChange}
+//         pagination={paginationConfig}
+//         className="font-secondary text-center"
+//         components={{
+//           header: {
+//             cell: ({ children }) => (
+//               <th
+//                 style={{
+//                   background: "#ff8e8e",
+//                   borderTop: "none",
+//                   fontSize: "1rem",
+//                   textAlign: "center",
+//                 }}
+//               >
+//                 {children}
+//               </th>
+//             ),
+//           },
+//         }}
+//       />
+//     </>
+//   );
+// };
+// export default DeliveredOrdersTable;
+
+// import React, { useEffect, useState } from "react";
+// import { Button, Space, Table } from "antd";
+// import moment from "jalali-moment";
+// import "moment/locale/fa";
+// import publicAxios from "../../../services/instances/publicAxios";
+// import OrdersStatusModal from "../modal/OrdersStatusModal";
+// import "moment/locale/fa";
 
 const DeliveredOrdersTable = () => {
   const [sortedInfo, setSortedInfo] = useState({});
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await publicAxios.get("/orders", {
+          params: { limit: 1000 },
+        });
+        const orders = response.data.data.orders;
+        const deliveredOrders = orders.filter(
+          (order) => order.deliveryStatus === false
+        );
+        console.log(deliveredOrders);
+        const userIds = deliveredOrders.map((order) => order.user);
+        const userDataPromises = userIds.map((userId) =>
+          publicAxios.get(`/users/${userId}`)
+        );
+        const userDatas = await Promise.all(userDataPromises);
+        const ordersWithUserData = deliveredOrders.map((order, index) => {
+          const user = userDatas[index].data.data.user;
+          console.log(user.createdAt);
+          const fullName = `${user.firstname} ${user.lastname}`;
+          const createdAt = user.createdAt;
+          return {
+            ...order,
+            userName: fullName,
+            date: createdAt,
+          };
+        });
+
+        setData(ordersWithUserData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
@@ -127,13 +217,35 @@ const DeliveredOrdersTable = () => {
   const paginationConfig = {
     pageSize: 8,
   };
-  const renderEditColumn = () => {
+
+  const renderDateColumn = (record) => {
+    const formattedDate = moment(record.date)
+      .locale("fa")
+      .format("jYYYY/jMM/jDD");
     return (
       <div className="text-center">
-        <div>بررسی وضعیت</div>
+        <div>{formattedDate}</div>
       </div>
     );
   };
+
+  console.log(data);
+  const renderEditColumn = (record) => {
+    function handelOpen() {
+      console.log("Clicked item id:", record);
+      setSelectedUser(record);
+      setOpen(true);
+    }
+    return (
+      <div className="text-center">
+        <div onClick={handelOpen}>بررسی وضعیت</div>
+      </div>
+    );
+  };
+  function handleClose() {
+    setOpen(false);
+  }
+
   const columns = [
     {
       title: "نام کاربر",
@@ -146,29 +258,25 @@ const DeliveredOrdersTable = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
+      render: (totalPrice) => <span>{totalPrice.toLocaleString("fa-IR")}</span>,
     },
-
     {
       title: "زمان ثبت سفارش",
-      dataIndex: "orderTime",
+      dataIndex: "date",
       className: "font-secondary text-center",
-      key: "orderTime",
+      key: "date",
       sorter: (a, b) =>
-        moment(a.orderTime, "jYYYY/jMM/jDD").unix() -
-        moment(b.orderTime, "jYYYY/jMM/jDD").unix(), // مقایسه تاریخ‌ها بر اساس تایم‌استمپ یونیکس
-      sortOrder: sortedInfo.columnKey === "orderTime" ? sortedInfo.order : null,
+        moment(b.orderTime, "jYYYY/jMM/jDD").diff(
+          moment(a.orderTime, "jYYYY/jMM/jDD")
+        ),
+      sortOrder: sortedInfo.columnKey === "date" ? sortedInfo.order : null,
       ellipsis: true,
-    },
-    {
-      title: "مجموع مبلغ",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      className: "font-secondary text-center",
+      render: renderDateColumn,
     },
     {
       title: "بررسی وضعت سفارش",
-      render: renderEditColumn,
       className: "font-secondary text-center",
+      render: (record) => renderEditColumn(record),
     },
   ];
   return (
@@ -182,6 +290,13 @@ const DeliveredOrdersTable = () => {
         <Button onClick={clearFilters}>Clear filters</Button>
         <Button onClick={clearAll}>Clear filters and sorters</Button>
       </Space>
+      {open && (
+        <DeliveredStatusModal
+          open={open}
+          onClose={handleClose}
+          selectedUser={selectedUser}
+        />
+      )}
       <Table
         columns={columns}
         dataSource={data}

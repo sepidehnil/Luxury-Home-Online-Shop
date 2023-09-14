@@ -7,33 +7,39 @@ import DeleteModal from "../modal/DeleteModal";
 import AddProductModal from "../modal/AddProductModal";
 import publicAxios from "../../../services/instances/publicAxios";
 import EditProduct from "../modal/EditProduct";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchcategories } from "../../../services/instances/categoriesSlice";
 
 const loadUserData = async () => {
-  const resposeProducts = await publicAxios.get(
-    "http://localhost:8000/api/products",
-    {
-      params: { limit: 1000 },
-    }
-  );
-  const responseCategories = await publicAxios.get(
-    "http://localhost:8000/api/categories"
-  );
+  const resposeProducts = await publicAxios.get("/products", {
+    params: { limit: 1000 },
+  });
+  console.log(resposeProducts);
+  const responseCategories = await publicAxios.get("/categories");
 
   const products = resposeProducts.data.data.products;
   const categories = responseCategories.data.data.categories;
-  const alldatas = products.map((product) => {
+  const alldatas = products.map(async (product) => {
+    const category = categories.find(
+      (category) => category._id === product.category
+    )?.name;
+    const imageURL =
+      product.images.length > 0
+        ? `http://localhost:8000/images/products/images/${product.images[0]}`
+        : "";
+
     return {
       ...product,
-      category: categories.find((category) => category._id === product.category)
-        ?.name,
-      imageURL: product.images[0],
+      category: category,
+      imageURL: imageURL,
       edit: product._id,
     };
   });
-  console.log(alldatas);
-  return alldatas;
+
+  const resolvedData = await Promise.all(alldatas);
+  console.log(resolvedData);
+  return resolvedData;
 };
 
 const ProductsTable = () => {
@@ -45,15 +51,58 @@ const ProductsTable = () => {
   const [editModal, setEditModal] = useState(false);
   const [product, setSelectedProduct] = useState("");
   const [totalItems, setTotalItems] = useState(0);
-  console.log(data);
+
+  const categories = useSelector((state) => state.categories.categories);
+
   useEffect(() => {
-    loadUserData().then((alldatas) => {
-      setData(alldatas);
-      setTotalItems(alldatas.length);
+    loadUserData().then((resolvedData) => {
+      setData(resolvedData);
+      setTotalItems(resolvedData.length);
     });
   }, []);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchcategories());
+  }, [dispatch]);
+
   const handleClose = () => setOpen(false);
-  const handleCloseProduct = () => setModalOpen(false);
+  const handleCloseProduct = (newProduct) => {
+    setModalOpen(false);
+    if (newProduct) {
+      const processedProduct = processProduct(newProduct);
+      setData((prevData) => [...prevData, processedProduct]);
+      const newTotalItems = totalItems + 1;
+      const newTotalPages = Math.ceil(
+        newTotalItems / paginationConfig.pageSize
+      );
+      setTotalItems(newTotalItems);
+      // Check if the current page exceeds the new total pages
+      if (paginationConfig.current > newTotalPages) {
+        // If it does, set the current page to the last page
+        setPagination({ ...paginationConfig, current: newTotalPages });
+      }
+    }
+  };
+
+  const processProduct = (product) => {
+    const category = categories.data.categories.find(
+      (category) => category._id === product.category
+    )?.name;
+    const imageURL =
+      product.images.length > 0
+        ? `http://localhost:8000/images/products/images/${product.images[0]}`
+        : "";
+
+    return {
+      ...product,
+      category: category,
+      imageURL: imageURL,
+      edit: product._id,
+    };
+  };
+
   const handleCloseEdit = () => setEditModal(false);
 
   const renderEditColumn = (record) => {
@@ -66,6 +115,7 @@ const ProductsTable = () => {
       setSelectedProduct(data.find((product) => product._id === record));
       setEditModal(true);
     };
+
     return (
       <div className="flex gap-6 justify-center">
         <img src={deleteIcon} onClick={handleOpen} />
@@ -76,21 +126,24 @@ const ProductsTable = () => {
 
   function handleConfirmDelete() {
     if (selectedItem) {
-      // Send a DELETE request to the backend
       axios
         .delete(`http://localhost:8000/api/products/${selectedItem}`)
         .then(() => {
-          // Remove the item from the local data
           setData((prevData) =>
             prevData.filter((item) => item._id !== selectedItem)
           );
-          setSelectedItem(null); // Move this line inside the .then block
-          handleClose(); // Close the modal after successful deletion
-          window.location.reload();
+          setSelectedItem(null);
+          handleClose();
         })
         .catch((error) => {
           console.error("Error deleting item:", error);
         });
+    }
+    const newTotalItems = totalItems - 1;
+    setTotalItems(newTotalItems);
+    const newTotalPages = Math.ceil(newTotalItems / paginationConfig.pageSize);
+    if (paginationConfig.current > newTotalPages) {
+      setPagination({ ...paginationConfig, current: newTotalPages });
     }
   }
 
@@ -112,11 +165,7 @@ const ProductsTable = () => {
       key: "imageURL",
       className: "font-secondary text-center",
       render: (imageURL) => (
-        <Image
-          src={`http://localhost:8000/images/products/images/${imageURL}`}
-          width={120}
-          height={120}
-        />
+        <Image src={`${imageURL}`} width={120} height={120} />
       ),
     },
     {

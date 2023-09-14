@@ -3,14 +3,14 @@ import DeliveredOrdersTable from "../../components/UI/table/DeliveredOrdersTable
 import { useState } from "react";
 
 function Orders() {
-  const [isChecked, setIsChecked] = useState(true); // تغییرات اینجا
+  const [isChecked, setIsChecked] = useState(false);
   const [currentPage, setCurrentPage] = useState("progressing");
 
   const handleCheckboxClick = () => {
     if (isChecked) {
-      setCurrentPage("delivered");
-    } else {
       setCurrentPage("progressing");
+    } else {
+      setCurrentPage("delivered");
     }
     setIsChecked(!isChecked);
   };
@@ -18,7 +18,6 @@ function Orders() {
   return (
     <div className="m-8 font-secondary">
       <h1 className=" text-2xl mb-5">مدیریت سفارش ها</h1>
-
       <fieldset className="flex gap-9 mb-6 items-center">
         <div>
           <input

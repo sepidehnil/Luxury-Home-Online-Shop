@@ -11,6 +11,11 @@ function Shipping() {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+    const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     const userId = Cookies.get("userId");
@@ -43,8 +48,9 @@ function Shipping() {
 
   localStorage.setItem("userData", JSON.stringify(updatedData));
 
-  const handleSave = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
+    // Handle form submission here
+    console.log("Form data:", data);
   };
 
   function convertToPersianNumbers(input) {
@@ -53,62 +59,75 @@ function Shipping() {
   }
 
   return (
-    <div className="h-[745px] bg-[url('https://www.ikea.com/images/a-boho-bedroom-with-a-double-bed-draped-in-neutral-bed-linen-feed733279e7de1f79945bec7e45b02c.jpg?f=sg')] bg-no-repeat ">
-      <form
-        className="w-[400px] h-full p-8 bg-transparent backdrop-blur-xl flex flex-col font-secondary gap-5"
-        onSubmit={handleSave}
-      >
-        <label htmlFor="fname">نام: </label>
-        <input
-          type="text"
-          id="fname"
-          name="fname"
-          className="border-2 py-1 px-1 rounded-lg outline-none"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <label htmlFor="lname">نام خانوادگی: </label>
-        <input
-          type="text"
-          id="lname"
-          name="lname"
-          className="border-2 py-1 px-2 rounded-lg outline-none"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <label htmlFor="address">ادرس: </label>
-        <textarea
-          id="address"
-          name="address"
-          rows="5"
-          className="rounded-lg outline-none py-1 px-2"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        ></textarea>
-        <label htmlFor="phone">تلفن همراه: </label>
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          className="border-2 py-1 px-2 rounded-lg outline-none"
-          value={convertToPersianNumbers(phoneNumber)}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-        <label htmlFor="date">تاریخ تحویل: </label>
-        {selectedDate && (
-          <Calendar
-            value={selectedDate}
-            onChange={handleDateChange}
-            shouldHighlightWeekends
-            locale="fa"
+    <div className="bg-[#24272c]">
+      <div className="">
+        <form
+          className="w-[400px] bg-transparent backdrop-blur-xl flex flex-col font-secondary gap-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <label htmlFor="fname">نام: </label>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            rules={{ required: "نام را وارد کنید" }}
+            render={({ field }) => (
+              <input
+                type="text"
+                id="fname"
+                className={`border-2 py-1 px-1 rounded-lg outline-none ${
+                  errors.name ? "border-red-500" : ""
+                }`}
+                {...field}
+              />
+            )}
           />
-        )}
-        <a href="http://localhost:5173/">
-          <div className="px-3 py-2 bg-red-600 border-none rounded-lg justify-center flex">
-            ثبت سفارش
-          </div>
-        </a>
-      </form>
+          {errors.name && (
+            <span className="text-red-500">{errors.name.message}</span>
+          )}
+          <label htmlFor="lname">نام خانوادگی: </label>
+          <input
+            type="text"
+            id="lname"
+            name="lname"
+            className="border-2 py-1 px-2 rounded-lg outline-none"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <label htmlFor="address">ادرس: </label>
+          <textarea
+            id="address"
+            name="address"
+            rows="5"
+            className="rounded-lg outline-none py-1 px-2"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          ></textarea>
+          <label htmlFor="phone">تلفن همراه: </label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            className="border-2 py-1 px-2 rounded-lg outline-none"
+            value={convertToPersianNumbers(phoneNumber)}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+          <label htmlFor="date">تاریخ تحویل: </label>
+          {selectedDate && (
+            <Calendar
+              value={selectedDate}
+              onChange={handleDateChange}
+              shouldHighlightWeekends
+              locale="fa"
+            />
+          )}
+          <a href="http://localhost:5173/">
+            <div className="px-3 py-2 bg-red-600 border-none rounded-lg justify-center flex">
+              ثبت سفارش
+            </div>
+          </a>
+        </form>
+      </div>
     </div>
   );
 }

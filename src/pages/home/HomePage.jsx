@@ -5,16 +5,17 @@ import logo from "../../assets/images/green-chair-logo-tree-design-250nw-2000531
 import search from "../../assets/svg/search.svg";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import MainHeader from "../../components/UI/header/MainHeader";
 
 function HomePage() {
   const { isLoading } = useProduct();
   const categories = useSelector((state) => state.categories.categories);
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categoryId, setcategoryId] = useState(null);
 
   useEffect(() => {
     if (categories?.data?.categories?.length > 0) {
-      setSelectedCategory(categories.data.categories[0]._id);
+      setcategoryId(categories.data.categories[0]._id);
     }
   }, [categories]);
 
@@ -26,12 +27,16 @@ function HomePage() {
   }
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategory(categoryId);
+    setcategoryId(categoryId);
   };
 
-  console.log(selectedCategory);
+  console.log(categoryId);
   return (
-    <section className="font-secondary">
+    <section className="font-secondary p-8">
+      <div>
+        <MainHeader />
+      </div>
+
       <div className="bg-[#fdd262] h-[300px] rounded-2xl mt-10 flex flex-col items-center">
         <div className="bg-white px-5 py-2 rounded-b-2xl">
           <div className="rounded-full bg-[#0A1E3C] p-1 text-lg text-white w-[100px] flex justify-center font-primary">
@@ -58,7 +63,7 @@ function HomePage() {
             >
               <h1
                 className={`p-2 rounded-full w-[150px] flex justify-center items-center border-2 border-gray-200 hover:bg-[#0A1E3C] hover:text-white cursor-pointer ${
-                  selectedCategory && selectedCategory === category._id
+                  categoryId && categoryId === category._id
                     ? "bg-[#0A1E3C] text-white"
                     : "bg-white text-[#0A1E3C]"
                 }`}
@@ -69,7 +74,7 @@ function HomePage() {
           ))}
         </div>
       </div>
-      <ProductPrev selectedCategory={selectedCategory} />
+      <ProductPrev categoryId={categoryId} />
     </section>
   );
 }

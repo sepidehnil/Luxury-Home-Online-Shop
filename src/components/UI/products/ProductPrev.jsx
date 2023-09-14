@@ -1,19 +1,18 @@
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import { useState } from "react"; // Import useState
 import useProduct from "../../../hooks/useProduct";
 import backward from "../../../assets/svg/backward.svg";
 
-function ProductPrev({ selectedCategory }) {
+function ProductPrev({ categoryId }) {
   const { isLoading, products } = useProduct();
 
   if (isLoading) {
     <p>loading </p>;
   }
   const filteredProducts = products.data.products.filter(
-    (item) => item.category === selectedCategory
+    (item) => item.category === categoryId
   );
-  console.log(selectedCategory);
+  console.log(categoryId);
   const lastSixProducts = filteredProducts.slice(
     Math.max(filteredProducts.length - 6, 0)
   );
@@ -33,7 +32,7 @@ function ProductPrev({ selectedCategory }) {
       </div>
       <div className="text-white flex justify-end px-8 mt-8 items-center cursor-pointer">
         <div className="px-2 py-2 flex justify-center items-center bg-[#0A1E3C] text-white rounded-2xl gap-3">
-          <Link to={`/categories/:${selectedCategory}`}>
+          <Link to={`/categories/${categoryId}`}>
             <p> دیدن محصولات بیشتر</p>
           </Link>
           <img src={backward} />

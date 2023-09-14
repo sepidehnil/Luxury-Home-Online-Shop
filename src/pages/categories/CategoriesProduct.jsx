@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { List, Pagination, Card } from "antd";
 import { fetchsubcategories } from "../../services/instances/subCategory";
+import PagesHeader from "../../components/UI/header/PagesHeader";
 
 function CategoriesPage() {
   const { isLoading, products } = useProduct();
@@ -23,7 +24,7 @@ function CategoriesPage() {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-
+  console.log(categoryId);
   const filteredProducts = products?.data.products.filter(
     (item) => item.category === categoryId
   );
@@ -47,69 +48,95 @@ function CategoriesPage() {
     },
     {}
   );
+
+  function convertToPersianNumbers(input) {
+    const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    const inputString = String(input);
+    const numberWithCommas = inputString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const persianNumberString = numberWithCommas.replace(
+      /[0-9]/g,
+      (char) => persianNumbers[parseInt(char)]
+    );
+
+    return persianNumberString;
+  }
+
   return (
-    <div className="bg-red-50 flex p-4 gap-12 h-screen">
-      <div className="w-[500px] h-[450px] bg-white p-8 rounded-lg">
-        {categories?.data.categories.map((item) => (
-          <div key={item._id} className="mb-5 font-secondary">
-            <Link to={`/categories/${item._id}`} key={item._id}>
-              <h1
-                className={`text-xl font-semibold font-secondary ${
-                  categoryId === item._id && "text-blue-500"
-                }`}
-              >
-                {item.name}
-              </h1>
-            </Link>
-            <ul>
-              {subcategoriesByCategory[item._id]?.map((subcategory) => (
-                <li key={subcategory._id} className="px-3 py-1">
-                  {subcategory.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <section>
+      <div>
+        <PagesHeader />
       </div>
 
-      <div className="flex w-11/12 flex-wrap m-auto mt-6 overflow-hidden">
-        <List
-          grid={{ gutter: 16, column: 3 }}
-          dataSource={displayedProducts}
-          renderItem={(product) => (
-            <List.Item className="font-secondary">
-              <Card
-                className="font-secondary"
-                title={product.name}
-                extra={
-                  <Link
-                    to={`/products/${product._id}`}
-                    className="font-secondary"
-                  >
-                    جزئیات بیشتر
-                  </Link>
-                }
+      <div className="flex p-4 gap-12">
+        <div className="w-[500px] rounded-lg border-2 border-gray-200 shadow-md p-10 bg-[#5b7f4c]">
+          {categories?.data.categories.map((item) => (
+            <div>
+              <div
+                key={item._id}
+                className="p-5 font-secondary text-lg hover:bg-[#4a703a]"
               >
-                <Link to={`/products/${product._id}`}>
-                  <img
-                    alt={product.name}
-                    src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-                  />
+                <Link to={`/categories/${item._id}`} key={item._id}>
+                  <h1
+                    className={`text-2xl font-secondary text-[rgb(20,27,45)] ${
+                      categoryId === item._id && "text-gray-100 "
+                    }`}
+                  >
+                    {item.name}
+                  </h1>
                 </Link>
-                <p>قیمت: {product.price}</p>
-              </Card>
-            </List.Item>
-          )}
-        />
-        <Pagination
-          current={currentPage}
-          total={filteredProducts.length}
-          pageSize={itemsPerPage}
-          onChange={onPageChange}
-          className="m-auto mt-2"
-        />
+                <ul>
+                  {subcategoriesByCategory[item._id]?.map((subcategory) => (
+                    <li key={subcategory._id} className="px-3 py-1 ">
+                      {subcategory.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex w-11/12 flex-wrap m-auto">
+          <List
+            grid={{ gutter: 16, column: 3 }}
+            dataSource={displayedProducts}
+            renderItem={(product) => (
+              <List.Item className="font-secondary">
+                <Card
+                  className="font-secondary border-2 border-gray-200 hover:shadow-lg"
+                  title={product.name}
+                  extra={
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="font-secondary"
+                    >
+                      جزئیات بیشتر
+                    </Link>
+                  }
+                >
+                  <Link to={`/products/${product._id}`}>
+                    <img
+                      alt={product.name}
+                      src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                    />
+                  </Link>
+                  <p className="mt-2">
+                    قیمت: {convertToPersianNumbers(product.price)}
+                  </p>
+                </Card>
+              </List.Item>
+            )}
+          />
+          <Pagination
+            current={currentPage}
+            total={filteredProducts.length}
+            pageSize={itemsPerPage}
+            onChange={onPageChange}
+            className="m-auto mt-2"
+          />
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

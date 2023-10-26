@@ -6,6 +6,11 @@ import publicAxios from "../../../services/instances/publicAxios";
 import ProgressingStatusModal from "../modal/ProgressingStatusModal";
 import "moment/locale/fa";
 
+const paginationStyle = {
+  display: "flex",
+  justifyContent: "center",
+};
+
 const ProgressingOrders = () => {
   const [sortedInfo, setSortedInfo] = useState({});
   const [filteredInfo, setFilteredInfo] = useState({});
@@ -70,12 +75,13 @@ const ProgressingOrders = () => {
   };
   const paginationConfig = {
     pageSize: 8,
+    style: paginationStyle,
   };
 
   const renderDateColumn = (record) => {
     const formattedDate = moment(record.date)
-      .locale("fa")
-      .format("jYYYY/jMM/jDD");
+      .locale("eng")
+      .format("YYYY/MM/DD");
     return (
       <div className="text-center">
         <div>{formattedDate}</div>
@@ -92,7 +98,9 @@ const ProgressingOrders = () => {
     }
     return (
       <div className="text-center">
-        <div onClick={handelOpen}>بررسی وضعیت</div>
+        <div onClick={handelOpen} className="cursor-pointer">
+          Checking status
+        </div>
       </div>
     );
   };
@@ -102,37 +110,29 @@ const ProgressingOrders = () => {
 
   const columns = [
     {
-      title: "نام کاربر",
+      title: "Username",
       dataIndex: "userName",
       key: "userName",
       className: "font-secondary text-center",
     },
     {
-      title: "مجموع مبلغ",
+      title: "Total price",
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
-      render: (totalPrice) => (
-        <span>
-          {totalPrice.toLocaleString("fa-IR")} {/* Format with commas */}
-        </span>
-      ),
+      render: (totalPrice) => <span>$ {totalPrice.toLocaleString()}</span>,
     },
     {
-      title: "زمان ثبت سفارش",
+      title: "Date of order",
       dataIndex: "date",
       className: "font-secondary text-center",
       key: "date",
-      sorter: (a, b) =>
-        moment(b.orderTime, "jYYYY/jMM/jDD").diff(
-          moment(a.orderTime, "jYYYY/jMM/jDD")
-        ),
       sortOrder: sortedInfo.columnKey === "date" ? sortedInfo.order : null,
       ellipsis: true,
       render: renderDateColumn,
     },
     {
-      title: "بررسی وضعت سفارش",
+      title: "Checking order status",
       className: "font-secondary text-center",
       render: (record) => renderEditColumn(record),
     },
@@ -166,7 +166,7 @@ const ProgressingOrders = () => {
             cell: ({ children }) => (
               <th
                 style={{
-                  background: "#ff8e8e",
+                  background: "white",
                   borderTop: "none",
                   fontSize: "1rem",
                   textAlign: "center",

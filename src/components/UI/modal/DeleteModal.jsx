@@ -34,20 +34,20 @@ export default function BasicModal({ open, onClose, onConfirm }) {
       >
         <Box sx={style} className="none rounded-md">
           <div className="font-secondary mb-6">
-            ایا مطمئن به حذف این کالا هستید؟
+            Are you sure to delete this item?
           </div>
           <div className="flex gap-5 justify-center">
             <Button
-              className="font-secondary bg-red-800 hover:px-5"
-              onClick={handelDeleteItem}
-            >
-              بله
-            </Button>
-            <Button
-              className="font-secondary bg-transparent hover:px-5 border-2 border-gray-300"
+              className="font-secondary bg-[#141B2D] hover:px-5 border-2 border-gray-300 text-white"
               onClick={handleCancel}
             >
-              خیر
+              No
+            </Button>
+            <Button
+              className="font-secondary  hover:px-5"
+              onClick={handelDeleteItem}
+            >
+              Yes
             </Button>
           </div>
         </Box>

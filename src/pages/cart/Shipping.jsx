@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import publicAxios from "../../services/instances/publicAxios";
 import Cookies from "js-cookie";
-import { Calendar } from "react-modern-calendar-datepicker";
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import { Calendar, theme } from "antd";
 
 function Shipping() {
   const [data, setData] = useState({});
@@ -12,12 +11,21 @@ function Shipping() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [formErrors, setFormErrors] = useState({});
-  const [date, setDate] = useState("");
+
+  const { token } = theme.useToken();
+  const wrapperStyle = {
+    width: 400,
+    border: `1px solid ${token.colorBorderSecondary}`,
+    borderRadius: token.borderRadiusLG,
+  };
+  const onPanelChange = (value, mode) => {
+    setSelectedDate(value.format("YYYY-MM-DD"));
+    localStorage.setItem("selectedDate", selectedDate);
+  };
 
   useEffect(() => {
     const userId = Cookies.get("userId");
     console.log("UserId:", userId);
-
     if (userId) {
       publicAxios.get(`/users/${userId}`).then((response) => {
         const userData = response.data.data.user;
@@ -31,12 +39,6 @@ function Shipping() {
   }, []);
   console.log(data);
 
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value;
-    setDate(selectedDate);
-    localStorage.setItem("shippingDate", selectedDate); // Save the date to local storage
-  };
-
   const updatedData = {
     firstname: name,
     lastname: lastName,
@@ -46,50 +48,39 @@ function Shipping() {
 
   localStorage.setItem("userData", JSON.stringify(updatedData));
 
-  function convertToPersianNumbers(input) {
-    const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-    return input.replace(/\d/g, (match) => persianNumbers[parseInt(match)]);
-  }
-
   const cartData = localStorage.getItem("cartData");
   const cartObject = JSON.parse(cartData);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = {};
 
     if (!name.trim()) {
-      errors.name = "نام را وارد کنید";
+      errors.name = "Enter you're name!";
     }
 
     if (!lastName.trim()) {
-      errors.lastName = "نام خانوادگی را وارد کنید";
+      errors.lastName = "Enter you're lastName!";
     }
 
     if (!address.trim()) {
-      errors.address = "آدرس را وارد کنید";
+      errors.address = "Enter you're address!";
     }
 
     if (!phoneNumber.trim()) {
-      errors.phoneNumber = "تلفن همراه را وارد کنید";
+      errors.phoneNumber = "Enter you're phone number!";
     }
 
-    // if (!selectedDate) {
-    //   errors.selectedDate = "تاریخ تحویل را انتخاب کنید";
-    // }
+    if (!selectedDate) {
+      errors.selectedDate = "Select you're delivery date!";
+    }
 
     if (Object.keys(errors).length === 0) {
-      // Form is valid, submit the data
       console.log("Form data submitted:", updatedData);
-      // You can add code here to send the data to the server
-
-      // Check if the cart is empty before redirectin
-
       if (cartObject.items.length > 0) {
-        // Redirect to the specified URL using JavaScript
         window.location.href = "http://localhost:5173/";
       }
     } else {
-      // Form has errors, update the state to show errors
       setFormErrors(errors);
     }
   };
@@ -98,10 +89,17 @@ function Shipping() {
     <div className="bg-[#24272c] flex justify-between ">
       <div>
         <form
-          className="w-[450px] bg-transparent backdrop-blur-xl flex flex-col font-secondary gap-5 p-10"
+          className="w-[500px] bg-transparent backdrop-blur-xl flex flex-col font-secondary gap-5 p-10"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="fname">نام: </label>
+          {cartObject.items.length === 0 ? (
+            <p className="text-red-500">Your cart is empty</p>
+          ) : (
+            ""
+          )}
+          <label htmlFor="fname" className="text-white">
+            Name:
+          </label>
           <input
             type="text"
             id="fname"
@@ -116,7 +114,7 @@ function Shipping() {
             <span className="text-red-500">{formErrors.name}</span>
           )}
           <label htmlFor="lname" className="text-white">
-            نام خانوادگی:
+            LastName:
           </label>
           <input
             type="text"
@@ -132,7 +130,7 @@ function Shipping() {
             <span className="text-red-500">{formErrors.lastName}</span>
           )}
           <label htmlFor="address" className="text-white">
-            ادرس:{" "}
+            Address:
           </label>
           <textarea
             id="address"
@@ -148,7 +146,7 @@ function Shipping() {
             <span className="text-red-500">{formErrors.address}</span>
           )}
           <label htmlFor="phone" className="text-white">
-            تلفن همراه:{" "}
+            Phone number:
           </label>
           <input
             type="text"
@@ -157,38 +155,27 @@ function Shipping() {
             className={`border-2 py-1 px-2 rounded-lg outline-none ${
               formErrors.phoneNumber ? "border-red-500" : ""
             }`}
-            value={convertToPersianNumbers(phoneNumber)}
+            value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
           {formErrors.phoneNumber && (
             <span className="text-red-500">{formErrors.phoneNumber}</span>
           )}
           <label htmlFor="date" className="text-white">
-            تاریخ تحویل:{" "}
+            Deliver Date:
           </label>
-          <label htmlFor="date">تاریخ تحویل: </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            className="border-2 py-1 px-2 rounded-lg outline-none"
-            value={date}
-            onChange={handleDateChange}
-          />
-          {/* {formErrors.selectedDate && (
+          <div style={wrapperStyle}>
+            <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+          </div>
+          {formErrors.selectedDate && (
             <span className="text-red-500">{formErrors.selectedDate}</span>
-          )} */}
+          )}
           <button
             className="px-3 py-2 bg-red-600 border-none rounded-lg justify-center flex text-white"
             type="submit"
           >
-            ثبت سفارش
+            Place order
           </button>
-          {cartObject.items.length === 0 ? (
-            <p className="text-red-500">سبد خرید خالی است.</p>
-          ) : (
-            ""
-          )}
         </form>
       </div>
       <div className="rounded-r-2xl flex items-center justify-center ">

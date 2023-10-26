@@ -70,8 +70,12 @@ const cartReducer = (state, action) => {
       (item) => item.id === action.id
     );
     const existingItem = state.items[existingCartItemIndex];
-    const totalAmountToSubtract = existingItem.price * existingItem.amount;
 
+    if (!existingItem) {
+      return state;
+    }
+
+    const totalAmountToSubtract = existingItem.price * existingItem.amount;
     const updatedItems = state.items.filter((item) => item.id !== action.id);
     const updatedTotalAmount = state.totalAmount - totalAmountToSubtract;
 
@@ -117,7 +121,11 @@ const CartProvider = (props) => {
   }, []);
 
   useEffect(() => {
+    // Update local storage with cart data
     localStorage.setItem("cartData", JSON.stringify(cartState));
+    if (cartState.items.length === 0) {
+      localStorage.setItem("totalAmount", "0");
+    }
   }, [cartState]);
 
   const cartContext = {

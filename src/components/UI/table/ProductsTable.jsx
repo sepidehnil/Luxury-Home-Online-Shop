@@ -11,6 +11,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchcategories } from "../../../services/instances/categoriesSlice";
 
+const paginationStyle = {
+  display: "flex",
+  justifyContent: "center",
+};
+
 const loadUserData = async () => {
   const resposeProducts = await publicAxios.get("/products", {
     params: { limit: 1000 },
@@ -160,7 +165,7 @@ const ProductsTable = () => {
   };
   const columns = [
     {
-      title: "عکس کالا",
+      title: "Image",
       dataIndex: "imageURL",
       key: "imageURL",
       className: "font-secondary text-center",
@@ -169,33 +174,33 @@ const ProductsTable = () => {
       ),
     },
     {
-      title: "نام کالا",
+      title: "Name",
       dataIndex: "name",
       key: "name",
       className: "font-secondary text-center",
     },
 
     {
-      title: "دسته بندی",
+      title: "Category",
       dataIndex: "category",
       key: "category",
       className: "font-secondary text-center",
       filters: [
         {
-          text: "اتاق خواب",
-          value: "اتاق خواب",
+          text: "Bedroom",
+          value: "Bedroom",
         },
         {
-          text: "سالن نشیمن",
-          value: "سالن نشیمن",
+          text: "Living room",
+          value: "Living room",
         },
         {
-          text: "آشپزخانه",
-          value: "آشپزخانه",
+          text: "Kitchen",
+          value: "Kitchen",
         },
         {
-          text: "سرویس بهداشتی",
-          value: "سرویس بهداشتی",
+          text: "Bathroom",
+          value: "Bathroom",
         },
       ],
       filteredValue: filteredInfo.category || null,
@@ -203,7 +208,7 @@ const ProductsTable = () => {
       ellipsis: true,
     },
     {
-      title: "ویرایش",
+      title: "Edit",
       dataIndex: "edit",
       key: "edit",
       className: "w-[150px] ",
@@ -213,6 +218,7 @@ const ProductsTable = () => {
   const paginationConfig = {
     pageSize: 3,
     total: totalItems,
+    style: paginationStyle,
   };
   return (
     <>
@@ -242,14 +248,14 @@ const ProductsTable = () => {
           onClick={clearFilters}
           className="bg-white text-black font-secondary"
         >
-          حذف فیلترها
+          Remove filters
         </Button>
         <Button
           className="bg-white text-black font-secondary"
           onOpen={modalOpen}
           onClick={handelAddProduct}
         >
-          افزودن کالا
+          Add product
         </Button>
       </Space>
       <Table
@@ -263,10 +269,11 @@ const ProductsTable = () => {
             cell: ({ children }) => (
               <th
                 style={{
-                  background: "#ff8e8e",
+                  background: "white",
                   borderTop: "none",
                   fontSize: "1rem",
                   textAlign: "center",
+                  color: "black",
                 }}
               >
                 {children}

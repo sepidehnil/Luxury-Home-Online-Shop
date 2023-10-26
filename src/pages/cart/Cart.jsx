@@ -7,6 +7,8 @@ import { useState } from "react";
 import deleteIcon from "../../assets/svg/deleteIcon.svg";
 import DeleteModal from "../../components/UI/modal/DeleteModal";
 import PagesHeader from "../../components/UI/header/PagesHeader";
+import minus from "../../assets/svg/minus.svg";
+import plus from "../../assets/svg/plus.svg";
 
 function Cart() {
   const [open, setOpen] = useState(false);
@@ -18,7 +20,7 @@ function Cart() {
   }
 
   const cartCtx = useContext(CartContext);
-  let totalAmount = `${cartCtx.totalAmount}`;
+  let totalAmount = `${cartCtx.totalAmount.toLocaleString()}`;
   const hasItems = cartCtx.items.length > 0;
 
   const cartItemRemoveHandler = (id) => {
@@ -52,38 +54,34 @@ function Cart() {
 
   const columns = [
     {
-      title: "عکس کالا",
+      title: "image",
       dataIndex: "images",
       key: "images",
       render: (images) => (
         <Image
           src={`http://localhost:8000/images/products/images/${images}`}
-          width={120}
-          height={120}
+          width={200}
+          height={150}
         />
       ),
     },
     {
-      title: "نام کالا",
+      title: "Name",
       dataIndex: "name",
-      className: "font-secondary text-md w-[300px] text-center",
+      className: "font-secondary text-md w-[500px] text-center",
     },
     {
-      title: "قیمت",
+      title: "Price",
       dataIndex: "price",
       className: "font-secondary text-md w-[180px] text-center",
       sorter: {
         compare: (a, b) => a.chinese - b.chinese,
         multiple: 3,
       },
-      render: (price) => (
-        <span>
-          {price.toLocaleString("fa-IR")} {/* Format with commas */}
-        </span>
-      ),
+      render: (price) => <span>$ {price.toLocaleString()}</span>,
     },
     {
-      title: "تعداد",
+      title: "Quantity",
       dataIndex: "quantity",
       className: "font-secondary text-md w-[180px] text-center",
       sorter: {
@@ -92,7 +90,7 @@ function Cart() {
       },
     },
     {
-      title: "ویرایش",
+      title: "Edit",
       dataIndex: "edit",
       key: "edit",
       className: "w-[150px] font-secondary text-md text-center",
@@ -110,16 +108,17 @@ function Cart() {
       <div className="flex items-center gap-4 justify-center">
         <button
           onClick={() => cartItemRemoveHandler(item.id)}
-          className="py-[1px] px-2 text-lg border-2 border-[#FDD263] rounded-lg hover:border-[#7AA668]"
+          className="py-[5px] px-3 border-2 border-[#FDD263] rounded-lg hover:border-[#7AA668]"
+          disabled={item.amount <= 1}
         >
-          -
+          <img src={minus} />
         </button>
-        <div className="text-md"> {item.amount.toLocaleString("fa-IR")}</div>
+        <div className="text-md"> {item.amount}</div>
         <button
           onClick={() => cartItemAddHandler(item)}
-          className="py-[1px] px-2 text-lg border-2 border-[#FDD263] rounded-lg hover:border-[#7AA668]"
+          className="py-[5px] px-3 border-2 border-[#FDD263] rounded-lg hover:border-[#7AA668]"
         >
-          +
+          <img src={plus} />
         </button>
       </div>
     ),
@@ -133,29 +132,14 @@ function Cart() {
     pageSize: 3,
   };
 
-  function latinToPersianNumber(number) {
-    const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-
-    return number.toString().replace(/\d/g, (digit) => {
-      return persianDigits[digit];
-    });
-  }
-  function formatNumberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-  const formattedTotalAmount = latinToPersianNumber(
-    formatNumberWithCommas(Number(totalAmount))
-  );
-
   const footerContent = (
     <tfoot>
-      <tr className="flex items-center gap-[700px]">
-        <td colSpan="4" className="font-secondary text-lg">
+      <tr className="flex items-center justify-between">
+        <td className="font-secondary text-lg">
           {hasItems ? (
-            <div> جمع کل :{formattedTotalAmount.toLocaleString("fa-IR")}</div>
+            <div>Total amount : $ {totalAmount.toLocaleString()}</div>
           ) : (
-            (totalAmount = 0)
+            <div>Total amount : 0</div>
           )}
         </td>
         <td>
@@ -164,7 +148,7 @@ function Cart() {
               onClick={shipping}
               className="bg-[#141B2D] p-2 rounded-lg font-secondary text-white"
             >
-              نهایی کردن سبد خرید
+              Place order
             </button>
           )}
         </td>
@@ -206,7 +190,6 @@ function Cart() {
               ),
             },
           }}
-          // Render the custom footer
           footer={() => footerContent}
         />
       </div>

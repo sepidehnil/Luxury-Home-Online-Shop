@@ -17,13 +17,13 @@ function MainHeader(props, categoryId) {
 
   return (
     <section className="relative">
-      <header className="font-secondary pl-[40px] flex justify-between rounded-2xl absolute w-full z-10 h-[70px]">
-        <div className="flex items-center gap-5">
+      <header className="font-secondary flex justify-between rounded-2xl absolute w-full z-10 h-[70px]">
+        <div className="flex items-center gap-8">
           <Link to="/">
-            <div className="flex gap-1 px-5 py-8 rounded-bl-3xl bg-white font-secondary text-2xl inset-3">
-              <span>خانه </span>
+            <div className="flex gap-1 px-5 py-8 rounded-br-3xl bg-white font-secondary text-2xl inset-3">
+              <span>Luxury </span>
               <img src={logo} width="22px" />
-              <span>لوکس</span>
+              <span>Home</span>
             </div>
           </Link>
           <div className="w-[500px] h-[35px] px-4 bg-white flex items-center text-black rounded-3xl mr-5">
@@ -35,24 +35,24 @@ function MainHeader(props, categoryId) {
           </div>
         </div>
 
-        <div className="flex gap-8 items-center mt-[30px]">
+        <div className="flex gap-8 items-center mt-[30px] pr-6">
           <Link to="/login">
             <div className="flex gap-1 bg-[#141b2d] py-[38px] px-2 rounded-b-lg text-white transition duration-300 ease-in-out hover:bg-gradient-to-b from-[rgb(20,27,45)] to-[rgba(255,255,255,0.333858543417367)]">
               <img src={userIcon} alt="cart icon" />
-              <span className="texl-xl">پنل ادمین</span>
+              <span className="texl-xl">Admin panel</span>
             </div>
           </Link>
           <Link to="/cart">
             <div className="text-white relative bg-[#141b2d] px-6 py-10 rounded-b-lg transition duration-300 ease-in-out hover:bg-gradient-to-b from-[rgb(20,27,45)] to-[rgba(255,255,255,0.333858543417367)]">
               <div className="w-6 h-6 rounded-full flex items-center justify-center text-sm absolute bg-black left-3 top-4 text-white ">
-                {numberOfCartItems.toLocaleString("fa")}
+                {numberOfCartItems}
               </div>
               <img src={carIcon} alt="cart icon" className="w-5" />
             </div>
           </Link>
           <Link to="/userlogin">
             <div className="flex gap-3 items-center bg-white-800 text-white bg-[#141b2d] rounded-b-lg px-3 py-8 transition duration-300 ease-in-out hover:bg-gradient-to-b from-[rgb(20,27,45)] to-[rgba(255,255,255,0.333858543417367)]">
-              <span className="texl-xl">ورود</span>
+              <span className="texl-xl">Sign in</span>
               <img src={user} />
             </div>
           </Link>
@@ -66,21 +66,17 @@ function MainHeader(props, categoryId) {
         }}
       >
         <p className="text-2xl mb-6">
-          فضای خود را با طراحی های داخلی و مبلمان خیره کننده جایگزین کنید.
+          Replace Your Space with Stunning interior & Furniture Designs
         </p>
         <p className="text-sm mb-6">
-          در اینجا، شما با تجربه‌ی مجموعه‌ای از قطعات فوق‌العاده زیبا و مبلمانی
-          بی‌نظیر روبه‌رو خواهید شد که به دکوراسیون خانه‌تان یک ارتقاء بی‌نظیر
-          می‌دهند.
-          <br />
-          این مبلمان‌ها نه تنها از نظر ظاهری بسیار جذاب و زیبا هستند بلکه عملکرد
-          بی‌نظیری نیز دارند و به شما بهترین تجربه را در هر دو جنبه‌ی زیبایی و
-          کاربری ارائه می‌دهند.
+          Here, you will find an array of stunning pieces that will take your
+          home decor to the next level, Our furniture combines aesthetic appeal
+          with functionality to give you the best of both worlds
         </p>
         <Link to={`/categories/${categoryId}`}>
           <div className="flex justify-end cursor-pointer">
             <div className="w-[180px] h-[40px] flex justify-center items-center bg-[rgba(20,27,45,1)] rounded-3xl gap-2">
-              <span>جستجوی محصولات</span>
+              <span>Explore Products</span>
               <img src={backward} className="text-white" />
             </div>
           </div>

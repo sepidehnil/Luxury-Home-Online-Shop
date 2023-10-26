@@ -5,152 +5,10 @@ import "moment/locale/fa";
 import publicAxios from "../../../services/instances/publicAxios";
 import DeliveredStatusModal from "../modal/DeliveredStatusModal";
 
-// const DeliveredOrdersTable = () => {
-//   const [sortedInfo, setSortedInfo] = useState({});
-//   const [filteredInfo, setFilteredInfo] = useState({});
-//   const [data, setData] = useState([]);
-
-//   useEffect(() => {
-//     async function fetchData() {
-//       try {
-//         const response = await publicAxios.get("/orders", {
-//           params: { limit: 1000 },
-//         });
-//         const orders = response.data.data.orders;
-
-//         const deliveredOrders = orders.filter(
-//           (order) => order.deliveryStatus === false
-//         );
-
-//         const userIds = deliveredOrders.map((order) => order.user);
-
-//         const userDataPromises = userIds.map((userId) =>
-//           publicAxios.get(`/users/${userId}`)
-//         );
-//         const userDatas = await Promise.all(userDataPromises);
-//         const ordersWithUserData = deliveredOrders.map((order, index) => {
-//           const user = userDatas[index].data.data.user;
-//           const fullName = `${user.firstname} ${user.lastname}`;
-//           return {
-//             ...order,
-//             userName: fullName,
-//           };
-//         });
-
-//         setData(ordersWithUserData);
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//       }
-//     }
-
-//     fetchData();
-//   }, []);
-
-//   const handleChange = (pagination, filters, sorter) => {
-//     console.log("Various parameters", pagination, filters, sorter);
-//     setFilteredInfo(filters);
-//     setSortedInfo(sorter);
-//   };
-//   const clearFilters = () => {
-//     setFilteredInfo({});
-//   };
-//   const clearAll = () => {
-//     setFilteredInfo({});
-//     setSortedInfo({});
-//   };
-//   const setOrderTimeSort = () => {
-//     setSortedInfo({
-//       order: "descend",
-//       columnKey: "orderTime",
-//     });
-//   };
-//   const paginationConfig = {
-//     pageSize: 8,
-//   };
-//   const renderEditColumn = () => {
-//     return (
-//       <div className="text-center">
-//         <div>بررسی وضعیت</div>
-//       </div>
-//     );
-//   };
-//   const columns = [
-//     {
-//       title: "نام کاربر",
-//       dataIndex: "userName",
-//       key: "userName",
-//       className: "font-secondary text-center",
-//     },
-//     {
-//       title: "مجموع مبلغ",
-//       dataIndex: "totalPrice",
-//       key: "totalPrice",
-//       className: "font-secondary text-center",
-//     },
-//     {
-//       title: "زمان ثبت سفارش",
-//       dataIndex: "orderTime",
-//       className: "font-secondary text-center",
-//       key: "orderTime",
-//       sorter: (a, b) =>
-//         moment(b.orderTime, "jYYYY/jMM/jDD").diff(
-//           moment(a.orderTime, "jYYYY/jMM/jDD")
-//         ),
-//       sortOrder: sortedInfo.columnKey === "orderTime" ? sortedInfo.order : null,
-//       ellipsis: true,
-//     },
-//     {
-//       title: "بررسی وضعت سفارش",
-//       render: renderEditColumn,
-//       className: "font-secondary text-center",
-//     },
-//   ];
-//   return (
-//     <>
-//       <Space
-//         style={{
-//           marginBottom: 16,
-//         }}
-//       >
-//         <Button onClick={setOrderTimeSort}>Sort by order time</Button>
-//         <Button onClick={clearFilters}>Clear filters</Button>
-//         <Button onClick={clearAll}>Clear filters and sorters</Button>
-//       </Space>
-//       <Table
-//         columns={columns}
-//         dataSource={data}
-//         onChange={handleChange}
-//         pagination={paginationConfig}
-//         className="font-secondary text-center"
-//         components={{
-//           header: {
-//             cell: ({ children }) => (
-//               <th
-//                 style={{
-//                   background: "#ff8e8e",
-//                   borderTop: "none",
-//                   fontSize: "1rem",
-//                   textAlign: "center",
-//                 }}
-//               >
-//                 {children}
-//               </th>
-//             ),
-//           },
-//         }}
-//       />
-//     </>
-//   );
-// };
-// export default DeliveredOrdersTable;
-
-// import React, { useEffect, useState } from "react";
-// import { Button, Space, Table } from "antd";
-// import moment from "jalali-moment";
-// import "moment/locale/fa";
-// import publicAxios from "../../../services/instances/publicAxios";
-// import OrdersStatusModal from "../modal/OrdersStatusModal";
-// import "moment/locale/fa";
+const paginationStyle = {
+  display: "flex",
+  justifyContent: "center",
+};
 
 const DeliveredOrdersTable = () => {
   const [sortedInfo, setSortedInfo] = useState({});
@@ -215,13 +73,13 @@ const DeliveredOrdersTable = () => {
     });
   };
   const paginationConfig = {
-    pageSize: 8,
+    style: paginationStyle,
   };
 
   const renderDateColumn = (record) => {
     const formattedDate = moment(record.date)
-      .locale("fa")
-      .format("jYYYY/jMM/jDD");
+      .locale("eng")
+      .format("YYYY/MM/DD");
     return (
       <div className="text-center">
         <div>{formattedDate}</div>
@@ -238,7 +96,9 @@ const DeliveredOrdersTable = () => {
     }
     return (
       <div className="text-center">
-        <div onClick={handelOpen}>بررسی وضعیت</div>
+        <button onClick={handelOpen} className="cursor-pointer ">
+          Checking status
+        </button>
       </div>
     );
   };
@@ -248,33 +108,33 @@ const DeliveredOrdersTable = () => {
 
   const columns = [
     {
-      title: "نام کاربر",
+      title: "Username",
       dataIndex: "userName",
       key: "userName",
       className: "font-secondary text-center",
     },
     {
-      title: "مجموع مبلغ",
+      title: "Total price",
       dataIndex: "totalPrice",
       key: "totalPrice",
       className: "font-secondary text-center",
-      render: (totalPrice) => <span>{totalPrice.toLocaleString("fa-IR")}</span>,
+      render: (totalPrice) => <span>$ {totalPrice}</span>,
     },
     {
-      title: "زمان ثبت سفارش",
+      title: "Date of order",
       dataIndex: "date",
       className: "font-secondary text-center",
       key: "date",
       sorter: (a, b) =>
-        moment(b.orderTime, "jYYYY/jMM/jDD").diff(
-          moment(a.orderTime, "jYYYY/jMM/jDD")
+        moment(b.orderTime, "YYYY/jMM/jDD").diff(
+          moment(a.orderTime, "YYYY/jMM/jDD")
         ),
       sortOrder: sortedInfo.columnKey === "date" ? sortedInfo.order : null,
       ellipsis: true,
       render: renderDateColumn,
     },
     {
-      title: "بررسی وضعت سفارش",
+      title: "Checking order status",
       className: "font-secondary text-center",
       render: (record) => renderEditColumn(record),
     },
@@ -308,7 +168,7 @@ const DeliveredOrdersTable = () => {
             cell: ({ children }) => (
               <th
                 style={{
-                  background: "#ff8e8e",
+                  background: "white",
                   borderTop: "none",
                   fontSize: "1rem",
                   textAlign: "center",

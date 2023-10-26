@@ -32,7 +32,7 @@ function UserForm() {
           const token = response.data.token;
           Cookies.set("accessToken", token.accessToken);
           Cookies.set("refreshToken", token.refreshToken);
-          
+
           const userId = response.data.data.user._id;
           setUserId(userId);
           Cookies.set("userId", userId);
@@ -42,22 +42,16 @@ function UserForm() {
       });
   }
 
-  //   useEffect(() => {
-  //     publicAxios.get("/http://localhost:8000/api/users").then((res) => {
-  //       console.log(res);
-  //     });
-  //   });
-
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-[url('https://www.ikea.com/images/a-mid-century-modern-living-room-centred-around-a-jaettebo-s-c7a5b708513cc0be58ebc3c4e94efd31.jpg?f=sg')] bg-no-repeat bg-cover bg-center">
-      <div className="w-2/6	text-right font-secondary">
+      <div className="w-2/6	text-left font-secondary">
         <form
           className="bg-white shadow-lg rounded-lg px-8 py-8"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h1 className="text-center text-xl">ورورد کاربر</h1>
+          <h1 className="text-center text-xl">User Login</h1>
           <div className="border-b-2 bg-gray-400 my-4"></div>
-          <label className="block text-black text-md ">نام کاربری</label>
+          <label className="block text-black text-md ">UserName</label>
           <input
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="text"
@@ -68,24 +62,21 @@ function UserForm() {
               required: true,
               maxLength: 20,
               pattern: /^[A-Za-z]+$/i,
-              //   validate: (value) => value === "admin",
             })}
           />
           {errors?.username?.type === "required" && (
-            <p className="text-red-500 text-[0.8rem]">
-              نام کاربری خود را وارد کنید
-            </p>
+            <p className="text-red-500 text-[0.8rem]">enter your userName! </p>
           )}
           {errors?.username?.type === "validate" && (
             <p className="text-red-500 text-[0.8rem]">
-              نام کاربری صحیح نمی باشد
+              userName is not correct!
             </p>
           )}
           {errors?.username?.type === "pattern" && (
-            <p className="text-red-500 text-[0.8rem]">فقط حروف الفبا</p>
+            <p className="text-red-500 text-[0.8rem]">only use alphabets!</p>
           )}
 
-          <label className="block text-black text-md">رمز عبور</label>
+          <label className="block text-black text-md">Password</label>
           <input
             className="border-2 border-slate-200 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline my-3"
             type="password"
@@ -99,23 +90,25 @@ function UserForm() {
           />
           {errors?.password?.type === "required" && (
             <div className="text-red-500 text-[0.8rem] ">
-              رمز عبور خود را وارد کنید
+              enter you're password!
             </div>
           )}
           {errors?.password?.type === "validate" && (
-            <p className="text-red-500 text-[0.8rem]">رمز عبور صحیح نمی باشد</p>
+            <p className="text-red-500 text-[0.8rem]">
+              you're password is not correct!
+            </p>
           )}
 
           <button
             type="submit"
             className="w-full bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
           >
-            ورود
+            LogIn
           </button>
 
           <Link to="/">
             <div className="flex justify-end gap-2 text-sm items-center mt-4 hover:underline-offset-4 hover:underline">
-              <span>بازگشت به خانه</span>
+              <span>Back to home</span>
               <img src={backwardArrow} />
             </div>
           </Link>

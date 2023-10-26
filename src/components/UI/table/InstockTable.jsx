@@ -2,6 +2,7 @@ import * as React from "react";
 import { DataGrid, GridCellEditStopReasons } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Footer } from "antd/es/layout/layout";
 
 export default function InstockTable() {
   const [data, setData] = useState([]);
@@ -138,10 +139,11 @@ export default function InstockTable() {
   };
 
   console.log(editedCells);
-  const headerCellStyle = "bg-[#ff8e8e] font-secondary";
+  const headerCellStyle = "bg-white font-secondary text-lg";
   const rowCellStyle = "bg-white font-secondary";
+  const GridFooter = "bg-white";
   return (
-    <div style={{ width: "100%", height: 500 }} className="font-secondary">
+    <div style={{ width: "100%", height: 550 }} className="font-secondary">
       <DataGrid
         rows={data.map((row) => ({
           ...row,
@@ -151,6 +153,7 @@ export default function InstockTable() {
           ...column,
           headerClassName: headerCellStyle,
         }))}
+        classes={{ footerContainer: GridFooter }}
         getRowId={getRowId}
         onCellKeyDown={handlekeyCahnge}
         onCellEditStart={handleCellEditStart}
@@ -160,24 +163,24 @@ export default function InstockTable() {
       <button
         onClick={handleSaveChanges}
         disabled={!isEditing || editedRows.size === 0}
-        style={{ marginTop: "10px" }}
+        style={{ marginTop: "15px" }}
         className={`p-2 rounded-lg ${
           !isEditing || editedRows.size === 0
             ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-            : "bg-red-100 text-black"
+            : "bg-[#7da86b] text-black"
         }`}
       >
-        ذخیره تغییرات
+        Save Changes
       </button>
     </div>
   );
 }
 
 const columns = [
-  { field: "name", headerName: "نام کالا", width: 598, editable: true },
+  { field: "name", headerName: "Product name", width: 598, editable: true },
   {
     field: "price",
-    headerName: "قیمت",
+    headerName: "Price",
     type: "number",
     editable: true,
     align: "center",
@@ -186,7 +189,7 @@ const columns = [
   },
   {
     field: "quantity",
-    headerName: "موجودی",
+    headerName: "Stock",
     type: "number",
     editable: true,
     align: "center",

@@ -12,25 +12,26 @@ import CartContext from "../../context/cart-context";
 import PagesHeader from "../../components/UI/header/PagesHeader";
 
 function ProductDetail() {
-  const { isLoading, products } = useProduct();
   const { productId } = useParams();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [counter, setCounter] = useState(1);
-  const categories = useSelector((state) => state.categories.categories);
+
   const cartCtx = useContext(CartContext);
   const dispatch = useDispatch();
+
+  const { isLoading, products } = useProduct();
+  const subcategories = useSelector(
+    (state) => state.subcategories.subcategories
+  );
+  const categories = useSelector((state) => state.categories.categories);
 
   useEffect(() => {
     dispatch(fetchsubcategories());
   }, [dispatch]);
 
-  const subcategories = useSelector(
-    (state) => state.subcategories.subcategories
-  );
-
   if (isLoading) {
-    return <p>loading</p>;
+    return <div>Loading...</div>;
   }
   console.log(products);
   const addToCartHandler = (amount) => {
@@ -54,7 +55,11 @@ function ProductDetail() {
     return category._id === filteredproductsDetail[0]?.category;
   });
 
-  const filteredSubCategories = subcategories?.data.subcategories.filter(
+  if (!subcategories || !subcategories.data) {
+    return <div>Loading...</div>;
+  }
+
+  const filteredSubCategories = subcategories.data.subcategories.filter(
     (subcategory) => {
       return subcategory._id === filteredproductsDetail[0]?.subcategory;
     }
@@ -84,9 +89,9 @@ function ProductDetail() {
       <div className="overflow-hidden p-14 mt-2">
         {filteredproductsDetail.map((product) => {
           return (
-            <div key={product._id} className="flex font-primary gap-11">
-              <div>
-                <h1 className="font-secondary text-xl font-semibold">
+            <div key={product._id} className="flex font-primary gap-11 ">
+              <div className="w-full">
+                <h1 className="font-secondary text-xl font-semibold ">
                   {product.name}
                 </h1>
                 <p className="mt-2">
@@ -97,16 +102,14 @@ function ProductDetail() {
                   dangerouslySetInnerHTML={{ __html: product.description }}
                   className="my-10 w-[600px]"
                 />
-                <span className="my-10">{` قیمت کالا : ${product.price.toLocaleString(
-                  "fa"
-                )} تومان`}</span>
+                <span className="my-10">{`Price : $ ${product.price}`}</span>
                 <div className="mt-10 mb-5 flex justify-start">
                   <div className="px-[60px] py-[8px] bg-[#141b2d] rounded-3xl gap-3 flex justify-center items-center ">
                     <button
                       onClick={handleAddToCart}
                       className="font-secondary text-md text-white"
                     >
-                      افزودن به سبد خرید
+                      Add to cart
                     </button>
                     <img src={carIcon} alt="cart icon" />
                   </div>
@@ -121,13 +124,13 @@ function ProductDetail() {
                       <img src={plus} />
                     </div>
                     <input
-                      className="bg-transparent outline-none text-2xl flex items-center justify-center w-5 text-white"
+                      className="bg-transparent outline-none text-2xl flex items-center justify-center w-8 text-white"
                       id="tentacles"
                       name="tentacles"
                       min="1"
                       max={product.quantity}
                       step="1"
-                      value={selectedQuantity.toLocaleString("fa")}
+                      value={selectedQuantity}
                       onChange={(e) =>
                         setSelectedQuantity(Number(e.target.value))
                       }
@@ -142,7 +145,7 @@ function ProductDetail() {
                 </div>
                 {counter > product.quantity ? (
                   <p className="mt-3 text-red-600">
-                    از این کالا {product.quantity} عدد موجود می باشد.
+                    Only {product.quantity} are available.
                   </p>
                 ) : (
                   <p></p>

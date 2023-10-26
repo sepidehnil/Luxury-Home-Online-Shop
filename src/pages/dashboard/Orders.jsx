@@ -16,10 +16,10 @@ function Orders() {
   };
 
   return (
-    <div className="m-8 font-secondary">
-      <h1 className=" text-2xl mb-5">مدیریت سفارش ها</h1>
+    <div className="m-14 font-secondary">
+      <h1 className=" text-2xl mb-5">Orders Management</h1>
       <fieldset className="flex gap-9 mb-6 items-center">
-        <div>
+        <div className="flex gap-1">
           <input
             type="radio"
             id="deliverdorders"
@@ -29,11 +29,11 @@ function Orders() {
             onChange={handleCheckboxClick} // تغییرات اینجا
           />
           <label htmlFor="deliverdorders" className="mr-2">
-            سفارش های تحویل داده شده
+            Delivered orders
           </label>
         </div>
 
-        <div>
+        <div className="flex gap-1">
           <input
             type="radio"
             id="progressingorders"
@@ -43,12 +43,12 @@ function Orders() {
             onChange={handleCheckboxClick} // تغییرات اینجا
           />
           <label htmlFor="progressingorders" className="mr-2">
-            سفارش های در انتظار ارسال
+            Progressing orders
           </label>
         </div>
       </fieldset>
 
-      <div className="w-[1000px] font-secondary bg-red-100 rounded-lg ">
+      <div className="w-[1000px] font-secondary bg-white rounded-lg ">
         {currentPage === "progressing" && <ProgressingOrders />}
         {currentPage === "delivered" && <DeliveredOrdersTable />}
       </div>

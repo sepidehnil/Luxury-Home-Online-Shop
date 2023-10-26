@@ -26,7 +26,7 @@ export default function LexicalTextEditor({ defaultText = "", onChange }) {
   const handleBlur = () => {
     setHasBlurred(true);
     if (text.trim() === "") {
-      setError("توضیحات الزامی است.");
+      setError("description is required!");
     } else {
       setError("");
     }
@@ -52,8 +52,7 @@ export default function LexicalTextEditor({ defaultText = "", onChange }) {
             "bold italic backcolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist outdent indent | " +
             "removeformat | help",
-          content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+          content_style: "body { font-family:Helvetica,Arial,sans-serif }",
         }}
       />
       {hasBlurred && error && (

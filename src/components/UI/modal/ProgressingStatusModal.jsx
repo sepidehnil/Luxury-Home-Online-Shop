@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import publicAxios from "../../../services/instances/publicAxios";
 import privateAxios from "../../../services/instances/privateAxios";
 import useProduct from "../../../hooks/useProduct";
-import moment from "jalali-moment";
+import jalaliMoment from "jalali-moment";
 
 const style = {
   position: "absolute",
@@ -21,22 +21,26 @@ const style = {
   borderRadius: "8px",
   textAlign: "center",
 };
+const paginationStyle = {
+  display: "flex",
+  justifyContent: "center",
+};
 
 const columns = [
   {
-    title: "کالا",
+    title: "Product",
     dataIndex: "product",
     key: "product",
     className: "font-secondary text-center w-[280px]",
   },
   {
-    title: "قیمت",
+    title: "Price",
     dataIndex: "price",
     key: "price",
     className: "font-secondary text-center w-[100px]",
   },
   {
-    title: "تعداد",
+    title: "Amount",
     dataIndex: "count",
     key: "count",
     className: "font-secondary text-center w-[100px]",
@@ -81,8 +85,8 @@ export default function ProgressingStatusModal({
           console.log(productDetails);
           const getUserTableWithData = getUserTableData.map((item, index) => ({
             product: productDetails[index].name,
-            price: productDetails[index].price.toLocaleString("fa-IR"),
-            count: item.count.toLocaleString("fa-IR"),
+            price: `$ ${productDetails[index].price}`,
+            count: item.count,
           }));
 
           setGetUserTable(getUserTableWithData);
@@ -94,11 +98,6 @@ export default function ProgressingStatusModal({
 
     fetchData();
   }, [products, selectedUser]);
-
-  const formatPersianDate = (dateString) => {
-    const jalaliDate = moment(dateString, "YYYY-MM-DD").locale("fa");
-    return jalaliDate.format("jYYYY/jMM/jDD");
-  };
 
   const handleDelivered = (e) => {
     e.preventDefault();
@@ -117,6 +116,9 @@ export default function ProgressingStatusModal({
       });
   };
 
+  const paginationConfig = {
+    style: paginationStyle,
+  };
   return (
     <div className="font-secondary">
       <Modal
@@ -127,26 +129,32 @@ export default function ProgressingStatusModal({
         className="font-primary"
       >
         <Box sx={style}>
-          <div className="text-right flex flex-col gap-4">
-            <h1 className="font-secondary text-lg">نمایش سفارش</h1>
-            <div className="border-b-2 border-gray-500"></div>
+          <div className="text-left flex flex-col gap-4 font-secondary">
+            <h1 className="font-secondary text-lg">Display order</h1>
+            <div className="border-b-2 border-[#7da86b]"></div>
             <div className="flex flex-col gap-3">
-              <div>نام مشتری: {selectedUser.userName}</div>
-              <div>ادرس: {userData.address}</div>
-              <div>تلفن: {userData.phoneNumber}</div>
+              <div>Customer name: {selectedUser.userName}</div>
+              <div>Address: {userData.address}</div>
+              <div>Phone number: {userData.phoneNumber}</div>
               <div>
-                زمان تحویل:
-                {formatPersianDate(selectedUser.deliveryDate).toLocaleString(
-                  "fa-IR"
-                )}
+                Delivered time:{" "}
+                {jalaliMoment(selectedUser.deliveryDate, "YYYY-MM-DDTHH")
+                  .local("eng")
+                  .format("YYYY-MM-DD")}
               </div>
-              <div>زمان سفارش: {formatPersianDate(selectedUser.createdAt)}</div>
+              <div>
+                Place Order time:{" "}
+                {jalaliMoment(selectedUser.createdAt, "YYYY-MM-DDTHH")
+                  .local("eng")
+                  .format("YYYY-MM-DD")}
+              </div>
             </div>
 
             <div className="font-secondary border-2 border-gray-400 rounded-lg">
               <Table
                 columns={columns}
                 dataSource={getUserTable}
+                pagination={paginationConfig}
                 components={{
                   header: {
                     cell: ({ children }) => (
@@ -154,7 +162,9 @@ export default function ProgressingStatusModal({
                         style={{
                           fontSize: "1rem",
                           textAlign: "center",
-                          background: "#c4c4c4",
+                          background: "#222a3a",
+                          color: "white",
+                          border: "none",
                         }}
                       >
                         {children}
@@ -167,9 +177,9 @@ export default function ProgressingStatusModal({
           </div>
           <button
             onClick={handleDelivered}
-            className="bg-gray-300 flex w-[100px] rounded-lg m-auto justify-center py-2 hover:bg-red-300 mt-4"
+            className="bg-gray-300 flex w-[100px] rounded-lg m-auto justify-center py-2 hover:bg-[#7da86b] mt-4 hover:text-wh"
           >
-            تحویل شد
+            delivered
           </button>
         </Box>
       </Modal>

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { List, Pagination, Card } from "antd";
 import { fetchsubcategories } from "../../services/instances/subCategory";
 import PagesHeader from "../../components/UI/header/PagesHeader";
+import backward from "../../assets/svg/backwardArrow.svg";
 
 function CategoriesPage() {
   const { isLoading, products } = useProduct();
@@ -49,26 +50,14 @@ function CategoriesPage() {
     {}
   );
 
-  function convertToPersianNumbers(input) {
-    const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-    const inputString = String(input);
-    const numberWithCommas = inputString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    const persianNumberString = numberWithCommas.replace(
-      /[0-9]/g,
-      (char) => persianNumbers[parseInt(char)]
-    );
-
-    return persianNumberString;
-  }
-
   return (
     <section>
       <div>
         <PagesHeader />
       </div>
 
-      <div className="flex p-4 gap-12">
-        <div className="w-[500px] rounded-lg border-2 border-gray-200 shadow-md p-10 bg-[#5b7f4c]">
+      <div className="flex pr-6 gap-12">
+        <div className="w-[250px] rounded-r-lg border-2 border-gray-200 shadow-md bg-[#5b7f4c] h-[600px]">
           {categories?.data.categories.map((item) => (
             <div>
               <div
@@ -96,7 +85,7 @@ function CategoriesPage() {
           ))}
         </div>
 
-        <div className="flex w-11/12 flex-wrap m-auto">
+        <div className="flex w-11/12 flex-wrap m-auto py-6">
           <List
             grid={{ gutter: 16, column: 3 }}
             dataSource={displayedProducts}
@@ -105,14 +94,6 @@ function CategoriesPage() {
                 <Card
                   className="font-secondary border-2 border-gray-200 hover:shadow-lg"
                   title={product.name}
-                  extra={
-                    <Link
-                      to={`/products/${product._id}`}
-                      className="font-secondary"
-                    >
-                      جزئیات بیشتر
-                    </Link>
-                  }
                 >
                   <Link to={`/products/${product._id}`}>
                     <img
@@ -120,9 +101,16 @@ function CategoriesPage() {
                       src={`http://localhost:8000/images/products/images/${product.images[0]}`}
                     />
                   </Link>
-                  <p className="mt-2">
-                    قیمت: {convertToPersianNumbers(product.price)}
-                  </p>
+                  <p className="mt-2">Price: $ {product.price}</p>
+                  <Link
+                    to={`/products/${product._id}`}
+                    className="font-secondary"
+                  >
+                    <div className="flex gap-2">
+                      <span className="underline">More Details</span>
+                      <img src={backward} />
+                    </div>
+                  </Link>
                 </Card>
               </List.Item>
             )}

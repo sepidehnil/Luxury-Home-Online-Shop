@@ -4,7 +4,6 @@ import Modal from "@mui/material/Modal";
 import { Button, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "../../../styles/index.css";
-import closeBtn from "../../../assets/svg/closeBtn.svg";
 import { useEffect } from "react";
 import LexicalTextEditor from "../forms/LexicalEditor";
 import {
@@ -12,7 +11,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Typography,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
@@ -25,41 +23,37 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 700,
   bgcolor: "white",
   boxShadow: 24,
   p: 4,
 };
 
 export default function AddEditProductModal({ onOpen, onClose }) {
-  const [name, setName] = useState("");
   const [category, setCategory] = useState([]);
   const [subcategory, setSubCategory] = useState([]);
   const [imageFile, setImageFile] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [brand, setBrand] = useState("");
+  const [fileError, setFileError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   const {
     handleSubmit,
-    control,
-    register,
     formState: { errors },
+    control,
   } = useForm();
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (formData) => {
     const data = {
-      name,
+      name: formData.name,
       category: selectedCategory,
       description,
       images: imageFile,
       subcategory: selectedSubcategory,
-      brand,
-      price,
-      quantity,
+      brand: formData.brand,
+      price: formData.price,
+      quantity: formData.quantity,
     };
     console.log(data);
     const form = new FormData();
@@ -101,7 +95,7 @@ export default function AddEditProductModal({ onOpen, onClose }) {
   }, []);
 
   console.log(subcategory);
-  console.log(name);
+
   return (
     <div className="font-secondary">
       <Modal
@@ -110,157 +104,207 @@ export default function AddEditProductModal({ onOpen, onClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
-          sx={style}
-          className="rounded-md font-secondary flex flex-col gap-3"
-        >
-          <Typography>اضافه کردن کالا</Typography>
-          <TextField
-            label="نام کالا"
-            fullWidth
-            size="small"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            {...register("name", { required: "نام کالا الزامی است." })}
-            error={!!errors.name}
-            helperText={errors.name?.message}
-          />
-          <TextField
-            label="برند کالا"
-            fullWidth
-            size="small"
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            {...register("brand", { required: "نام برند کالا الزامی است." })}
-            error={!!errors.brand}
-            helperText={errors.brand?.message}
-          />
-          <TextField
-            label="قیمت کالا "
-            fullWidth
-            size="small"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            {...register("price", { required: "قیمت کالا الزامی است." })}
-            error={!!errors.price}
-            helperText={errors.price?.message}
-          />
-          <TextField
-            label="تعداد کالا "
-            fullWidth
-            size="small"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            {...register("quantity", { required: "تعداد کالا الزامی است." })}
-            error={!!errors.quantity}
-            helperText={errors.quantity?.message}
-          />
-          <Controller
-            name="selectedCategory"
-            control={control}
-            defaultValue=""
-            rules={{ required: "دسته بندی الزامی است." }}
-            render={({ field }) => (
-              <FormControl fullWidth size="small">
-                <InputLabel id="demo-select-small-label">دسته بندی</InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={field.value}
-                  onChange={(e) => {
-                    setSelectedCategory(e.target.value);
-                    field.onChange(e.target.value);
-                  }}
-                  label="دسته بندی"
-                  className="font-secondary"
-                  required
-                >
-                  {category.map((category) => (
-                    <MenuItem key={category._id} value={category._id}>
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText error={!!errors.selectedCategory}>
-                  {errors.selectedCategory?.message}
-                </FormHelperText>
-              </FormControl>
-            )}
-          />
+        <Box sx={style} className="rounded-md font-secondary">
+          <h1 className="mb-8 font-bold text-xl">Add products</h1>
 
-          <Controller
-            name="selectedSubcategory"
-            control={control}
-            defaultValue=""
-            rules={{ required: "زیربخش الزامی است." }}
-            render={({ field }) => (
-              <FormControl fullWidth size="small">
-                <InputLabel id="demo-select-small-label">زیربخش</InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={field.value}
-                  onChange={(e) => {
-                    setSelectedSubcategory(e.target.value);
-                    field.onChange(e.target.value);
-                  }}
-                  label="زیربخش"
-                  className="font-secondary"
-                  required
-                >
-                  {subcategory
-                    .filter(
-                      (subcategory) => subcategory.category === selectedCategory
-                    )
-                    .map((subcategory) => (
-                      <MenuItem key={subcategory._id} value={subcategory._id}>
-                        {subcategory.name}
-                      </MenuItem>
-                    ))}
-                </Select>
-                <FormHelperText error={!!errors.selectedSubcategory}>
-                  {errors.selectedSubcategory?.message}
-                </FormHelperText>
-              </FormControl>
-            )}
-          />
+          <form className="flex gap-10 justify-center">
+            <div className="flex flex-col gap-5">
+              <Controller
+                name="name"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Name is required!" }}
+                render={({ field }) => (
+                  <TextField
+                    label="Name"
+                    fullWidth
+                    size="small"
+                    {...field}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="brand"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Brand is required!" }}
+                render={({ field }) => (
+                  <TextField
+                    label="Brand"
+                    fullWidth
+                    size="small"
+                    {...field}
+                    error={!!errors.brand}
+                    helperText={errors.brand?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="price"
+                control={control}
+                defaultValue=""
+                rules={{ required: "price is required!" }}
+                render={({ field }) => (
+                  <TextField
+                    label="Price"
+                    fullWidth
+                    size="small"
+                    {...field}
+                    error={!!errors.price}
+                    helperText={errors.price?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="quantity"
+                control={control}
+                defaultValue=""
+                rules={{ required: "quantity is required!" }}
+                render={({ field }) => (
+                  <TextField
+                    label="Quantity"
+                    fullWidth
+                    size="small"
+                    {...field}
+                    error={!!errors.quantity}
+                    helperText={errors.quantity?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="selectedCategory"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Category is required!" }}
+                render={({ field }) => (
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-select-small-label">
+                      Category
+                    </InputLabel>
+                    <Select
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={field.value}
+                      onChange={(e) => {
+                        setSelectedCategory(e.target.value);
+                        field.onChange(e.target.value);
+                      }}
+                      label="Category"
+                      className="font-secondary"
+                      required
+                    >
+                      {category.map((category) => (
+                        <MenuItem key={category._id} value={category._id}>
+                          {category.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText error={!!errors.selectedCategory}>
+                      {errors.selectedCategory?.message}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
 
-          <LexicalTextEditor onChange={handleDescriptionChange} />
-
-          <Upload
-            listType="picture-card"
-            required
-            showUploadList={true}
-            beforeUpload={(file) => {
-              // Check if the file is an image (you can add more checks here)
-              // if (!file.type.startsWith("image/")) {
-              //   message.error("لطفاً یک تصویر انتخاب کنید.");
-              //   return false; // Prevent the upload
-              // }
-
-              // // Check the file size (in bytes)
-              // const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-              // if (file.size > maxSizeInBytes) {
-              //   message.error("تصویر انتخابی باید کمتر از 5 مگابایت باشد.");
-              //   return false; // Prevent the upload
-              // }
-
-              setImageFile(file);
-              return false; // Prevent the default behavior of the Upload component
-            }}
-            onChange={handleImage}
-            type="file"
-            name="file"
-          >
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>آپلود عکس</div>
+              <Controller
+                name="selectedSubcategory"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Subcategory is required!" }}
+                render={({ field }) => (
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-select-small-label">
+                      Subcategory
+                    </InputLabel>
+                    <Select
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={field.value}
+                      onChange={(e) => {
+                        setSelectedSubcategory(e.target.value);
+                        field.onChange(e.target.value);
+                      }}
+                      label="Subcategory"
+                      className="font-secondary"
+                      required
+                    >
+                      {subcategory
+                        .filter(
+                          (subcategory) =>
+                            subcategory.category === selectedCategory
+                        )
+                        .map((subcategory) => (
+                          <MenuItem
+                            key={subcategory._id}
+                            value={subcategory._id}
+                          >
+                            {subcategory.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <FormHelperText error={!!errors.selectedSubcategory}>
+                      {errors.selectedSubcategory?.message}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
             </div>
-          </Upload>
 
-          <Button onClick={handleSubmit(onSubmit)} className="font-secondary">
-            ذخیره
-          </Button>
+            <div className="flex flex-col gap-5">
+              <LexicalTextEditor onChange={handleDescriptionChange} />
+
+              <Upload
+                listType="picture-card"
+                required
+                showUploadList={true}
+                beforeUpload={(file) => {
+                  const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+                  const fileExtension = file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+                  if (!allowedExtensions.includes(fileExtension)) {
+                    setFileError(
+                      "Please select a valid image file (jpg, jpeg, png, or gif)."
+                    );
+                    return false;
+                  }
+                  const maxSizeInBytes = 5 * 1024 * 1024;
+                  if (file.size > maxSizeInBytes) {
+                    setFileError("The selected image must be less than 5MB.");
+                    return false;
+                  }
+                  setFileError("");
+                  setImageFile(file);
+                  return false;
+                }}
+                onChange={handleImage}
+                type="file"
+                name="file"
+              >
+                <div>
+                  <PlusOutlined />
+                  <div style={{ marginTop: 8 }}>Upload image</div>
+                </div>
+              </Upload>
+
+              {fileError && (
+                <p className="text-red-600 text-[12px] font-light">
+                  {fileError}
+                </p>
+              )}
+            </div>
+          </form>
+          <div className="flex justify-center mt-8">
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              className="font-secondary w-full flex justify-center items-center py-4 bg-[#141B2D] text-white hover:bg-transparent hover:text-white"
+            >
+              Save
+            </Button>
+          </div>
         </Box>
       </Modal>
     </div>

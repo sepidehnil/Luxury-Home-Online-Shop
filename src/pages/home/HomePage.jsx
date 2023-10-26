@@ -1,9 +1,6 @@
 import useProduct from "../../hooks/useProduct";
 import { useSelector } from "react-redux";
 import ProductPrev from "../../components/UI/products/ProductPrev";
-import logo from "../../assets/images/green-chair-logo-tree-design-250nw-2000531558.jpg";
-import search from "../../assets/svg/search.svg";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MainHeader from "../../components/UI/header/MainHeader";
 
@@ -40,16 +37,15 @@ function HomePage() {
       <div className="bg-[#fdd262] h-[300px] rounded-2xl mt-10 flex flex-col items-center">
         <div className="bg-white px-5 py-2 rounded-b-2xl">
           <div className="rounded-full bg-[#0A1E3C] p-1 text-lg text-white w-[100px] flex justify-center font-primary">
-            محصولات
+            Products
           </div>
         </div>
         <div className="text-[#0A1E3C] flex flex-col justify-center items-center h-full text-center">
-          <h1 className="text-3xl font-bold">انتخابی متناسب برای فضای شما</h1>
+          <h1 className="text-3xl font-bold">Collection for your space</h1>
           <p className="font-primary w-[640px] mt-4 text-lg">
-            یک مجموعه دقیقاً برگزیده از محصولات با کیفیت را برای فضای شما تدارک
-            دیده‌ایم! <br />
-            این مجموعه شامل مواردی است که با دقت انتخاب شده‌اند و بطور قطع تمامی
-            نیازهای شما را پوشش می‌دهند.
+            Introducing our carefully curated Product Collection! We've
+            handpicked a selection of top-quality items that are sure to meet
+            all of your needs.
           </p>
         </div>
       </div>

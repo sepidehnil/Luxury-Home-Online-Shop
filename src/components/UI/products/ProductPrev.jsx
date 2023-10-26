@@ -7,7 +7,7 @@ function ProductPrev({ categoryId }) {
   const { isLoading, products } = useProduct();
 
   if (isLoading) {
-    <p>loading </p>;
+    <p>loading </p>
   }
   const filteredProducts = products.data.products.filter(
     (item) => item.category === categoryId
@@ -33,7 +33,7 @@ function ProductPrev({ categoryId }) {
       <div className="text-white flex justify-end px-8 mt-8 items-center cursor-pointer">
         <div className="px-2 py-2 flex justify-center items-center bg-[#0A1E3C] text-white rounded-2xl gap-3">
           <Link to={`/categories/${categoryId}`}>
-            <p> دیدن محصولات بیشتر</p>
+            <p>See more products</p>
           </Link>
           <img src={backward} />
         </div>

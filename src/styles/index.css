@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+@font-face {
+  font-family: IRANyekan;
+  src: url("../assets/fonts/Qs_Iranyekan.ttf");
+}
+@font-face {
+  font-family: IRANyekanbold;
+  src: url("../assets/fonts/Qs_Iranyekan bold.ttf");
+}
+@font-face {
+  font-family: IRANyekanmedium;
+  src: url("../assets/fonts/Qs_Iranyekan medium.ttf");
+}

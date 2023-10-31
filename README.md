@@ -1,3 +1,4 @@
+The structure of the component map:
 ![GitHub Logo](https://github.com/sepidehnil/Maktab94-Project-Sepideh-Nilforoushan/blob/main/src/assets/images/Copy%20of%20Untitled%20Diagram.drawio.png)
 Website Demo:
 ![GitHub Logo](https://github.com/sepidehnil/Maktab94-Project-Sepideh-Nilforoushan/blob/main/src/assets/images/Screenshot%20(33).png)

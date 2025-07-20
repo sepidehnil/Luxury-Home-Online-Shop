@@ -78,7 +78,7 @@ function Shipping() {
     if (Object.keys(errors).length === 0) {
       console.log("Form data submitted:", updatedData);
       if (cartObject.items.length > 0) {
-        window.location.href = "http://localhost:5173/";
+        window.location.href = "http://localhost:5174/";
       }
     } else {
       setFormErrors(errors);
